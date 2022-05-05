@@ -92,7 +92,7 @@ class ChatWithMessagesFragment : Fragment() {
                 it.map(requireView())
             }
             //TODO if text is empty + TODO path to file + get recepient id
-            if ((viewModel.getChatTitle() == "")) { //TODO check if correct without No title
+            if ((viewModel.getCompanionId() != "")) {
                 viewModel.sendDirectMessage(
                     enterMessageEditText.text.toString(),
                     "",
@@ -101,9 +101,13 @@ class ChatWithMessagesFragment : Fragment() {
                     viewModel.getCompanionId() //TODO
                 )
                 //TODO + in group chat like that?, when get something add message in ui, not update ui?
-                MainScope().launch(Dispatchers.IO) {
+                /*MainScope().launch(Dispatchers.IO) {
                     stompClient.send("/user/${viewModel.getCompanionId()}/queue/messages", enterMessageEditText.text.toString())
                     Log.d("LogTag", "Send to ${viewModel.getCompanionId()}")
+                }*/
+                MainScope().launch(Dispatchers.Main) {
+                    delay(500)
+                    fetchData(adapter)
                 }
             }
             else {
@@ -125,7 +129,7 @@ class ChatWithMessagesFragment : Fragment() {
             it.map(object : HandleMessages {
                 override fun fetchMessages(messages: List<Message>) {
                     viewModel.observeMessages(this@ChatWithMessagesFragment, { messageList ->
-                        adapter.update(messageList) })
+                        adapter.update(messageList.sortedBy { message -> message.dateTime }) })
                     viewModel.fetchMessages(messages)
                 }
             })
