@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">AndroidChatClient</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="email_error">Email is incorrect</string>
+    <string name="password_error">Password is incorrect</string>
+    <string name="create">Create</string>
+    <string name="select_an_avatar">Select an avatar</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="username_error">Username is incorrect</string>
+    <string name="service_unavailable_message">Service unavailable</string>
+    <string name="no_connection_message">No connection</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="try_again">Try again</string>
+    <string name="server_error_message">Error. Please check your data.</string>
+    <string name="search_chats_hint">Search chats</string>
+    <string name="enter_a_message_chat_details">Enter a message</string>
+    <string name="send">Send</string>
+</resources>
