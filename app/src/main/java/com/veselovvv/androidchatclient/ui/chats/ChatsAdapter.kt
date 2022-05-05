@@ -44,12 +44,17 @@ class ChatsAdapter(
         class FullscreenProgress(view: View) : ChatsViewHolder(view)
 
         class Base(view: View, private val chatListener: ChatListener) : ChatsViewHolder(view) {
-            private val titleTextView = itemView.findViewById<MaterialTextView>(R.id.title_text_view_chat_item)
+            private val titleTextView =
+                itemView.findViewById<MaterialTextView>(R.id.title_text_view_chat_item)
+            private val lastMessageTextView =
+                itemView.findViewById<MaterialTextView>(R.id.last_message_text_view_chat_item)
 
             override fun bind(chat: ChatUi) {
                 chat.map(object : ChatUi.BaseMapper {
-                    override fun map(id: UUID, title: String) {
+                    override fun map(id: UUID, title: String, lastMessageText: String) {
                         titleTextView.text = title
+                        if (lastMessageText != "") lastMessageTextView.text = lastMessageText
+                        else lastMessageTextView.text = "No messages" //TODO to strings + if file is sent
                     }
                     override fun map(text: String) = Unit
                 })
@@ -69,7 +74,7 @@ class ChatsAdapter(
                     override fun map(text: String) {
                         message.text = text
                     }
-                    override fun map(id: UUID, title: String) = Unit
+                    override fun map(id: UUID, title: String, lastMessageText: String) = Unit
                 })
                 button.setOnClickListener { retry.tryAgain() }
             }
@@ -77,7 +82,7 @@ class ChatsAdapter(
     }
 
     interface ChatListener {
-        fun showChat(id: UUID, title: String)
+        fun showChat(id: UUID, title: String, companionId: String)
     }
 }
 

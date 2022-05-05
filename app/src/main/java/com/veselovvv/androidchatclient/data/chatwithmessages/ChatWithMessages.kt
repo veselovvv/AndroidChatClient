@@ -12,6 +12,8 @@ data class ChatWithMessages(
     private val messages: List<Message>
 ) : Abstract.Object<ChatWithMessagesData, ToChatWithMessagesMapper> {
     val chatDetails get() = this.chat.chatSettingsList
+    val lastMessage get() =
+        if (this.messages.isNotEmpty()) this.messages.sortedBy { it.dateTime }.last() else null
 
     override fun map(mapper: ToChatWithMessagesMapper) = mapper.map(chat, messages)
 }

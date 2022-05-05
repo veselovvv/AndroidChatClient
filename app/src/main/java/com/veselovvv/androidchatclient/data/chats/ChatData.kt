@@ -5,7 +5,11 @@ import com.veselovvv.androidchatclient.domain.chats.ChatDomain
 import java.util.*
 
 data class ChatData(
-    private val id: UUID, private val title: String
+    private val id: UUID,
+    private val title: String,
+    private val companionId: String,
+    private val lastMessageText: String
 ) : Abstract.Object<ChatDomain, ChatDataToDomainMapper> {
-    override fun map(mapper: ChatDataToDomainMapper) = mapper.map(id, title)
+    override fun map(mapper: ChatDataToDomainMapper) =
+        mapper.map(id, title, companionId, lastMessageText)
 }

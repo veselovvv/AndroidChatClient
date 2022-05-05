@@ -18,7 +18,7 @@ class ChatsViewModel(
     private val chatsInteractor: ChatsInteractor,
     private val mapper: ChatsDomainToUiMapper,
     private val communication: ChatsCommunication,
-    private val chatCache: Save<Pair<String, String>>,
+    private val chatCache: Save<Triple<String, String, String>>,
     private val navigator: Save<Int>,
     private val navigationCommunication: NavigationCommunication
 ) : ViewModel() {
@@ -40,8 +40,8 @@ class ChatsViewModel(
     fun observe(owner: LifecycleOwner, observer: Observer<List<ChatUi>>) =
         communication.observe(owner, observer)
 
-    fun showChat(id: String, title: String) {
-        chatCache.save(Pair(id, title))
+    fun showChat(id: String, title: String, companionId: String) {
+        chatCache.save(Triple(id, title, companionId))
         navigationCommunication.map(CHAT_SCREEN)
     }
 

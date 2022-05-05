@@ -19,5 +19,16 @@
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="Title" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/last_message_text_view_chat_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Last message" />
     </LinearLayout>
 </LinearLayout>

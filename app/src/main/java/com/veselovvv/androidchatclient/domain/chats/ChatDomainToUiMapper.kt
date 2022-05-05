@@ -5,5 +5,5 @@ import com.veselovvv.androidchatclient.ui.chats.ChatUi
 import java.util.*
 
 interface ChatDomainToUiMapper : Abstract.Mapper {
-    fun map(id: UUID, title: String): ChatUi
+    fun map(id: UUID, title: String, companionId: String, lastMessageText: String): ChatUi
 }

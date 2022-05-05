@@ -1,7 +1,6 @@
 package com.veselovvv.androidchatclient.ui.chatwithmessages
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,43 +67,33 @@ class ChatWithMessagesFragment : Fragment() {
         //TODO + move to ViewModel?
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://10.0.2.2:8081/chat-ws/websocket")
         stompClient.connect()
-        //TODO get userId
-        val destination = if (viewModel.getCompanionId() != "") {
-            Log.d("LogTag", "Direct, companionId: ${viewModel.getCompanionId()}") //TODO
-            "/user/${viewModel.getUserId()}/queue/messages" // OR COMPANION???
-        } else {
-            Log.d("LogTag", "Group") //TODO
-            "/group/${viewModel.getChatId()}"
-        }
+
+        val destination = if (viewModel.getCompanionId() != "")
+            "/user/${viewModel.getUserId()}/queue/messages"
+        else "/group/${viewModel.getChatId()}"
+
         stompClient.topic(destination).subscribe {
             MainScope().launch(Dispatchers.Main) {
-                Log.d("LogTag", "destination: $destination") //TODO
                 fetchData(adapter)
             }
         }
 
         fetchData(adapter)
 
-        //TODO send and receive messages via web-sockets, update UI after message is sent?
         sendMessageImageView.setOnClickListener {
             viewModel.observeMessage(this) {
                 it.map()
                 it.map(requireView())
             }
-            //TODO if text is empty + TODO path to file + get recepient id
+            //TODO if text is empty and file + TODO path to file
             if ((viewModel.getCompanionId() != "")) {
                 viewModel.sendDirectMessage(
                     enterMessageEditText.text.toString(),
                     "",
                     viewModel.getChatId(),
                     viewModel.getUserId(),
-                    viewModel.getCompanionId() //TODO
+                    viewModel.getCompanionId()
                 )
-                //TODO + in group chat like that?, when get something add message in ui, not update ui?
-                /*MainScope().launch(Dispatchers.IO) {
-                    stompClient.send("/user/${viewModel.getCompanionId()}/queue/messages", enterMessageEditText.text.toString())
-                    Log.d("LogTag", "Send to ${viewModel.getCompanionId()}")
-                }*/
                 MainScope().launch(Dispatchers.Main) {
                     delay(500)
                     fetchData(adapter)

@@ -1,6 +1,5 @@
 package com.veselovvv.androidchatclient.data.chatwithmessages
 
-import android.util.Log
 import com.veselovvv.androidchatclient.data.user.SessionManager
 
 interface ChatsWithMessagesRepository {
@@ -15,9 +14,6 @@ interface ChatsWithMessagesRepository {
         override suspend fun fetchChatWithMessages(chatId: String) = try {
             val token = sessionManager.read().first
             val chatWithMessagesCloud = cloudDataSource.fetchChatWithMessages(token, chatId)
-            //TODO
-            /*val companionId = chatWithMessagesCloud.companionId
-            Log.d("LogTag", companionId)*/
             val chatWithMessages = chatWithMessagesCloudMapper.map(chatWithMessagesCloud)
             ChatsWithMessagesData.Success(chatWithMessages)
         } catch (exception: Exception) {

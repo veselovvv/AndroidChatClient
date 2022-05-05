@@ -42,7 +42,8 @@ class ChatsFragment : Fragment() {
                 override fun tryAgain() = viewModel.fetchChats()
             },
             object : ChatsAdapter.ChatListener {
-                override fun showChat(id: UUID, title: String) = viewModel.showChat(id.toString(), title) //TODO id
+                override fun showChat(id: UUID, title: String, companionId: String) =
+                    viewModel.showChat(id.toString(), title, companionId) //TODO id
             }
         )
 

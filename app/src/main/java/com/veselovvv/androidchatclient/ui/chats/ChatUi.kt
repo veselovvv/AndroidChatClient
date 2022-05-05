@@ -9,10 +9,15 @@ sealed class ChatUi : Abstract.Object<Unit, ChatUi.BaseMapper> {
 
     object Progress : ChatUi()
 
-    class Base(private val id: UUID, private val title: String) : ChatUi() {
-        override fun map(mapper: BaseMapper) = mapper.map(id, title)
+    class Base(
+        private val id: UUID,
+        private val title: String,
+        private val companionId: String,
+        private val lastMessageText: String
+    ) : ChatUi() {
+        override fun map(mapper: BaseMapper) = mapper.map(id, title, lastMessageText)
         override fun open(chatListener: ChatsAdapter.ChatListener) =
-            chatListener.showChat(id, title)
+            chatListener.showChat(id, title, companionId)
     }
 
     class Fail(private val message: String) : ChatUi() {
@@ -20,7 +25,7 @@ sealed class ChatUi : Abstract.Object<Unit, ChatUi.BaseMapper> {
     }
 
     interface BaseMapper : Abstract.Mapper {
-        fun map(id: UUID, title: String)
+        fun map(id: UUID, title: String, lastMessageText: String)
         fun map(text: String)
     }
 }
