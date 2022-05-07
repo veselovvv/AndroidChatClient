@@ -21,7 +21,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class ChatsWithMessagesViewModel(
     private val chatsWithMessagesInteractor: ChatsWithMessagesInteractor,
     private val messageInteractor: MessageInteractor,
@@ -35,17 +34,13 @@ class ChatsWithMessagesViewModel(
     private val uploadFileMapper: UploadFileDomainToUiMapper,
     private val chatCache: Read<Triple<String, String, String>>
 ) : ViewModel() {
-    //TODO
     private var selectedFileUri: Uri? = null
     private var pathToFile = ""
+
     fun getSelectedFileUri() = selectedFileUri
-    fun setSelectedFileUri(uri: Uri?) {
-        selectedFileUri = uri
-    }
+    fun setSelectedFileUri(uri: Uri?) { selectedFileUri = uri }
     fun getPathToFile() = pathToFile
-    fun setPathToFile(path: String) {
-        pathToFile = path
-    }
+    fun setPathToFile(path: String) { pathToFile = path }
 
     fun fetchChatWithMessages(chatId: String) {
         chatsWithMessagesCommunication.map(ChatWithMessagesUi.Progress)

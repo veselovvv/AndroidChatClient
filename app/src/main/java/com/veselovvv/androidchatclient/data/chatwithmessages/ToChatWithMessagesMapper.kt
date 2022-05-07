@@ -9,6 +9,6 @@ interface ToChatWithMessagesMapper : Abstract.Mapper {
 
     class Base : ToChatWithMessagesMapper {
         override fun map(chat: ChatDetails, messages: List<Message>) =
-            ChatWithMessagesData(chat, messages)
+            ChatWithMessagesData(chat, messages.sortedBy { it.dateTime })
     }
 }

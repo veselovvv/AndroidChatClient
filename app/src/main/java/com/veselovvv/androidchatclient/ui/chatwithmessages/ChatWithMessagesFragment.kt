@@ -4,9 +4,7 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,10 +42,6 @@ class ChatWithMessagesFragment : Fragment() {
     private lateinit var fileSelectedLayout: LinearLayout
     private lateinit var unselectFileButton: ShapeableImageView
     private lateinit var stompClient: StompClient
-
-    //TODO
-    /*private var selectedFileUri: Uri? = null
-    private var pathToFile = ""*/
 
     //TODO
     private companion object {
@@ -118,12 +112,15 @@ class ChatWithMessagesFragment : Fragment() {
         }
 
         sendMessageImageView.setOnClickListener {
+            var set = true
             if (viewModel.getSelectedFileUri() != null) {
-                //TODO move observing?
                 viewModel.observeFileUploading(this) {
                     it.map(object : LoadFile {
                         override fun load(filePath: String) { //TODO rename?
-                            viewModel.setPathToFile(filePath)
+                            if (set) {
+                                viewModel.setPathToFile(filePath)
+                                set = !set
+                            }
                         }
                     })
                     it.map(requireView())
@@ -186,7 +183,7 @@ class ChatWithMessagesFragment : Fragment() {
             it.map(object : HandleMessages {
                 override fun fetchMessages(messages: List<Message>) {
                     viewModel.observeMessages(this@ChatWithMessagesFragment, { messageList ->
-                        adapter.update(messageList/*TODO.sortedBy { message -> message.dateTime }*/) })
+                        adapter.update(messageList) })
                     viewModel.fetchMessages(messages)
                 }
             })
