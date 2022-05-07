@@ -4,11 +4,11 @@ import android.view.View
 import com.google.android.material.snackbar.Snackbar
 
 sealed class UploadFileUi {
-    open fun map(loadFile: LoadFile) = Unit
+    open fun map(setPathToFile: SetPathToFile) = Unit
     open fun map(view: View) = Unit
 
     class Success(private val filePath: String) : UploadFileUi() {
-        override fun map(loadFile: LoadFile) = loadFile.load(filePath)
+        override fun map(setPathToFile: SetPathToFile) = setPathToFile.setPath(filePath)
     }
 
     class Fail(private val message: String) : UploadFileUi() {

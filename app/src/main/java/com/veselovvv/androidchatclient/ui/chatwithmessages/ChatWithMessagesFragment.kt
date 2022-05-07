@@ -22,7 +22,7 @@ import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.core.Retry
 import com.veselovvv.androidchatclient.data.messages.Message
-import com.veselovvv.androidchatclient.ui.fileuploading.LoadFile
+import com.veselovvv.androidchatclient.ui.fileuploading.SetPathToFile
 import kotlinx.coroutines.*
 import okhttp3.*
 import ua.naiksoftware.stomp.Stomp
@@ -43,8 +43,8 @@ class ChatWithMessagesFragment : Fragment() {
     private lateinit var unselectFileButton: ShapeableImageView
     private lateinit var stompClient: StompClient
 
-    //TODO
     private companion object {
+        const val READ_EXTERNAL_REQUEST = 1
         const val FILE_REQUEST_CODE = 100
     }
 
@@ -97,14 +97,11 @@ class ChatWithMessagesFragment : Fragment() {
 
         fetchData(adapter)
 
-        //TODO
         attachFileImageView.setOnClickListener {
-            //TODO
-            val READ_EXTERNAL_REQUEST = 1
             if (checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED)
                 requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_EXTERNAL_REQUEST)
-            } else {
+            else {
                 val intent = Intent(Intent.ACTION_PICK)
                 intent.type = "*/*"
                 startActivityForResult(intent, FILE_REQUEST_CODE)
@@ -115,8 +112,8 @@ class ChatWithMessagesFragment : Fragment() {
             var set = true
             if (viewModel.getSelectedFileUri() != null) {
                 viewModel.observeFileUploading(this) {
-                    it.map(object : LoadFile {
-                        override fun load(filePath: String) { //TODO rename?
+                    it.map(object : SetPathToFile {
+                        override fun setPath(filePath: String) {
                             if (set) {
                                 viewModel.setPathToFile(filePath)
                                 set = !set
@@ -157,22 +154,19 @@ class ChatWithMessagesFragment : Fragment() {
             }
             viewModel.setPathToFile("")
             enterMessageEditText.setText("")
-            fileSelectedLayout.visibility = View.GONE //TODO where update?
+            fileSelectedLayout.visibility = View.GONE
         }
     }
 
-    //TODO
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FILE_REQUEST_CODE && resultCode == RESULT_OK) {
-            //attachFileImageView.setImageURI(data?.data) //TODO delete
-            if (data?.data != null) {
-                viewModel.setSelectedFileUri(data.data)
-                fileSelectedLayout.visibility = View.VISIBLE
-                unselectFileButton.setOnClickListener {
-                    viewModel.setSelectedFileUri(null)
-                    fileSelectedLayout.visibility = View.GONE
-                }
+        if (requestCode == FILE_REQUEST_CODE && resultCode == RESULT_OK && data?.data != null) {
+            viewModel.setSelectedFileUri(data.data)
+            fileSelectedLayout.visibility = View.VISIBLE
+
+            unselectFileButton.setOnClickListener {
+                viewModel.setSelectedFileUri(null)
+                fileSelectedLayout.visibility = View.GONE
             }
         }
     }
