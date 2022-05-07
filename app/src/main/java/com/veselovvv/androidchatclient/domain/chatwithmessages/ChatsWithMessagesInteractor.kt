@@ -5,6 +5,7 @@ import com.veselovvv.androidchatclient.data.chatwithmessages.ChatsWithMessagesRe
 
 interface ChatsWithMessagesInteractor {
     suspend fun fetchChatWithMessages(chatId: String): ChatsWithMessagesDomain
+    fun getUserToken(): String
     fun getUserId(): String
 
     class Base(
@@ -13,6 +14,8 @@ interface ChatsWithMessagesInteractor {
     ) : ChatsWithMessagesInteractor {
         override suspend fun fetchChatWithMessages(chatId: String) =
             chatsWithMessagesRepository.fetchChatWithMessages(chatId).map(mapper)
+
+        override fun getUserToken() = chatsWithMessagesRepository.getUserToken()
         override fun getUserId() = chatsWithMessagesRepository.getUserId()
     }
 }

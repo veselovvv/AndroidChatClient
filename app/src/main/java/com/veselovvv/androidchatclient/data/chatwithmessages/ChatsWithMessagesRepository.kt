@@ -4,6 +4,7 @@ import com.veselovvv.androidchatclient.data.user.SessionManager
 
 interface ChatsWithMessagesRepository {
     suspend fun fetchChatWithMessages(chatId: String): ChatsWithMessagesData
+    fun getUserToken(): String
     fun getUserId(): String
 
     class Base(
@@ -20,6 +21,7 @@ interface ChatsWithMessagesRepository {
             ChatsWithMessagesData.Fail(exception)
         }
 
+        override fun getUserToken() = sessionManager.read().first
         override fun getUserId() = sessionManager.read().second
     }
 }

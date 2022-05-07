@@ -39,4 +39,11 @@
         <item name="android:padding">6dp</item>
         <item name="android:layout_marginEnd">16dp</item>
     </style>
+
+    <style name="photo_image_view">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">200dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
 </resources>

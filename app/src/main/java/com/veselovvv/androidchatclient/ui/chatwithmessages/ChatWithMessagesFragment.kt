@@ -1,12 +1,19 @@
 package com.veselovvv.androidchatclient.ui.chatwithmessages
 
+import android.Manifest
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -17,6 +24,7 @@ import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.core.Retry
 import com.veselovvv.androidchatclient.data.messages.Message
+import com.veselovvv.androidchatclient.ui.fileuploading.LoadFile
 import kotlinx.coroutines.*
 import okhttp3.*
 import ua.naiksoftware.stomp.Stomp
@@ -32,7 +40,19 @@ class ChatWithMessagesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var enterMessageEditText: TextInputEditText
     private lateinit var sendMessageImageView: ShapeableImageView
+    private lateinit var attachFileImageView: ShapeableImageView
+    private lateinit var fileSelectedLayout: LinearLayout
+    private lateinit var unselectFileButton: ShapeableImageView
     private lateinit var stompClient: StompClient
+
+    //TODO
+    /*private var selectedFileUri: Uri? = null
+    private var pathToFile = ""*/
+
+    //TODO
+    private companion object {
+        const val FILE_REQUEST_CODE = 100
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +68,7 @@ class ChatWithMessagesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = MessagesAdapter(viewModel.getUserId())
+        val adapter = MessagesAdapter(viewModel.getUserId(), viewModel.getUserToken())
         recyclerView = view.findViewById(R.id.recycler_view_chat_with_messages)
         recyclerView.adapter = adapter
         recyclerView.scrollToPosition(adapter.itemCount - 1)
@@ -60,9 +80,12 @@ class ChatWithMessagesFragment : Fragment() {
         progressLayout = requireActivity().findViewById(R.id.progress_layout)
         enterMessageEditText = requireActivity().findViewById(R.id.enter_message_chat_with_messages)
         sendMessageImageView = requireActivity().findViewById(R.id.send_button_chat_with_messages)
+        attachFileImageView = requireActivity().findViewById(R.id.attach_file_chat_with_messages)
+        fileSelectedLayout = requireActivity().findViewById(R.id.file_selected_layout_chat_with_messages)
         failLayout = requireActivity().findViewById(R.id.fail_layout)
         messageTextView = requireActivity().findViewById(R.id.message_text_view_chat_with_messages)
         tryAgainButton = requireActivity().findViewById(R.id.try_again_button_chat_with_messages)
+        unselectFileButton = requireActivity().findViewById(R.id.unselect_file_button_chat_with_messages)
 
         //TODO + move to ViewModel?
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://10.0.2.2:8081/chat-ws/websocket")
@@ -80,7 +103,35 @@ class ChatWithMessagesFragment : Fragment() {
 
         fetchData(adapter)
 
+        //TODO
+        attachFileImageView.setOnClickListener {
+            //TODO
+            val READ_EXTERNAL_REQUEST = 1
+            if (checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_EXTERNAL_REQUEST)
+            } else {
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "*/*"
+                startActivityForResult(intent, FILE_REQUEST_CODE)
+            }
+        }
+
         sendMessageImageView.setOnClickListener {
+            if (viewModel.getSelectedFileUri() != null) {
+                //TODO move observing?
+                viewModel.observeFileUploading(this) {
+                    it.map(object : LoadFile {
+                        override fun load(filePath: String) { //TODO rename?
+                            viewModel.setPathToFile(filePath)
+                        }
+                    })
+                    it.map(requireView())
+                }
+                viewModel.uploadFile(viewModel.getSelectedFileUri()!!)
+                viewModel.setSelectedFileUri(null)
+            }
+
             viewModel.observeMessage(this) {
                 it.map()
                 it.map(requireView())
@@ -89,7 +140,7 @@ class ChatWithMessagesFragment : Fragment() {
             if ((viewModel.getCompanionId() != "")) {
                 viewModel.sendDirectMessage(
                     enterMessageEditText.text.toString(),
-                    "",
+                    viewModel.getPathToFile(),
                     viewModel.getChatId(),
                     viewModel.getUserId(),
                     viewModel.getCompanionId()
@@ -98,17 +149,34 @@ class ChatWithMessagesFragment : Fragment() {
                     delay(500)
                     fetchData(adapter)
                 }
-            }
-            else {
+            } else {
                 viewModel.sendGroupMessage(
                     enterMessageEditText.text.toString(),
-                    "",
+                    viewModel.getPathToFile(),
                     viewModel.getChatId(),
                     viewModel.getUserId(),
                     viewModel.getChatId()
                 )
             }
+            viewModel.setPathToFile("")
             enterMessageEditText.setText("")
+            fileSelectedLayout.visibility = View.GONE //TODO where update?
+        }
+    }
+
+    //TODO
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == FILE_REQUEST_CODE && resultCode == RESULT_OK) {
+            //attachFileImageView.setImageURI(data?.data) //TODO delete
+            if (data?.data != null) {
+                viewModel.setSelectedFileUri(data.data)
+                fileSelectedLayout.visibility = View.VISIBLE
+                unselectFileButton.setOnClickListener {
+                    viewModel.setSelectedFileUri(null)
+                    fileSelectedLayout.visibility = View.GONE
+                }
+            }
         }
     }
 
@@ -118,7 +186,7 @@ class ChatWithMessagesFragment : Fragment() {
             it.map(object : HandleMessages {
                 override fun fetchMessages(messages: List<Message>) {
                     viewModel.observeMessages(this@ChatWithMessagesFragment, { messageList ->
-                        adapter.update(messageList.sortedBy { message -> message.dateTime }) })
+                        adapter.update(messageList/*TODO.sortedBy { message -> message.dateTime }*/) })
                     viewModel.fetchMessages(messages)
                 }
             })

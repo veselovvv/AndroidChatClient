@@ -11,7 +11,7 @@ sealed class LoginDomain : Abstract.Object<LoginsUi, LoginDomainToUiMapper> {
         override fun map(mapper: LoginDomainToUiMapper) = mapper.map()
     }
 
-    class Fail(private val exception: Exception): LoginDomain() {
+    class Fail(private val exception: Exception) : LoginDomain() {
         override fun map(mapper: LoginDomainToUiMapper) = mapper.map(
             when (exception) {
                 is UnknownHostException -> ErrorType.NO_CONNECTION

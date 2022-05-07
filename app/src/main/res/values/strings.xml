@@ -18,4 +18,5 @@
     <string name="search_chats_hint">Search chats</string>
     <string name="enter_a_message_chat_details">Enter a message</string>
     <string name="send">Send</string>
+    <string name="file_selected">File selected</string>
 </resources>

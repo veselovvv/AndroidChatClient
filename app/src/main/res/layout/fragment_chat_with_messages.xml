@@ -60,7 +60,32 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         app:stackFromEnd="true"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <LinearLayout
+        android:id="@+id/file_selected_layout_chat_with_messages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@color/purple_200"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:padding="16dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:text="@string/file_selected" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/unselect_file_button_chat_with_messages"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.05"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_round_cancel_24" />
+    </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

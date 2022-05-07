@@ -15,13 +15,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/message_item">
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/photo_image_view_sent_message_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/photo_image_view" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_text_view_sent_message_item"
-            tools:text="My message"
+            style="@style/message_item_text"
             android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/message_item_text" />
+            app:layout_constraintTop_toBottomOf="@+id/photo_image_view_sent_message_item"
+            tools:text="My message" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/date_text_view_sent_message_item"
@@ -55,12 +62,19 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Name" />
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/photo_image_view_received_message_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name_text_view_received_message_item"
+            style="@style/photo_image_view" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_text_view_received_message_item"
             android:gravity="start"
             style="@style/message_item_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name_text_view_received_message_item"
+            app:layout_constraintTop_toBottomOf="@+id/photo_image_view_received_message_item"
             tools:text="Your message" />
 
         <com.google.android.material.textview.MaterialTextView

@@ -5,11 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.data.messages.Message
 
-class MessagesAdapter(private val userId: String) : RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder>() {
+class MessagesAdapter(
+    private val userId: String, private val userToken: String
+) : RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder>() {
     private val messages = ArrayList<Message>()
 
     fun update(new: List<Message>) {
@@ -22,12 +28,12 @@ class MessagesAdapter(private val userId: String) : RecyclerView.Adapter<Message
         MessagesViewHolder.Base(R.layout.message_layout.makeView(parent))
 
     override fun onBindViewHolder(holder: MessagesViewHolder, position: Int) =
-        holder.bind(messages[position], userId)
+        holder.bind(messages[position], userId, userToken)
 
     override fun getItemCount() = messages.size
 
     abstract class MessagesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        open fun bind(message: Message, userId: String) = Unit
+        open fun bind(message: Message, userId: String, userToken: String) = Unit
 
         class Base(view: View) : MessagesViewHolder(view) {
             private val sentMessageLayout =
@@ -36,6 +42,8 @@ class MessagesAdapter(private val userId: String) : RecyclerView.Adapter<Message
                 itemView.findViewById<MaterialTextView>(R.id.text_text_view_sent_message_item)
             private val sentMessageDateTextView =
                 itemView.findViewById<MaterialTextView>(R.id.date_text_view_sent_message_item)
+            private val sentMessagePhotoImageView =
+                itemView.findViewById<ShapeableImageView>(R.id.photo_image_view_sent_message_item)
             private val receivedMessageLayout =
                 itemView.findViewById<ConstraintLayout>(R.id.received_message_item)
             private val receivedMessageNameTextView =
@@ -44,20 +52,43 @@ class MessagesAdapter(private val userId: String) : RecyclerView.Adapter<Message
                 itemView.findViewById<MaterialTextView>(R.id.text_text_view_received_message_item)
             private val receivedMessageDateTextView =
                 itemView.findViewById<MaterialTextView>(R.id.date_text_view_received_message_item)
+            private val receivedMessagePhotoImageView =
+                itemView.findViewById<ShapeableImageView>(R.id.photo_image_view_received_message_item)
 
-            override fun bind(message: Message, userId: String) {
+            override fun bind(message: Message, userId: String, userToken: String) {
                 if (message.sender.userId.toString() == userId) {
                     receivedMessageLayout.visibility = View.GONE
                     sentMessageLayout.visibility = View.VISIBLE
                     sentMessageTextTextView.text = message.messageText
                     sentMessageDateTextView.text = message.dateTime.substring(11, 16)
+                    //TODO
+                    if (message.messagePathToFile != "" && message.messagePathToFile != null) {
+                        sentMessagePhotoImageView.visibility = View.VISIBLE
+                        loadImage(message.messagePathToFile.toString(), userToken, sentMessagePhotoImageView)
+                    } else sentMessagePhotoImageView.visibility = View.GONE
                 } else {
                     sentMessageLayout.visibility = View.GONE
                     receivedMessageLayout.visibility = View.VISIBLE
                     receivedMessageNameTextView.text = message.sender.userName
                     receivedMessageTextTextView.text = message.messageText
                     receivedMessageDateTextView.text = message.dateTime.substring(11, 16)
+                    //TODO
+                    if (message.messagePathToFile != "" && message.messagePathToFile != null) {
+                        receivedMessagePhotoImageView.visibility = View.VISIBLE
+                        loadImage(message.messagePathToFile.toString(), userToken, receivedMessagePhotoImageView)
+                    } else receivedMessagePhotoImageView.visibility = View.GONE
                 }
+            }
+
+            private fun loadImage(
+                messagePathToFile: String, userToken: String, imageView: ShapeableImageView
+            ) {
+                //TODO path?
+                Glide.with(itemView)
+                    .load(GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
+                            messagePathToFile.substringAfter("chat-server/"),
+                        LazyHeaders.Builder().addHeader("Authorization", userToken).build())
+                    ).into(imageView)
             }
         }
     }

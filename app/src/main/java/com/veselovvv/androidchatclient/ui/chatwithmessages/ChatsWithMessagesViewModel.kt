@@ -1,5 +1,6 @@
 package com.veselovvv.androidchatclient.ui.chatwithmessages
 
+import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -8,24 +9,44 @@ import com.veselovvv.androidchatclient.core.Read
 import com.veselovvv.androidchatclient.data.messages.Message
 import com.veselovvv.androidchatclient.domain.chatwithmessages.ChatsWithMessagesDomainToUiMapper
 import com.veselovvv.androidchatclient.domain.chatwithmessages.ChatsWithMessagesInteractor
+import com.veselovvv.androidchatclient.domain.fileuploading.UploadFileDomainToUiMapper
+import com.veselovvv.androidchatclient.domain.fileuploading.UploadFileInteractor
 import com.veselovvv.androidchatclient.domain.message.MessageDomainToUiMapper
 import com.veselovvv.androidchatclient.domain.message.MessageInteractor
+import com.veselovvv.androidchatclient.ui.fileuploading.UploadFileCommunication
+import com.veselovvv.androidchatclient.ui.fileuploading.UploadFileUi
 import com.veselovvv.androidchatclient.ui.message.MessageCommunication
 import com.veselovvv.androidchatclient.ui.message.MessageUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 class ChatsWithMessagesViewModel(
     private val chatsWithMessagesInteractor: ChatsWithMessagesInteractor,
     private val messageInteractor: MessageInteractor,
+    private val uploadFileInteractor: UploadFileInteractor,
     private val chatsWithMessagesCommunication: ChatsWithMessagesCommunication,
     private val messagesCommunication: MessagesCommunication,
     private val messageCommunication: MessageCommunication,
+    private val uploadFileCommunication: UploadFileCommunication, //TODO
     private val chatsWithMessagesMapper: ChatsWithMessagesDomainToUiMapper,
     private val messageMapper: MessageDomainToUiMapper,
+    private val uploadFileMapper: UploadFileDomainToUiMapper,
     private val chatCache: Read<Triple<String, String, String>>
 ) : ViewModel() {
+    //TODO
+    private var selectedFileUri: Uri? = null
+    private var pathToFile = ""
+    fun getSelectedFileUri() = selectedFileUri
+    fun setSelectedFileUri(uri: Uri?) {
+        selectedFileUri = uri
+    }
+    fun getPathToFile() = pathToFile
+    fun setPathToFile(path: String) {
+        pathToFile = path
+    }
+
     fun fetchChatWithMessages(chatId: String) {
         chatsWithMessagesCommunication.map(ChatWithMessagesUi.Progress)
         viewModelScope.launch(Dispatchers.IO) {
@@ -63,6 +84,16 @@ class ChatsWithMessagesViewModel(
         }
     }
 
+    fun uploadFile(uri: Uri) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val resultDomain = uploadFileInteractor.uploadFile(uri)
+            val resultUi = resultDomain.map(uploadFileMapper)
+            withContext(Dispatchers.Main) {
+                resultUi.map(uploadFileCommunication)
+            }
+        }
+    }
+
     fun observe(owner: LifecycleOwner, observer: Observer<ChatWithMessagesUi>) =
         chatsWithMessagesCommunication.observe(owner, observer)
 
@@ -72,6 +103,10 @@ class ChatsWithMessagesViewModel(
     fun observeMessage(owner: LifecycleOwner, observer: Observer<MessageUi>) =
         messageCommunication.observe(owner, observer)
 
+    fun observeFileUploading(owner: LifecycleOwner, observer: Observer<UploadFileUi>) =
+        uploadFileCommunication.observe(owner, observer)
+
+    fun getUserToken() = chatsWithMessagesInteractor.getUserToken()
     fun getUserId() = chatsWithMessagesInteractor.getUserId()
     fun getChatId() = chatCache.read().first
     fun getChatTitle() = chatCache.read().second

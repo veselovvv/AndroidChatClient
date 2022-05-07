@@ -8,7 +8,13 @@ import com.veselovvv.androidchatclient.data.chats.ChatsCloudMapper
 import com.veselovvv.androidchatclient.data.chats.ChatsRepository
 import com.veselovvv.androidchatclient.data.chats.ToChatMapper
 import com.veselovvv.androidchatclient.data.chats.net.ChatService
-import com.veselovvv.androidchatclient.data.chatwithmessages.*
+import com.veselovvv.androidchatclient.data.chatwithmessages.ChatWithMessagesCloudDataSource
+import com.veselovvv.androidchatclient.data.chatwithmessages.ChatWithMessagesCloudMapper
+import com.veselovvv.androidchatclient.data.chatwithmessages.ChatsWithMessagesRepository
+import com.veselovvv.androidchatclient.data.chatwithmessages.ToChatWithMessagesMapper
+import com.veselovvv.androidchatclient.data.fileuploading.UploadFileCloudDataSource
+import com.veselovvv.androidchatclient.data.fileuploading.UploadFileRepository
+import com.veselovvv.androidchatclient.data.fileuploading.UploadFileService
 import com.veselovvv.androidchatclient.data.login.LoginCloudDataSource
 import com.veselovvv.androidchatclient.data.login.LoginRepository
 import com.veselovvv.androidchatclient.data.login.ToLoginMapper
@@ -24,12 +30,17 @@ import com.veselovvv.androidchatclient.domain.chats.ChatsInteractor
 import com.veselovvv.androidchatclient.domain.chatwithmessages.BaseChatWithMessagesDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.chatwithmessages.BaseChatsWithMessagesDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.chatwithmessages.ChatsWithMessagesInteractor
+import com.veselovvv.androidchatclient.domain.fileuploading.BaseUploadFileDataToDomainMapper
+import com.veselovvv.androidchatclient.domain.fileuploading.FileProvider
+import com.veselovvv.androidchatclient.domain.fileuploading.UploadFileInteractor
 import com.veselovvv.androidchatclient.domain.login.BaseLoginDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.login.LoginInteractor
 import com.veselovvv.androidchatclient.domain.message.BaseMessageDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.message.MessageInteractor
 import com.veselovvv.androidchatclient.ui.chats.*
 import com.veselovvv.androidchatclient.ui.chatwithmessages.*
+import com.veselovvv.androidchatclient.ui.fileuploading.BaseUploadFileDomainToUiMapper
+import com.veselovvv.androidchatclient.ui.fileuploading.UploadFileCommunication
 import com.veselovvv.androidchatclient.ui.login.*
 import com.veselovvv.androidchatclient.ui.main.MainViewModel
 import com.veselovvv.androidchatclient.ui.main.NavigationCommunication
@@ -149,14 +160,23 @@ class ChatApp : Application() { //TODO to modules
                     sessionManager
                 ), BaseMessageDataToDomainMapper()
             ),
+            UploadFileInteractor.Base(
+                UploadFileRepository.Base(
+                    UploadFileCloudDataSource.Base(retrofit.create(UploadFileService::class.java)),
+                    sessionManager
+                ), BaseUploadFileDataToDomainMapper(),
+                FileProvider.Base(this)
+            ),
             ChatsWithMessagesCommunication.Base(),
             MessagesCommunication.Base(),
             MessageCommunication.Base(),
+            UploadFileCommunication.Base(),
             BaseChatsWithMessagesDomainToUiMapper(
                 resourceProvider,
                 BaseChatWithMessagesDomainToUiMapper()
             ),
             BaseMessageDomainToUiMapper(resourceProvider),
+            BaseUploadFileDomainToUiMapper(resourceProvider),
             ChatCache.Base(this)
         )
     }
