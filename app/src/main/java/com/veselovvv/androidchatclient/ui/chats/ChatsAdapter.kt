@@ -51,10 +51,16 @@ class ChatsAdapter(
 
             override fun bind(chat: ChatUi) {
                 chat.map(object : ChatUi.BaseMapper {
-                    override fun map(id: UUID, title: String, lastMessageText: String) {
+                    override fun map(
+                        id: UUID, title: String, lastMessageText: String, lastMessagePathToFile: String
+                    ) {
                         titleTextView.text = title
-                        if (lastMessageText != "") lastMessageTextView.text = lastMessageText
-                        else lastMessageTextView.text = "No messages" //TODO to strings + if file is sent
+                        when {
+                            lastMessageText != "" -> lastMessageTextView.text = lastMessageText
+                            lastMessagePathToFile != "" ->
+                                lastMessageTextView.text = itemView.context.getString(R.string.file)
+                            else -> lastMessageTextView.text = itemView.context.getString(R.string.no_messages)
+                        }
                     }
                     override fun map(text: String) = Unit
                 })
@@ -74,7 +80,9 @@ class ChatsAdapter(
                     override fun map(text: String) {
                         message.text = text
                     }
-                    override fun map(id: UUID, title: String, lastMessageText: String) = Unit
+                    override fun map(
+                        id: UUID, title: String, lastMessageText: String, lastMessagePathToFile: String
+                    ) = Unit
                 })
                 button.setOnClickListener { retry.tryAgain() }
             }

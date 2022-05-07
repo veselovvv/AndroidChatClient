@@ -13,9 +13,10 @@ sealed class ChatUi : Abstract.Object<Unit, ChatUi.BaseMapper> {
         private val id: UUID,
         private val title: String,
         private val companionId: String,
-        private val lastMessageText: String
+        private val lastMessageText: String,
+        private val lastMessagePathToFile: String
     ) : ChatUi() {
-        override fun map(mapper: BaseMapper) = mapper.map(id, title, lastMessageText)
+        override fun map(mapper: BaseMapper) = mapper.map(id, title, lastMessageText, lastMessagePathToFile)
         override fun open(chatListener: ChatsAdapter.ChatListener) =
             chatListener.showChat(id, title, companionId)
     }
@@ -25,7 +26,7 @@ sealed class ChatUi : Abstract.Object<Unit, ChatUi.BaseMapper> {
     }
 
     interface BaseMapper : Abstract.Mapper {
-        fun map(id: UUID, title: String, lastMessageText: String)
+        fun map(id: UUID, title: String, lastMessageText: String, lastMessagePathToFile: String)
         fun map(text: String)
     }
 }

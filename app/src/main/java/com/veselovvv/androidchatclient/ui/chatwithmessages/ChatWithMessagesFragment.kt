@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
@@ -81,7 +82,7 @@ class ChatWithMessagesFragment : Fragment() {
         tryAgainButton = requireActivity().findViewById(R.id.try_again_button_chat_with_messages)
         unselectFileButton = requireActivity().findViewById(R.id.unselect_file_button_chat_with_messages)
 
-        //TODO + move to ViewModel?
+        //TODO move to ViewModel?
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://10.0.2.2:8081/chat-ws/websocket")
         stompClient.connect()
 
@@ -130,28 +131,30 @@ class ChatWithMessagesFragment : Fragment() {
                 it.map()
                 it.map(requireView())
             }
-            //TODO if text is empty and file + TODO path to file
-            if ((viewModel.getCompanionId() != "")) {
-                viewModel.sendDirectMessage(
-                    enterMessageEditText.text.toString(),
-                    viewModel.getPathToFile(),
-                    viewModel.getChatId(),
-                    viewModel.getUserId(),
-                    viewModel.getCompanionId()
-                )
-                MainScope().launch(Dispatchers.Main) {
-                    delay(500)
-                    fetchData(adapter)
+            //TODO if text is empty and file
+            if (enterMessageEditText.text.toString() != "" || viewModel.getPathToFile() != "") {
+                if ((viewModel.getCompanionId() != "")) {
+                    viewModel.sendDirectMessage(
+                        enterMessageEditText.text.toString(),
+                        viewModel.getPathToFile(),
+                        viewModel.getChatId(),
+                        viewModel.getUserId(),
+                        viewModel.getCompanionId()
+                    )
+                    MainScope().launch(Dispatchers.Main) {
+                        delay(500)
+                        fetchData(adapter)
+                    }
+                } else {
+                    viewModel.sendGroupMessage(
+                        enterMessageEditText.text.toString(),
+                        viewModel.getPathToFile(),
+                        viewModel.getChatId(),
+                        viewModel.getUserId(),
+                        viewModel.getChatId()
+                    )
                 }
-            } else {
-                viewModel.sendGroupMessage(
-                    enterMessageEditText.text.toString(),
-                    viewModel.getPathToFile(),
-                    viewModel.getChatId(),
-                    viewModel.getUserId(),
-                    viewModel.getChatId()
-                )
-            }
+            } else Snackbar.make(requireView(), getString(R.string.message_is_empty), Snackbar.LENGTH_SHORT).show()
             viewModel.setPathToFile("")
             enterMessageEditText.setText("")
             fileSelectedLayout.visibility = View.GONE
@@ -182,8 +185,7 @@ class ChatWithMessagesFragment : Fragment() {
                 }
             })
             it.map(
-                failLayout, messageTextView, tryAgainButton,
-                object : Retry {
+                failLayout, messageTextView, tryAgainButton, object : Retry {
                     override fun tryAgain() = viewModel.fetchChatWithMessages(viewModel.getChatId())
                 }
             )

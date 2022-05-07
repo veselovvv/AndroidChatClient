@@ -15,7 +15,7 @@ interface FileProvider {
 
     class Base(private val context: Context) : FileProvider {
         override fun getFile(fileUri: Uri): MultipartBody.Part {
-            val file = File(getPathFromUri(fileUri) ?: "") //TODO
+            val file = File(getPathFromUri(fileUri) ?: "")
             return MultipartBody.Part.createFormData(
                 "file", file.name, RequestBody.create("*/*".toMediaTypeOrNull(), file)
             )
@@ -30,7 +30,7 @@ interface FileProvider {
                 if (columnIndex != null) {
                     cursor?.moveToFirst()
                     cursor?.getString(columnIndex)
-                } else "" //TODO
+                } else ""
             } finally {
                 cursor?.close()
             }

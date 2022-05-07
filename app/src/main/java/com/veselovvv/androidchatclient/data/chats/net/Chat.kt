@@ -13,7 +13,6 @@ data class Chat(
     @SerializedName("title")
     private var title: String?,
     private var companionId: String?,
-    //TODO
     private var lastMessage: Message?
     /*@SerializedName("user")
     private val user: User?, //TODO need that?
@@ -32,5 +31,11 @@ data class Chat(
         set(value) { this.lastMessage = value }
 
     override fun map(mapper: ToChatMapper) =
-        mapper.map(id, title ?: "", companionId ?: "", lastMessage?.messageText ?: "")
+        mapper.map(
+            id,
+            title ?: "",
+            companionId ?: "",
+            lastMessage?.messageText ?: "",
+            lastMessage?.messagePathToFile ?: ""
+        )
 }

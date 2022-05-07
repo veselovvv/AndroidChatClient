@@ -5,5 +5,7 @@ import com.veselovvv.androidchatclient.domain.chats.ChatDomain
 import java.util.*
 
 interface ChatDataToDomainMapper : Abstract.Mapper {
-    fun map(id: UUID, title: String, companionId: String, lastMessageText: String): ChatDomain
+    fun map(
+        id: UUID, title: String, companionId: String, lastMessageText: String, lastMessagePathToFile: String
+    ): ChatDomain
 }

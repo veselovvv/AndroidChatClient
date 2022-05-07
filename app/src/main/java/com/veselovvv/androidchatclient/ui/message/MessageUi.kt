@@ -8,7 +8,7 @@ sealed class MessageUi {
     open fun map(view: View) = Unit
 
     class Success : MessageUi() {
-        override fun map() = Unit //TODO?
+        override fun map() = Unit
     }
 
     class Fail(private val message: String) : MessageUi() {

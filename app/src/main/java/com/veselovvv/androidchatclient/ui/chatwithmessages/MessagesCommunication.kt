@@ -7,7 +7,7 @@ import com.veselovvv.androidchatclient.core.Abstract
 import com.veselovvv.androidchatclient.data.messages.Message
 
 interface MessagesCommunication : Abstract.Mapper {
-    fun map(messages: List<Message>) //TODO MessageUI
+    fun map(messages: List<Message>)
     fun observe(owner: LifecycleOwner, observer: Observer<List<Message>>)
 
     class Base : MessagesCommunication {

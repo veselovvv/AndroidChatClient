@@ -19,4 +19,7 @@
     <string name="enter_a_message_chat_details">Enter a message</string>
     <string name="send">Send</string>
     <string name="file_selected">File selected</string>
+    <string name="file">File</string>
+    <string name="no_messages">No messages</string>
+    <string name="message_is_empty">Message is empty</string>
 </resources>

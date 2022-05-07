@@ -61,7 +61,7 @@ class MessagesAdapter(
                     sentMessageLayout.visibility = View.VISIBLE
                     sentMessageTextTextView.text = message.messageText
                     sentMessageDateTextView.text = message.dateTime.substring(11, 16)
-                    //TODO
+
                     if (message.messagePathToFile != "" && message.messagePathToFile != null) {
                         sentMessagePhotoImageView.visibility = View.VISIBLE
                         loadImage(message.messagePathToFile.toString(), userToken, sentMessagePhotoImageView)
@@ -72,7 +72,7 @@ class MessagesAdapter(
                     receivedMessageNameTextView.text = message.sender.userName
                     receivedMessageTextTextView.text = message.messageText
                     receivedMessageDateTextView.text = message.dateTime.substring(11, 16)
-                    //TODO
+
                     if (message.messagePathToFile != "" && message.messagePathToFile != null) {
                         receivedMessagePhotoImageView.visibility = View.VISIBLE
                         loadImage(message.messagePathToFile.toString(), userToken, receivedMessagePhotoImageView)
