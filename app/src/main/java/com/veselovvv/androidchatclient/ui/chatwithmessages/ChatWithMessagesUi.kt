@@ -27,6 +27,8 @@ sealed class ChatWithMessagesUi {
         }
     }
 
+    class Empty : ChatWithMessagesUi()
+
     class Base(
         private val chat: ChatDetails,
         private val messages: List<Message>

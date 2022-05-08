@@ -9,6 +9,7 @@ interface ChatsWithMessagesInteractor {
     suspend fun editChatSettings(
         chatId: String, userId: String, banned: Boolean, sendNotifications: Boolean
     ): ChatsWithMessagesDomain
+    suspend fun leaveGroupChat(groupId: String, userId: String): ChatsWithMessagesDomain
     fun getUserToken(): String
     fun getUserId(): String
 
@@ -22,6 +23,9 @@ interface ChatsWithMessagesInteractor {
         override suspend fun editChatSettings(
             chatId: String, userId: String, banned: Boolean, sendNotifications: Boolean
         ) = chatsWithMessagesRepository.editChatSettings(chatId, userId, banned, sendNotifications).map(mapper)
+
+        override suspend fun leaveGroupChat(groupId: String, userId: String) =
+            chatsWithMessagesRepository.leaveGroupChat(groupId, userId).map(mapper)
 
         override fun getUserToken() = chatsWithMessagesRepository.getUserToken()
         override fun getUserId() = chatsWithMessagesRepository.getUserId()

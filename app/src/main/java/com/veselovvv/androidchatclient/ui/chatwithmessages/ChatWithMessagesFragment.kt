@@ -94,8 +94,9 @@ class ChatWithMessagesFragment : Fragment() {
                     true
                 }
                 R.id.action_leave_chat -> {
-                    //TODO
-                    //TODO showSnackBar
+                    viewModel.leaveGroupChat(viewModel.getChatId(), viewModel.getUserId())
+                    showSnackBar(R.string.you_have_left_the_chat)
+                    requireActivity().onBackPressed()
                     true
                 }
                 else -> false

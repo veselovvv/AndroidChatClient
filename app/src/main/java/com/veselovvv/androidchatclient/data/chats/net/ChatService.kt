@@ -33,4 +33,11 @@ interface ChatService {
         @Path("userId") userId: String,
         @Body editChatSettings: EditChatSettingsDto
     ): ResponseBody
+
+    @DELETE("chats/group/{groupId}/{userId}/leave")
+    suspend fun leaveGroupChat(
+        @Header("Authorization") token: String,
+        @Path("groupId") groupId: String,
+        @Path("userId") userId: String
+    )
 }

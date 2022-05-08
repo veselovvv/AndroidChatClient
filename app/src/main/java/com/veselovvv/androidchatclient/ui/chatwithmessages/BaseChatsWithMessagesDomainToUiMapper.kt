@@ -10,6 +10,7 @@ class BaseChatsWithMessagesDomainToUiMapper(
     private val resourceProvider: ResourceProvider,
     private val chatWithMessagesMapper: ChatWithMessagesDomainToUiMapper
 ) : ChatsWithMessagesDomainToUiMapper {
+    override fun map() = ChatsWithMessagesUi.Empty()
     override fun map(chatWithMessages: ChatWithMessagesDomain) =
         ChatsWithMessagesUi.Success(chatWithMessages, chatWithMessagesMapper)
     override fun map(errorType: ErrorType) = ChatsWithMessagesUi.Fail(errorType, resourceProvider)

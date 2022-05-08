@@ -69,6 +69,17 @@ class ChatsWithMessagesViewModel(
         }
     }
 
+    fun leaveGroupChat(groupId: String, userId: String) {
+        chatsWithMessagesCommunication.map(ChatWithMessagesUi.Progress)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = chatsWithMessagesInteractor.leaveGroupChat(groupId, userId)
+            val resultUi = result.map(chatsWithMessagesMapper)
+            withContext(Dispatchers.Main) {
+                resultUi.map(chatsWithMessagesCommunication)
+            }
+        }
+    }
+
     fun fetchMessages(messages: List<Message>) = messagesCommunication.map(messages)
 
     fun sendDirectMessage(

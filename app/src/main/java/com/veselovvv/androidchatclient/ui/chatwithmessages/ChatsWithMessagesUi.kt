@@ -8,6 +8,12 @@ import com.veselovvv.androidchatclient.domain.chatwithmessages.ChatWithMessagesD
 import com.veselovvv.androidchatclient.domain.chatwithmessages.ChatWithMessagesDomainToUiMapper
 
 sealed class ChatsWithMessagesUi : Abstract.Object<Unit, ChatsWithMessagesCommunication> {
+    class Empty : ChatsWithMessagesUi() {
+        override fun map(mapper: ChatsWithMessagesCommunication) {
+            mapper.map(ChatWithMessagesUi.Empty())
+        }
+    }
+
     class Success(
         private val chatWithMessages: ChatWithMessagesDomain,
         private val chatWithMessagesMapper: ChatWithMessagesDomainToUiMapper

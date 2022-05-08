@@ -9,6 +9,11 @@ import retrofit2.HttpException
 import java.net.UnknownHostException
 
 sealed class ChatsWithMessagesDomain : Abstract.Object<ChatsWithMessagesUi, ChatsWithMessagesDomainToUiMapper> {
+    class Empty : ChatsWithMessagesDomain() {
+        override fun map(mapper: ChatsWithMessagesDomainToUiMapper) =
+            mapper.map()
+    }
+
     class Success(
         private val chatWithMessages: ChatWithMessagesData,
         private val chatWithMessagesMapper: ChatWithMessagesDataToDomainMapper

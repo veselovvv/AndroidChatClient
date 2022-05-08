@@ -9,6 +9,7 @@ interface ChatWithMessagesCloudDataSource {
     suspend fun editChatSettings(
         token: String, chatId: String, userId: String, editChatSettings: EditChatSettingsDto
     ): ChatWithMessages
+    suspend fun leaveGroupChat(token: String, groupId: String, userId: String)
 
     class Base(private val service: ChatService, private val gson: Gson) : ChatWithMessagesCloudDataSource {
         private val type = object : TypeToken<ChatWithMessages>() {}.type
@@ -21,5 +22,8 @@ interface ChatWithMessagesCloudDataSource {
         ): ChatWithMessages = gson.fromJson(
             service.editChatSettings(token, chatId, userId, editChatSettings).string(), type
         )
+
+        override suspend fun leaveGroupChat(token: String, groupId: String, userId: String) =
+            service.leaveGroupChat(token, groupId, userId)
     }
 }
