@@ -14,4 +14,5 @@ data class UserChatSettings(
 ) {
     val userId get() = this.id.idUser
     val isNotificationsEnabled get() = this.sendNotifications
+    val isBanned get() = this.banned
 }

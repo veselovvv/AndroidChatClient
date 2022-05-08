@@ -8,10 +8,7 @@ import com.veselovvv.androidchatclient.data.chats.ChatsCloudMapper
 import com.veselovvv.androidchatclient.data.chats.ChatsRepository
 import com.veselovvv.androidchatclient.data.chats.ToChatMapper
 import com.veselovvv.androidchatclient.data.chats.net.ChatService
-import com.veselovvv.androidchatclient.data.chatwithmessages.ChatWithMessagesCloudDataSource
-import com.veselovvv.androidchatclient.data.chatwithmessages.ChatWithMessagesCloudMapper
-import com.veselovvv.androidchatclient.data.chatwithmessages.ChatsWithMessagesRepository
-import com.veselovvv.androidchatclient.data.chatwithmessages.ToChatWithMessagesMapper
+import com.veselovvv.androidchatclient.data.chatwithmessages.*
 import com.veselovvv.androidchatclient.data.fileuploading.UploadFileCloudDataSource
 import com.veselovvv.androidchatclient.data.fileuploading.UploadFileRepository
 import com.veselovvv.androidchatclient.data.fileuploading.UploadFileService
@@ -149,6 +146,7 @@ class ChatApp : Application() { //TODO to modules
                 ChatsWithMessagesRepository.Base(
                     chatWithMessagesCloudDataSource,
                     ChatWithMessagesCloudMapper.Base(ToChatWithMessagesMapper.Base()),
+                    ToEditChatSettingsDtoMapper.Base(),
                     sessionManager
                 ),
                 BaseChatsWithMessagesDataToDomainMapper(BaseChatWithMessagesDataToDomainMapper())

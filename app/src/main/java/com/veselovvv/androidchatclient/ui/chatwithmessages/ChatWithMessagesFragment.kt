@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
@@ -72,25 +73,29 @@ class ChatWithMessagesFragment : Fragment() {
         toolbar.title = viewModel.getChatTitle()
         toolbar.inflateMenu(R.menu.chat_with_messages_menu)
         toolbar.setOnMenuItemClickListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.action_enable_notifications -> {
-                    //TODO
-                    Snackbar.make(requireView(), "Enable notifications", Snackbar.LENGTH_SHORT).show()
+                    viewModel.editChatSettings(
+                        viewModel.getChatId(), viewModel.getUserId(), viewModel.getIsBannedInChat(), true
+                    )
+                    showSnackBar(R.string.notifications_enabled)
                     true
                 }
                 R.id.action_disable_notifications -> {
-                    //TODO
-                    Snackbar.make(requireView(), "Disable notifications", Snackbar.LENGTH_SHORT).show()
+                    viewModel.editChatSettings(
+                        viewModel.getChatId(), viewModel.getUserId(), viewModel.getIsBannedInChat(), false
+                    )
+                    showSnackBar(R.string.notifications_disabled)
                     true
                 }
                 R.id.action_delete_chat -> {
                     //TODO
-                    Snackbar.make(requireView(), "Delete", Snackbar.LENGTH_SHORT).show()
+                    //TODO showSnackBar
                     true
                 }
                 R.id.action_leave_chat -> {
                     //TODO
-                    Snackbar.make(requireView(), "Leave", Snackbar.LENGTH_SHORT).show()
+                    //TODO showSnackBar
                     true
                 }
                 else -> false
@@ -180,7 +185,7 @@ class ChatWithMessagesFragment : Fragment() {
                         viewModel.getChatId()
                     )
                 }
-            } else Snackbar.make(requireView(), getString(R.string.message_is_empty), Snackbar.LENGTH_SHORT).show()
+            } else showSnackBar(R.string.message_is_empty)
             viewModel.setPathToFile("")
             enterMessageEditText.setText("")
             fileSelectedLayout.visibility = View.GONE
@@ -206,17 +211,24 @@ class ChatWithMessagesFragment : Fragment() {
             it.map(object : HideMenuItems {
                 override fun hide(chat: ChatDetails) {
                     chat.chatSettingsList.forEach { chatSettings ->
-                        if (chatSettings.userId.toString() == viewModel.getUserId())
-                            if (chatSettings.isNotificationsEnabled)
-                                toolbar.hideMenuItem(R.id.action_enable_notifications)
-                            else toolbar.hideMenuItem(R.id.action_disable_notifications)
+                        if (chatSettings.userId.toString() == viewModel.getUserId()) {
+                            viewModel.setIsBannedInChat(chatSettings.isBanned)
+                            if (chatSettings.isNotificationsEnabled) {
+                                toolbar.showMenuItem(R.id.action_enable_notifications, false)
+                                toolbar.showMenuItem(R.id.action_disable_notifications, true)
+                            } else {
+                                toolbar.showMenuItem(R.id.action_disable_notifications, false)
+                                toolbar.showMenuItem(R.id.action_enable_notifications, true)
+                            }
+                        }
                     }
 
-                    if (viewModel.getCompanionId() != "") toolbar.hideMenuItem(R.id.action_leave_chat)
+                    if (viewModel.getCompanionId() != "")
+                        toolbar.showMenuItem(R.id.action_leave_chat, false)
                     else {
                         if (viewModel.getUserId() != chat.createdByUserId.toString())
-                            toolbar.hideMenuItem(R.id.action_delete_chat)
-                        else toolbar.hideMenuItem(R.id.action_leave_chat)
+                            toolbar.showMenuItem(R.id.action_delete_chat, false)
+                        else toolbar.showMenuItem(R.id.action_leave_chat, false)
                     }
                 }
             })
@@ -240,8 +252,11 @@ class ChatWithMessagesFragment : Fragment() {
         super.onDestroy()
         stompClient.disconnect() //TODO
     }
+
+    private fun showSnackBar(@StringRes text: Int) =
+        Snackbar.make(requireView(), getString(text), Snackbar.LENGTH_SHORT).show()
 }
 
-private fun Toolbar.hideMenuItem(@IdRes itemId: Int) {
-    menu.findItem(itemId).isVisible = false
+private fun Toolbar.showMenuItem(@IdRes itemId: Int, showItem: Boolean) {
+    menu.findItem(itemId).isVisible = showItem
 }
