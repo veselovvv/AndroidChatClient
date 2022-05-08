@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.material.textfield.TextInputLayout
 import com.veselovvv.androidchatclient.ui.login.Validator
 
-abstract class BaseViewModel(private val validator: Validator) : ViewModel() {
+abstract class BaseValidationViewModel(private val validator: Validator) : ViewModel() {
     fun validateUsername(username: String, textInputLayout: TextInputLayout, errorMessage: String) =
         validate(validator.isUsernameCorrect(username), textInputLayout, errorMessage)
 
@@ -20,9 +20,7 @@ abstract class BaseViewModel(private val validator: Validator) : ViewModel() {
         if (!isCorrect) {
             inputLayout.error = errorMessage
             noError = false
-        } else {
-            inputLayout.error = null
-        }
+        } else inputLayout.error = null
         return noError
     }
 }

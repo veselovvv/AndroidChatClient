@@ -49,6 +49,7 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
+            //TODO move validation to viewModel
             var allFieldsAreCorrect = true
 
             if (!viewModel.validateEmail(email, emailTextInputLayout, getString(R.string.email_error)))

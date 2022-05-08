@@ -45,6 +45,7 @@ class ChatWithMessagesFragment : Fragment() {
     private lateinit var unselectFileButton: ShapeableImageView
     private lateinit var stompClient: StompClient
 
+    //TODO user all about file choosing from BaseFileUploadFragment
     private companion object {
         const val READ_EXTERNAL_REQUEST = 1
         const val FILE_REQUEST_CODE = 100

@@ -29,12 +29,13 @@ class ChatsWithMessagesViewModel(
     private val chatsWithMessagesCommunication: ChatsWithMessagesCommunication,
     private val messagesCommunication: MessagesCommunication,
     private val messageCommunication: MessageCommunication,
-    private val uploadFileCommunication: UploadFileCommunication, //TODO
+    private val uploadFileCommunication: UploadFileCommunication,
     private val chatsWithMessagesMapper: ChatsWithMessagesDomainToUiMapper,
     private val messageMapper: MessageDomainToUiMapper,
     private val uploadFileMapper: UploadFileDomainToUiMapper,
     private val chatCache: Read<Triple<String, String, String>>
 ) : ViewModel() {
+    //TODO use all about file choosing and uploading from BaseFileUploadViewModel?
     private var isBannedInChat = false
     private var selectedFileUri: Uri? = null
     private var pathToFile = ""
