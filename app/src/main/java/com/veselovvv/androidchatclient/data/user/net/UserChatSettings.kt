@@ -13,4 +13,5 @@ data class UserChatSettings(
     private val isChatAdmin: Boolean
 ) {
     val userId get() = this.id.idUser
+    val isNotificationsEnabled get() = this.sendNotifications
 }

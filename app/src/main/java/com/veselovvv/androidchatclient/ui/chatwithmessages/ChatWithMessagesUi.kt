@@ -11,6 +11,7 @@ import com.veselovvv.androidchatclient.data.messages.Message
 
 sealed class ChatWithMessagesUi {
     open fun map(progressLayout: FrameLayout) = Unit
+    open fun map(hideMenuItems: HideMenuItems) = Unit
     open fun map(handleMessages: HandleMessages) = Unit
 
     open fun map(
@@ -33,7 +34,7 @@ sealed class ChatWithMessagesUi {
         override fun map(progressLayout: FrameLayout) {
             progressLayout.visibility = View.GONE
         }
-
+        override fun map(hideMenuItems: HideMenuItems) = hideMenuItems.hide(chat)
         override fun map(handleMessages: HandleMessages) = handleMessages.fetchMessages(messages)
     }
 

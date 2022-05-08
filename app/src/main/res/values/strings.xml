@@ -22,4 +22,8 @@
     <string name="file">File</string>
     <string name="no_messages">No messages</string>
     <string name="message_is_empty">Message is empty</string>
+    <string name="delete_chat">Delete chat</string>
+    <string name="leave_chat">Leave chat</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="disable_notifications">Disable notifications</string>
 </resources>

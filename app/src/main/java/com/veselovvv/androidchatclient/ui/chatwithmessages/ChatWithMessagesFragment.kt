@@ -5,11 +5,10 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.annotation.IdRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
@@ -22,6 +21,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.core.Retry
+import com.veselovvv.androidchatclient.data.chatdetails.ChatDetails
 import com.veselovvv.androidchatclient.data.messages.Message
 import com.veselovvv.androidchatclient.ui.fileuploading.SetPathToFile
 import kotlinx.coroutines.*
@@ -70,6 +70,32 @@ class ChatWithMessagesFragment : Fragment() {
 
         toolbar = view.findViewById(R.id.toolbar_chat_with_messages)
         toolbar.title = viewModel.getChatTitle()
+        toolbar.inflateMenu(R.menu.chat_with_messages_menu)
+        toolbar.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.action_enable_notifications -> {
+                    //TODO
+                    Snackbar.make(requireView(), "Enable notifications", Snackbar.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.action_disable_notifications -> {
+                    //TODO
+                    Snackbar.make(requireView(), "Disable notifications", Snackbar.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.action_delete_chat -> {
+                    //TODO
+                    Snackbar.make(requireView(), "Delete", Snackbar.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.action_leave_chat -> {
+                    //TODO
+                    Snackbar.make(requireView(), "Leave", Snackbar.LENGTH_SHORT).show()
+                    true
+                }
+                else -> false
+            }
+        }
         toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
 
         progressLayout = requireActivity().findViewById(R.id.progress_layout)
@@ -131,7 +157,7 @@ class ChatWithMessagesFragment : Fragment() {
                 it.map()
                 it.map(requireView())
             }
-            //TODO if text is empty and file
+
             if (enterMessageEditText.text.toString() != "" || viewModel.getPathToFile() != "") {
                 if ((viewModel.getCompanionId() != "")) {
                     viewModel.sendDirectMessage(
@@ -177,6 +203,23 @@ class ChatWithMessagesFragment : Fragment() {
     private fun fetchData(adapter: MessagesAdapter) {
         viewModel.observe(this) {
             it.map(progressLayout)
+            it.map(object : HideMenuItems {
+                override fun hide(chat: ChatDetails) {
+                    chat.chatSettingsList.forEach { chatSettings ->
+                        if (chatSettings.userId.toString() == viewModel.getUserId())
+                            if (chatSettings.isNotificationsEnabled)
+                                toolbar.hideMenuItem(R.id.action_enable_notifications)
+                            else toolbar.hideMenuItem(R.id.action_disable_notifications)
+                    }
+
+                    if (viewModel.getCompanionId() != "") toolbar.hideMenuItem(R.id.action_leave_chat)
+                    else {
+                        if (viewModel.getUserId() != chat.createdByUserId.toString())
+                            toolbar.hideMenuItem(R.id.action_delete_chat)
+                        else toolbar.hideMenuItem(R.id.action_leave_chat)
+                    }
+                }
+            })
             it.map(object : HandleMessages {
                 override fun fetchMessages(messages: List<Message>) {
                     viewModel.observeMessages(this@ChatWithMessagesFragment, { messageList ->
@@ -184,8 +227,7 @@ class ChatWithMessagesFragment : Fragment() {
                     viewModel.fetchMessages(messages)
                 }
             })
-            it.map(
-                failLayout, messageTextView, tryAgainButton, object : Retry {
+            it.map(failLayout, messageTextView, tryAgainButton, object : Retry {
                     override fun tryAgain() = viewModel.fetchChatWithMessages(viewModel.getChatId())
                 }
             )
@@ -198,4 +240,8 @@ class ChatWithMessagesFragment : Fragment() {
         super.onDestroy()
         stompClient.disconnect() //TODO
     }
+}
+
+private fun Toolbar.hideMenuItem(@IdRes itemId: Int) {
+    menu.findItem(itemId).isVisible = false
 }

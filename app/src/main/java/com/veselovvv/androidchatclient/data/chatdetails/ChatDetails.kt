@@ -1,13 +1,15 @@
 package com.veselovvv.androidchatclient.data.chatdetails
 
 import com.google.gson.annotations.SerializedName
+import com.veselovvv.androidchatclient.data.user.net.User
 import com.veselovvv.androidchatclient.data.user.net.UserChatSettings
 
 data class ChatDetails(
-    /*@SerializedName("user")
-    private val user: User?,*/
+    @SerializedName("user")
+    private val user: User?,
     @SerializedName("userChatSettingsList")
     private val userChatSettingsList: List<UserChatSettings>
 ) {
+    val createdByUserId get() = this.user?.userId
     val chatSettingsList get() = this.userChatSettingsList
 }
