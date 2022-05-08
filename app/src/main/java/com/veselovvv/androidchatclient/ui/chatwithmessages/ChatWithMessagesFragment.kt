@@ -89,8 +89,9 @@ class ChatWithMessagesFragment : Fragment() {
                     true
                 }
                 R.id.action_delete_chat -> {
-                    //TODO
-                    //TODO showSnackBar
+                    viewModel.deleteChat(viewModel.getChatId())
+                    showSnackBar(R.string.chat_is_deleted)
+                    requireActivity().onBackPressed()
                     true
                 }
                 R.id.action_leave_chat -> {

@@ -8,6 +8,7 @@ interface ChatsWithMessagesRepository {
         chatId: String, userId: String, banned: Boolean, sendNotifications: Boolean
     ): ChatsWithMessagesData
     suspend fun leaveGroupChat(groupId: String, userId: String): ChatsWithMessagesData
+    suspend fun deleteChat(chatId: String): ChatsWithMessagesData
     fun getUserToken(): String
     fun getUserId(): String
 
@@ -42,6 +43,14 @@ interface ChatsWithMessagesRepository {
         override suspend fun leaveGroupChat(groupId: String, userId: String) = try {
             val token = sessionManager.read().first
             cloudDataSource.leaveGroupChat(token, groupId, userId)
+            ChatsWithMessagesData.Empty()
+        } catch (exception: Exception) {
+            ChatsWithMessagesData.Fail(exception)
+        }
+
+        override suspend fun deleteChat(chatId: String) = try {
+            val token = sessionManager.read().first
+            cloudDataSource.deleteChat(token, chatId)
             ChatsWithMessagesData.Empty()
         } catch (exception: Exception) {
             ChatsWithMessagesData.Fail(exception)

@@ -40,4 +40,10 @@ interface ChatService {
         @Path("groupId") groupId: String,
         @Path("userId") userId: String
     )
+
+    @DELETE("chats/{chatId}/delete")
+    suspend fun deleteChat(
+        @Header("Authorization") token: String,
+        @Path("chatId") chatId: String
+    )
 }

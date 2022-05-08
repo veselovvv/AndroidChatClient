@@ -10,6 +10,7 @@ interface ChatsWithMessagesInteractor {
         chatId: String, userId: String, banned: Boolean, sendNotifications: Boolean
     ): ChatsWithMessagesDomain
     suspend fun leaveGroupChat(groupId: String, userId: String): ChatsWithMessagesDomain
+    suspend fun deleteChat(chatId: String): ChatsWithMessagesDomain
     fun getUserToken(): String
     fun getUserId(): String
 
@@ -26,6 +27,9 @@ interface ChatsWithMessagesInteractor {
 
         override suspend fun leaveGroupChat(groupId: String, userId: String) =
             chatsWithMessagesRepository.leaveGroupChat(groupId, userId).map(mapper)
+
+        override suspend fun deleteChat(chatId: String) =
+            chatsWithMessagesRepository.deleteChat(chatId).map(mapper)
 
         override fun getUserToken() = chatsWithMessagesRepository.getUserToken()
         override fun getUserId() = chatsWithMessagesRepository.getUserId()

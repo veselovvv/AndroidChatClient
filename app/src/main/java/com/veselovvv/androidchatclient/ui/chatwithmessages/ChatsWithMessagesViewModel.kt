@@ -80,6 +80,17 @@ class ChatsWithMessagesViewModel(
         }
     }
 
+    fun deleteChat(chatId: String) {
+        chatsWithMessagesCommunication.map(ChatWithMessagesUi.Progress)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = chatsWithMessagesInteractor.deleteChat(chatId)
+            val resultUi = result.map(chatsWithMessagesMapper)
+            withContext(Dispatchers.Main) {
+                resultUi.map(chatsWithMessagesCommunication)
+            }
+        }
+    }
+
     fun fetchMessages(messages: List<Message>) = messagesCommunication.map(messages)
 
     fun sendDirectMessage(
