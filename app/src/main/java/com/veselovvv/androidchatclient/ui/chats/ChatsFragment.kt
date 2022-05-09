@@ -2,15 +2,20 @@ package com.veselovvv.androidchatclient.ui.chats
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isEmpty
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.core.Retry
@@ -21,6 +26,9 @@ class ChatsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeToRefreshLayout: SwipeRefreshLayout
     private lateinit var toolbar: Toolbar
+    private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +53,39 @@ class ChatsFragment : Fragment() {
             }
         )
 
+        drawerLayout = view.findViewById(R.id.drawer_layout)
+        toggle = ActionBarDrawerToggle(requireActivity(), drawerLayout, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        navigationView = view.findViewById(R.id.navigation_view)
+        navigationView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.action_new_group -> {
+                    //TODO
+                    Snackbar.make(requireView(), "New Group", Snackbar.LENGTH_SHORT).show()
+                    drawerLayout.close()
+                    true
+                }
+                R.id.action_people -> {
+                    //TODO
+                    Snackbar.make(requireView(), "People", Snackbar.LENGTH_SHORT).show()
+                    drawerLayout.close()
+                    true
+                }
+                R.id.action_settings -> {
+                    //TODO
+                    Snackbar.make(requireView(), "Settings", Snackbar.LENGTH_SHORT).show()
+                    drawerLayout.close()
+                    true
+                }
+                else -> false
+            }
+        }
+
         toolbar = view.findViewById(R.id.toolbar_chats)
         toolbar.title = getString(R.string.app_title)
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_menu_24)
+        toolbar.setNavigationOnClickListener { drawerLayout.open() }
         toolbar.inflateMenu(R.menu.chats_menu)
         toolbar.setOnMenuItemClickListener{
             when (it.itemId) {
