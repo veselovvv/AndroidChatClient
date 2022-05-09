@@ -5,10 +5,22 @@ import com.veselovvv.androidchatclient.core.Abstract
 import com.veselovvv.androidchatclient.core.ErrorType
 import com.veselovvv.androidchatclient.core.ResourceProvider
 import com.veselovvv.androidchatclient.data.user.net.User
+import com.veselovvv.androidchatclient.domain.user.UserDomain
+import com.veselovvv.androidchatclient.domain.user.UserDomainToUiMapper
 
 sealed class UsersUi : Abstract.Object<Unit, UserCommunication> {
     class RegisterSuccess : UsersUi() {
         override fun map(mapper: UserCommunication) = mapper.map(UserUi.RegisterSuccess())
+    }
+
+    class Success(
+        private val user: UserDomain,
+        private val userMapper: UserDomainToUiMapper
+    ) : UsersUi() {
+        override fun map(mapper: UserCommunication) {
+            val usersUi = user.map(userMapper)
+            mapper.map(usersUi)
+        }
     }
 
     class Fail(

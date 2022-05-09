@@ -1,29 +1,30 @@
 package com.veselovvv.androidchatclient.data.user.net
 
 import com.google.gson.annotations.SerializedName
+import com.veselovvv.androidchatclient.core.Abstract
+import com.veselovvv.androidchatclient.data.user.ToUserMapper
+import com.veselovvv.androidchatclient.data.user.UserData
 import java.util.*
 
 data class User(
     @SerializedName("id")
     private val id: UUID,
     @SerializedName("name")
-    private val name: String
-    /*@SerializedName("email")
+    private val name: String,
+    @SerializedName("email")
     private val email: String,
     @SerializedName("password")
     private val password: String,
-    @SerializedName("banned")
+    /*@SerializedName("banned")
     private val banned: Boolean,
     @SerializedName("role")
-    private val role: Role,
+    private val role: Role,TODO? */
     @SerializedName("photoPathToFile")
-    private val photoPathToFile: String?,
-    @SerializedName("userChatSettings")
-    private val userChatSettings: List<UserChatSettings>*/
-) /*: Abstract.Object<UserData, ToUserMapper> */{
+    private val photoPathToFile: String?
+) : Abstract.Object<UserData, ToUserMapper> {
     val userId get() = this.id
     val userName get() = this.name
 
-    /*override fun map(mapper: ToUserMapper) =
-        mapper.map(id, name, email, password, banned, role, photoPathToFile, userChatSettings)*/
+    override fun map(mapper: ToUserMapper) =
+        mapper.map(id.toString(), name, email, password, photoPathToFile ?: "")
 }

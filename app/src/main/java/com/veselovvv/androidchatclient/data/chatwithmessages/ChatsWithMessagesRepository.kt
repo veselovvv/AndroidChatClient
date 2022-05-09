@@ -16,7 +16,7 @@ interface ChatsWithMessagesRepository {
         private val cloudDataSource: ChatWithMessagesCloudDataSource,
         private val chatWithMessagesCloudMapper: ChatWithMessagesCloudMapper,
         private val toEditChatSettingsDtoMapper: ToEditChatSettingsDtoMapper,
-        private val sessionManager: SessionManager,
+        private val sessionManager: SessionManager
     ) : ChatsWithMessagesRepository {
         override suspend fun fetchChatWithMessages(chatId: String) = try {
             val token = sessionManager.read().first

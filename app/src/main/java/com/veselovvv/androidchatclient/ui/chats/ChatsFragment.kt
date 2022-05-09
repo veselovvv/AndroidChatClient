@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.core.Retry
+import com.veselovvv.androidchatclient.ui.user.HandleUserInfo
 import java.util.*
 
 class ChatsFragment : Fragment() {
@@ -29,6 +31,8 @@ class ChatsFragment : Fragment() {
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+    private lateinit var usernameTextView: MaterialTextView
+    private lateinit var emailTextView: MaterialTextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +62,8 @@ class ChatsFragment : Fragment() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         navigationView = view.findViewById(R.id.navigation_view)
+        usernameTextView = navigationView.getHeaderView(0).findViewById(R.id.username_header)
+        emailTextView =  navigationView.getHeaderView(0).findViewById(R.id.email_header)
         navigationView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_new_group -> {
@@ -85,7 +91,22 @@ class ChatsFragment : Fragment() {
         toolbar = view.findViewById(R.id.toolbar_chats)
         toolbar.title = getString(R.string.app_title)
         toolbar.setNavigationIcon(R.drawable.ic_baseline_menu_24)
-        toolbar.setNavigationOnClickListener { drawerLayout.open() }
+        toolbar.setNavigationOnClickListener {
+            drawerLayout.open()
+            viewModel.observeUser(this) {
+                it.map(object : HandleUserInfo {
+                    override fun handle(
+                        id: String, name: String, email: String, password: String, photoPathToFile: String
+                    ) {
+                        //TODO add avatar
+                        usernameTextView.text = name
+                        emailTextView.text = email
+                    }
+                })
+                it.map(requireView())
+            }
+            viewModel.fetchUser(viewModel.getUserId())
+        }
         toolbar.inflateMenu(R.menu.chats_menu)
         toolbar.setOnMenuItemClickListener{
             when (it.itemId) {

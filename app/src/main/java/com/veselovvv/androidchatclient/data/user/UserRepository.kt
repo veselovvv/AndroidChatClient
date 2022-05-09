@@ -1,24 +1,37 @@
 package com.veselovvv.androidchatclient.data.user
 
-import java.lang.Exception
-
 interface UserRepository {
     suspend fun createUser(
         name: String, email: String, password: String, roleId: String, photoPathToFile: String
-    ): UserData
+    ): UsersData
+    suspend fun fetchUser(userId: String): UsersData
+    fun getUserId(): String //TODO dry here and in chat with messages
 
     class Base(
         private val cloudDataSource: UserCloudDataSource,
-        private val mapper: ToUserMapper
+        private val userCloudMapper: UserCloudMapper,
+        private val toUserDTOMapper: ToUserDTOMapper,
+        private val sessionManager: SessionManager
     ) : UserRepository {
         override suspend fun createUser(
             name: String, email: String, password: String, roleId: String, photoPathToFile: String
         ) = try {
-            val userDTO = mapper.map(name, email, password, roleId, photoPathToFile)
+            val userDTO = toUserDTOMapper.map(name, email, password, roleId, photoPathToFile)
             cloudDataSource.createUser(userDTO) //TODO need save result?
-            UserData.RegisterSuccess()
+            UsersData.RegisterSuccess()
         } catch (exception: Exception) {
-            UserData.Fail(exception)
+            UsersData.Fail(exception)
         }
+
+        override suspend fun fetchUser(userId: String) = try {
+            val token = sessionManager.read().first
+            val userCloud = cloudDataSource.fetchUser(token, userId)
+            val user = userCloudMapper.map(userCloud)
+            UsersData.Success(user)
+        } catch (exception: Exception) {
+            UsersData.Fail(exception)
+        }
+
+        override fun getUserId() = sessionManager.read().second
     }
 }

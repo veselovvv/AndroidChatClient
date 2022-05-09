@@ -18,10 +18,7 @@ import com.veselovvv.androidchatclient.data.login.ToLoginMapper
 import com.veselovvv.androidchatclient.data.message.MessageCloudDataSource
 import com.veselovvv.androidchatclient.data.message.MessageRepository
 import com.veselovvv.androidchatclient.data.message.ToMessageDTOMapper
-import com.veselovvv.androidchatclient.data.user.SessionManager
-import com.veselovvv.androidchatclient.data.user.ToUserMapper
-import com.veselovvv.androidchatclient.data.user.UserCloudDataSource
-import com.veselovvv.androidchatclient.data.user.UserRepository
+import com.veselovvv.androidchatclient.data.user.*
 import com.veselovvv.androidchatclient.data.users.net.UserService
 import com.veselovvv.androidchatclient.domain.chats.BaseChatDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.chats.BaseChatsDataToDomainMapper
@@ -37,8 +34,7 @@ import com.veselovvv.androidchatclient.domain.login.BaseLoginDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.login.LoginInteractor
 import com.veselovvv.androidchatclient.domain.message.BaseMessageDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.message.MessageInteractor
-import com.veselovvv.androidchatclient.domain.user.BaseUserDataToDomainMapper
-import com.veselovvv.androidchatclient.domain.user.UserInteractor
+import com.veselovvv.androidchatclient.domain.user.*
 import com.veselovvv.androidchatclient.ui.chats.*
 import com.veselovvv.androidchatclient.ui.chatwithmessages.*
 import com.veselovvv.androidchatclient.ui.fileuploading.BaseUploadFileDomainToUiMapper
@@ -50,6 +46,7 @@ import com.veselovvv.androidchatclient.ui.main.Navigator
 import com.veselovvv.androidchatclient.ui.message.BaseMessageDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.message.MessageCommunication
 import com.veselovvv.androidchatclient.ui.user.BaseUserDomainToUiMapper
+import com.veselovvv.androidchatclient.ui.user.BaseUsersDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.user.UserCommunication
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -82,6 +79,9 @@ class ChatApp : Application() { //TODO to modules
     lateinit var uploadFileInteractor: UploadFileInteractor
     lateinit var uploadFileDomainToUiMapper: UploadFileDomainToUiMapper
     lateinit var uploadFileCommunication: UploadFileCommunication
+    lateinit var userCommunication: UserCommunication
+    lateinit var userInteractor: UserInteractor
+    lateinit var usersDomainToUiMapper: UsersDomainToUiMapper
 
     override fun onCreate() {
         super.onCreate()
@@ -118,6 +118,8 @@ class ChatApp : Application() { //TODO to modules
         chatWithMessagesCloudDataSource = ChatWithMessagesCloudDataSource.Base(chatService, gson)
         uploadFileDomainToUiMapper = BaseUploadFileDomainToUiMapper(resourceProvider)
         uploadFileCommunication = UploadFileCommunication.Base()
+        userCommunication = UserCommunication.Base()
+        usersDomainToUiMapper = BaseUsersDomainToUiMapper(resourceProvider, BaseUserDomainToUiMapper())
 
         uploadFileInteractor = UploadFileInteractor.Base(
             UploadFileRepository.Base(
@@ -125,6 +127,16 @@ class ChatApp : Application() { //TODO to modules
                 sessionManager
             ), BaseUploadFileDataToDomainMapper(),
             FileProvider.Base(this)
+        )
+
+        userInteractor = UserInteractor.Base(
+            UserRepository.Base(
+                userCloudDataSource,
+                UserCloudMapper.Base(ToUserMapper.Base()),
+                ToUserDTOMapper.Base(),
+                sessionManager
+            ),
+            BaseUsersDataToDomainMapper(BaseUserDataToDomainMapper())
         )
 
         mainViewModel = MainViewModel(Navigator.Base(this), navigationCommunication)
@@ -141,14 +153,11 @@ class ChatApp : Application() { //TODO to modules
             LoginCommunication.Base()
         )
         registerViewModel = RegisterViewModel(
-            UserInteractor.Base(
-                UserRepository.Base(userCloudDataSource, ToUserMapper.Base()),
-                BaseUserDataToDomainMapper()
-            ),
+            userInteractor,
             uploadFileInteractor,
-            BaseUserDomainToUiMapper(resourceProvider),
+            usersDomainToUiMapper,
             uploadFileDomainToUiMapper,
-            UserCommunication.Base(),
+            userCommunication,
             uploadFileCommunication
         )
         chatsViewModel = ChatsViewModel(
@@ -162,8 +171,11 @@ class ChatApp : Application() { //TODO to modules
                 ),
                 BaseChatsDataToDomainMapper(BaseChatDataToDomainMapper())
             ),
+            userInteractor,
             BaseChatsDomainToUiMapper(resourceProvider, BaseChatDomainToUiMapper()),
+            usersDomainToUiMapper,
             ChatsCommunication.Base(),
+            userCommunication,
             ChatCache.Base(this),
             Navigator.Base(this),
             navigationCommunication
