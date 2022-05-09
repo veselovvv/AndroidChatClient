@@ -30,9 +30,7 @@ class ChatsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_chats, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_chats, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +46,7 @@ class ChatsFragment : Fragment() {
         )
 
         toolbar = view.findViewById(R.id.toolbar_chats)
-        toolbar.title = "Chats" //TODO move to strings.xml
+        toolbar.title = getString(R.string.app_title)
         toolbar.inflateMenu(R.menu.chats_menu)
         toolbar.setOnMenuItemClickListener{
             when (it.itemId) {

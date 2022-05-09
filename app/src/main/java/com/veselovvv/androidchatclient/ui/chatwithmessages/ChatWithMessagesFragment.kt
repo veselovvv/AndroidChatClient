@@ -1,9 +1,6 @@
 package com.veselovvv.androidchatclient.ui.chatwithmessages
 
-import android.Manifest
-import android.app.Activity.RESULT_OK
-import android.content.Intent
-import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.FrameLayout
@@ -11,8 +8,6 @@ import android.widget.LinearLayout
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
@@ -24,13 +19,14 @@ import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.core.Retry
 import com.veselovvv.androidchatclient.data.chatdetails.ChatDetails
 import com.veselovvv.androidchatclient.data.messages.Message
+import com.veselovvv.androidchatclient.ui.core.BaseFileUploadFragment
 import com.veselovvv.androidchatclient.ui.fileuploading.SetPathToFile
 import kotlinx.coroutines.*
 import okhttp3.*
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 
-class ChatWithMessagesFragment : Fragment() {
+class ChatWithMessagesFragment : BaseFileUploadFragment() {
     private lateinit var viewModel: ChatsWithMessagesViewModel
     private lateinit var toolbar: Toolbar
     private lateinit var progressLayout: FrameLayout
@@ -45,12 +41,6 @@ class ChatWithMessagesFragment : Fragment() {
     private lateinit var unselectFileButton: ShapeableImageView
     private lateinit var stompClient: StompClient
 
-    //TODO user all about file choosing from BaseFileUploadFragment
-    private companion object {
-        const val READ_EXTERNAL_REQUEST = 1
-        const val FILE_REQUEST_CODE = 100
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = (requireActivity().application as ChatApp).chatsWithMessagesViewModel
@@ -58,9 +48,7 @@ class ChatWithMessagesFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_chat_with_messages, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_chat_with_messages, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -132,17 +120,7 @@ class ChatWithMessagesFragment : Fragment() {
 
         fetchData(adapter)
 
-        attachFileImageView.setOnClickListener {
-            if (checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED)
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_EXTERNAL_REQUEST)
-            else {
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = "*/*"
-                startActivityForResult(intent, FILE_REQUEST_CODE)
-            }
-        }
-
+        attachFileImageView.setOnClickListener { getPermission() }
         sendMessageImageView.setOnClickListener {
             var set = true
             if (viewModel.getSelectedFileUri() != null) {
@@ -195,16 +173,13 @@ class ChatWithMessagesFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FILE_REQUEST_CODE && resultCode == RESULT_OK && data?.data != null) {
-            viewModel.setSelectedFileUri(data.data)
-            fileSelectedLayout.visibility = View.VISIBLE
+    override fun doOnActivityResult(data: Uri) {
+        viewModel.setSelectedFileUri(data)
+        fileSelectedLayout.visibility = View.VISIBLE
 
-            unselectFileButton.setOnClickListener {
-                viewModel.setSelectedFileUri(null)
-                fileSelectedLayout.visibility = View.GONE
-            }
+        unselectFileButton.setOnClickListener {
+            viewModel.setSelectedFileUri(null)
+            fileSelectedLayout.visibility = View.GONE
         }
     }
 

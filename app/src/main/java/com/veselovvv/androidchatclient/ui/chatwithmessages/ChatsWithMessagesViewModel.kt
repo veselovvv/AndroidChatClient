@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.veselovvv.androidchatclient.core.Read
-import com.veselovvv.androidchatclient.data.chatwithmessages.EditChatSettingsDto
 import com.veselovvv.androidchatclient.data.messages.Message
 import com.veselovvv.androidchatclient.domain.chatwithmessages.ChatsWithMessagesDomainToUiMapper
 import com.veselovvv.androidchatclient.domain.chatwithmessages.ChatsWithMessagesInteractor
@@ -35,7 +34,6 @@ class ChatsWithMessagesViewModel(
     private val uploadFileMapper: UploadFileDomainToUiMapper,
     private val chatCache: Read<Triple<String, String, String>>
 ) : ViewModel() {
-    //TODO use all about file choosing and uploading from BaseFileUploadViewModel?
     private var isBannedInChat = false
     private var selectedFileUri: Uri? = null
     private var pathToFile = ""

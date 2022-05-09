@@ -16,6 +16,7 @@ import com.veselovvv.androidchatclient.ui.main.MainActivity
 
 class LoginFragment : Fragment() {
     private lateinit var viewModel: LoginViewModel
+    private lateinit var validator: Validator
     private lateinit var emailTextInputLayout: TextInputLayout
     private lateinit var passwordTextInputLayout: TextInputLayout
     private lateinit var emailEditText: TextInputEditText
@@ -27,14 +28,13 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = (requireActivity().application as ChatApp).loginViewModel
+        validator = (requireActivity().application as ChatApp).validator
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_login, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,14 +49,14 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
-            //TODO move validation to viewModel
             var allFieldsAreCorrect = true
 
-            if (!viewModel.validateEmail(email, emailTextInputLayout, getString(R.string.email_error)))
-                allFieldsAreCorrect = false
-
-            if (!viewModel.validatePassword(password, passwordTextInputLayout, getString(R.string.password_error)))
-                allFieldsAreCorrect = false
+            if (!validator.validate(
+                    email, FieldType.EMAIL, emailTextInputLayout, getString(R.string.email_error)
+                )) allFieldsAreCorrect = false
+            if (!validator.validate(
+                    password, FieldType.PASSWORD, passwordTextInputLayout, getString(R.string.password_error)
+                )) allFieldsAreCorrect = false
 
             if (allFieldsAreCorrect) {
                 //TODO

@@ -1,7 +1,6 @@
 package com.veselovvv.androidchatclient.ui.login
 
-import android.app.Activity
-import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class RegisterFragment : BaseFileUploadFragment() {
     private lateinit var viewModel: RegisterViewModel
+    private lateinit var validator: Validator
     private lateinit var avatarCircleImageView: CircleImageView
     private lateinit var selectAvatarMaterialTextView: MaterialTextView
     private lateinit var usernameTextInputLayout: TextInputLayout
@@ -31,14 +31,13 @@ class RegisterFragment : BaseFileUploadFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = (requireActivity().application as ChatApp).registerViewModel
+        validator = (requireActivity().application as ChatApp).validator
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_register, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_register, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,24 +55,24 @@ class RegisterFragment : BaseFileUploadFragment() {
 
         createAccountButton = view.findViewById(R.id.create_account_button_register)
         createAccountButton.setOnClickListener {
-            //TODO move validation to viewModel
+            val username = usernameEditText.text.toString()
+            val email = emailEditText.text.toString()
+            val password = passwordEditText.text.toString()
             var allFieldsAreCorrect = true
 
-            if (!viewModel.validateUsername(usernameEditText.text.toString(), usernameTextInputLayout, getString(R.string.username_error)))
-                allFieldsAreCorrect = false
-
-            if (!viewModel.validateEmail(emailEditText.text.toString(), emailTextInputLayout, getString(R.string.email_error)))
-                allFieldsAreCorrect = false
-
-            if (!viewModel.validatePassword(passwordEditText.text.toString(), passwordTextInputLayout, getString(R.string.password_error)))
-                allFieldsAreCorrect = false
+            if (!validator.validate(
+                    username, FieldType.USERNAME, usernameTextInputLayout, getString(R.string.username_error)
+                )) allFieldsAreCorrect = false
+            if (!validator.validate(
+                    email, FieldType.EMAIL, emailTextInputLayout, getString(R.string.email_error)
+                )) allFieldsAreCorrect = false
+            if (!validator.validate(
+                    password, FieldType.PASSWORD, passwordTextInputLayout, getString(R.string.password_error)
+                )) allFieldsAreCorrect = false
 
             if (allFieldsAreCorrect) {
                 viewModel.register(
-                    usernameEditText.text.toString(),
-                    emailEditText.text.toString(),
-                    passwordEditText.text.toString(),
-                    "99af9e43-8687-44c2-bb47-88c86c620ce7", //TODO? + why null? + why can't login with created user?
+                    username, email, password, "dd8f927d-a2af-415d-a88a-16d6142c568a", //TODO?
                     viewModel.getPathToFile()
                 )
                 viewModel.observe(this) {
@@ -86,17 +85,14 @@ class RegisterFragment : BaseFileUploadFragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK && data?.data != null) {
-            avatarCircleImageView.setImageURI(data.data)
-            viewModel.observeFileUploading(this) {
-                it.map(object : SetPathToFile {
-                    override fun setPath(filePath: String) = viewModel.setPathToFile(filePath)
-                })
-                it.map(requireView())
-            }
-            viewModel.uploadFile(data.data!!)
+    override fun doOnActivityResult(data: Uri) {
+        avatarCircleImageView.setImageURI(data)
+        viewModel.observeFileUploading(this) {
+            it.map(object : SetPathToFile {
+                override fun setPath(filePath: String) = viewModel.setPathToFile(filePath)
+            })
+            it.map(requireView())
         }
+        viewModel.uploadFile(data)
     }
 }

@@ -3,12 +3,12 @@ package com.veselovvv.androidchatclient.ui.login
 import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.veselovvv.androidchatclient.domain.fileuploading.UploadFileDomainToUiMapper
 import com.veselovvv.androidchatclient.domain.fileuploading.UploadFileInteractor
 import com.veselovvv.androidchatclient.domain.user.UserDomainToUiMapper
 import com.veselovvv.androidchatclient.domain.user.UserInteractor
-import com.veselovvv.androidchatclient.ui.core.BaseValidationViewModel
 import com.veselovvv.androidchatclient.ui.fileuploading.UploadFileCommunication
 import com.veselovvv.androidchatclient.ui.fileuploading.UploadFileUi
 import com.veselovvv.androidchatclient.ui.user.UserCommunication
@@ -23,9 +23,8 @@ class RegisterViewModel(
     private val mapper: UserDomainToUiMapper,
     private val uploadFileMapper: UploadFileDomainToUiMapper,
     private val communication: UserCommunication,
-    private val uploadFileCommunication: UploadFileCommunication,
-    private val validator: Validator
-) : BaseValidationViewModel(validator) {
+    private val uploadFileCommunication: UploadFileCommunication
+) : ViewModel() {
     private var pathToFile = ""
 
     fun getPathToFile() = pathToFile

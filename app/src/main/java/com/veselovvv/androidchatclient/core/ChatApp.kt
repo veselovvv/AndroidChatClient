@@ -18,7 +18,10 @@ import com.veselovvv.androidchatclient.data.login.ToLoginMapper
 import com.veselovvv.androidchatclient.data.message.MessageCloudDataSource
 import com.veselovvv.androidchatclient.data.message.MessageRepository
 import com.veselovvv.androidchatclient.data.message.ToMessageDTOMapper
-import com.veselovvv.androidchatclient.data.user.*
+import com.veselovvv.androidchatclient.data.user.SessionManager
+import com.veselovvv.androidchatclient.data.user.ToUserMapper
+import com.veselovvv.androidchatclient.data.user.UserCloudDataSource
+import com.veselovvv.androidchatclient.data.user.UserRepository
 import com.veselovvv.androidchatclient.data.users.net.UserService
 import com.veselovvv.androidchatclient.domain.chats.BaseChatDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.chats.BaseChatsDataToDomainMapper
@@ -135,10 +138,7 @@ class ChatApp : Application() { //TODO to modules
                 BaseLoginDataToDomainMapper()
             ),
             BaseLoginDomainToUiMapper(resourceProvider),
-            LoginCommunication.Base(),
-            Navigator.Base(this),
-            navigationCommunication,
-            validator
+            LoginCommunication.Base()
         )
         registerViewModel = RegisterViewModel(
             UserInteractor.Base(
@@ -149,8 +149,8 @@ class ChatApp : Application() { //TODO to modules
             BaseUserDomainToUiMapper(resourceProvider),
             uploadFileDomainToUiMapper,
             UserCommunication.Base(),
-            uploadFileCommunication,
-            validator)
+            uploadFileCommunication
+        )
         chatsViewModel = ChatsViewModel(
             ChatsInteractor.Base(
                 ChatsRepository.Base(
