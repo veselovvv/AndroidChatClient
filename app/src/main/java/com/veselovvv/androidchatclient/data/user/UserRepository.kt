@@ -10,6 +10,7 @@ interface UserRepository {
     ): UsersData
     fun getUserId(): String //TODO dry here and in chat with messages
     fun getUserToken(): String //TODO dry here and in chat with messages
+    fun cleanToken()
 
     class Base(
         private val cloudDataSource: UserCloudDataSource,
@@ -51,5 +52,6 @@ interface UserRepository {
 
         override fun getUserId() = sessionManager.read().second
         override fun getUserToken() = sessionManager.read().first
+        override fun cleanToken() = sessionManager.save(Pair(getUserId(), ""))
     }
 }

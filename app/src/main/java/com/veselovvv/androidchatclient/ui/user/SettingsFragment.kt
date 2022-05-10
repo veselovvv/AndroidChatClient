@@ -1,5 +1,6 @@
 package com.veselovvv.androidchatclient.ui.user
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.ui.core.BaseFileUploadFragment
 import com.veselovvv.androidchatclient.ui.fileuploading.SetPathToFile
 import com.veselovvv.androidchatclient.ui.login.FieldType
+import com.veselovvv.androidchatclient.ui.login.LoginActivity
 import com.veselovvv.androidchatclient.ui.login.Validator
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -56,7 +58,9 @@ class SettingsFragment : BaseFileUploadFragment() {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_log_out -> {
-                    //TODO
+                    viewModel.cleanToken()
+                    requireActivity().startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                    requireActivity().finish()
                     true
                 }
                 else -> false

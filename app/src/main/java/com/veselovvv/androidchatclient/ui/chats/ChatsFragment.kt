@@ -93,7 +93,6 @@ class ChatsFragment : Fragment() {
                     true
                 }
                 R.id.action_settings -> {
-                    //TODO
                     viewModel.showSettings()
                     drawerLayout.close()
                     true

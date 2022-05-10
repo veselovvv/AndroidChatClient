@@ -65,4 +65,5 @@ class SettingsViewModel(
 
     fun getUserId() = userInteractor.getUserId()
     fun getUserToken() = userInteractor.getUserToken()
+    fun cleanToken() = userInteractor.cleanToken()
 }

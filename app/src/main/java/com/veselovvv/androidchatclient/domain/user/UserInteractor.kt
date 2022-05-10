@@ -13,6 +13,7 @@ interface UserInteractor {
     ): UsersDomain
     fun getUserId(): String
     fun getUserToken(): String
+    fun cleanToken()
 
     class Base(
         private val userRepository: UserRepository,
@@ -30,5 +31,6 @@ interface UserInteractor {
 
         override fun getUserId() = userRepository.getUserId()
         override fun getUserToken() = userRepository.getUserToken()
+        override fun cleanToken() = userRepository.cleanToken()
     }
 }
