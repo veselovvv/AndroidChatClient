@@ -12,6 +12,7 @@ import com.veselovvv.androidchatclient.domain.user.UsersDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.main.NavigationCommunication
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHATS_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHAT_SCREEN
+import com.veselovvv.androidchatclient.ui.main.Screens.Companion.SETTINGS_SCREEN
 import com.veselovvv.androidchatclient.ui.user.UserCommunication
 import com.veselovvv.androidchatclient.ui.user.UserUi
 import kotlinx.coroutines.Dispatchers
@@ -63,6 +64,10 @@ class ChatsViewModel(
     fun showChat(id: String, title: String, companionId: String) {
         chatCache.save(Triple(id, title, companionId))
         navigationCommunication.map(CHAT_SCREEN)
+    }
+
+    fun showSettings() {
+        navigationCommunication.map(SETTINGS_SCREEN)
     }
 
     fun getUserId() = userInteractor.getUserId()

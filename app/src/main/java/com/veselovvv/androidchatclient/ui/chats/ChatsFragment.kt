@@ -2,7 +2,6 @@ package com.veselovvv.androidchatclient.ui.chats
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -86,7 +85,7 @@ class ChatsFragment : Fragment() {
                 }
                 R.id.action_settings -> {
                     //TODO
-                    Snackbar.make(requireView(), "Settings", Snackbar.LENGTH_SHORT).show()
+                    viewModel.showSettings()
                     drawerLayout.close()
                     true
                 }

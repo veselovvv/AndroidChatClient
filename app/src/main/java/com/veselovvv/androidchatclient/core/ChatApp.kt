@@ -47,6 +47,7 @@ import com.veselovvv.androidchatclient.ui.message.BaseMessageDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.message.MessageCommunication
 import com.veselovvv.androidchatclient.ui.user.BaseUserDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.user.BaseUsersDomainToUiMapper
+import com.veselovvv.androidchatclient.ui.user.SettingsViewModel
 import com.veselovvv.androidchatclient.ui.user.UserCommunication
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -82,6 +83,7 @@ class ChatApp : Application() { //TODO to modules
     lateinit var userCommunication: UserCommunication
     lateinit var userInteractor: UserInteractor
     lateinit var usersDomainToUiMapper: UsersDomainToUiMapper
+    lateinit var settingsViewModel: SettingsViewModel
 
     override fun onCreate() {
         super.onCreate()
@@ -211,5 +213,7 @@ class ChatApp : Application() { //TODO to modules
             uploadFileDomainToUiMapper,
             ChatCache.Base(this)
         )
+
+        settingsViewModel = SettingsViewModel(userInteractor, usersDomainToUiMapper, userCommunication)
     }
 }

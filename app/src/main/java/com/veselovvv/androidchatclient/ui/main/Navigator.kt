@@ -23,5 +23,6 @@ class Screens {
     companion object {
         const val CHATS_SCREEN = 0
         const val CHAT_SCREEN = 1
+        const val SETTINGS_SCREEN = 2
     }
 }

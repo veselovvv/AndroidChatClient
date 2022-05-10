@@ -8,6 +8,8 @@ import com.veselovvv.androidchatclient.ui.chats.ChatsFragment
 import com.veselovvv.androidchatclient.ui.chatwithmessages.ChatWithMessagesFragment
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHATS_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHAT_SCREEN
+import com.veselovvv.androidchatclient.ui.main.Screens.Companion.SETTINGS_SCREEN
+import com.veselovvv.androidchatclient.ui.user.SettingsFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -27,6 +29,13 @@ class MainActivity : AppCompatActivity() {
                 CHAT_SCREEN -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.container_main, ChatWithMessagesFragment())
+                        .addToBackStack(null)
+                        .commit()
+                }
+                SETTINGS_SCREEN -> {
+                    //TODO dry
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container_main, SettingsFragment())
                         .addToBackStack(null)
                         .commit()
                 }
