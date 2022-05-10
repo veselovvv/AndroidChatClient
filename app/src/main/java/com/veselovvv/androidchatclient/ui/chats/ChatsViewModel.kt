@@ -66,6 +66,7 @@ class ChatsViewModel(
     }
 
     fun getUserId() = userInteractor.getUserId()
+    fun getUserToken() = userInteractor.getUserToken()
 
     fun init() {
         navigator.save(CHATS_SCREEN)

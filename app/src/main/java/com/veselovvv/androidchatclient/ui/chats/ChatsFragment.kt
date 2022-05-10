@@ -14,6 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
@@ -21,6 +24,7 @@ import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.core.Retry
 import com.veselovvv.androidchatclient.ui.user.HandleUserInfo
+import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
 class ChatsFragment : Fragment() {
@@ -31,6 +35,7 @@ class ChatsFragment : Fragment() {
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+    private lateinit var avatarCircleImageView: CircleImageView
     private lateinit var usernameTextView: MaterialTextView
     private lateinit var emailTextView: MaterialTextView
 
@@ -62,6 +67,7 @@ class ChatsFragment : Fragment() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         navigationView = view.findViewById(R.id.navigation_view)
+        avatarCircleImageView = navigationView.getHeaderView(0).findViewById(R.id.avatar_imageview_header)
         usernameTextView = navigationView.getHeaderView(0).findViewById(R.id.username_header)
         emailTextView =  navigationView.getHeaderView(0).findViewById(R.id.email_header)
         navigationView.setNavigationItemSelectedListener { item ->
@@ -98,7 +104,14 @@ class ChatsFragment : Fragment() {
                     override fun handle(
                         id: String, name: String, email: String, password: String, photoPathToFile: String
                     ) {
-                        //TODO add avatar
+                        //TODO path?
+                        Glide.with(requireView())
+                            .load(
+                                GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
+                                        photoPathToFile.substringAfter("chat-server/"),
+                                LazyHeaders.Builder().addHeader("Authorization", viewModel.getUserToken()
+                                ).build())
+                            ).into(avatarCircleImageView)
                         usernameTextView.text = name
                         emailTextView.text = email
                     }

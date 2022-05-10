@@ -9,6 +9,7 @@ interface UserInteractor {
     ): UsersDomain
     suspend fun fetchUser(userId: String): UsersDomain
     fun getUserId(): String
+    fun getUserToken(): String
 
     class Base(
         private val userRepository: UserRepository,
@@ -20,5 +21,6 @@ interface UserInteractor {
 
         override suspend fun fetchUser(userId: String) = userRepository.fetchUser(userId).map(mapper)
         override fun getUserId() = userRepository.getUserId()
+        override fun getUserToken() = userRepository.getUserToken()
     }
 }

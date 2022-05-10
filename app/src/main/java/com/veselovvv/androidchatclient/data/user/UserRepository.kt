@@ -6,6 +6,7 @@ interface UserRepository {
     ): UsersData
     suspend fun fetchUser(userId: String): UsersData
     fun getUserId(): String //TODO dry here and in chat with messages
+    fun getUserToken(): String //TODO dry here and in chat with messages
 
     class Base(
         private val cloudDataSource: UserCloudDataSource,
@@ -33,5 +34,6 @@ interface UserRepository {
         }
 
         override fun getUserId() = sessionManager.read().second
+        override fun getUserToken() = sessionManager.read().first
     }
 }
