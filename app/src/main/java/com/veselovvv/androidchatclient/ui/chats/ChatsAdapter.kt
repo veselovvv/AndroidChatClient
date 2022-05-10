@@ -8,11 +8,13 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.Retry
+import com.veselovvv.androidchatclient.ui.login.Navigate
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ChatsAdapter(
     private val retry: Retry,
+    private val navigate: Navigate,
     private val chatListener: ChatListener
 ) : RecyclerView.Adapter<ChatsAdapter.ChatsViewHolder>() {
     private val chats = ArrayList<ChatUi>()
@@ -27,11 +29,13 @@ class ChatsAdapter(
         is ChatUi.Base -> 0
         is ChatUi.Fail -> 1
         is ChatUi.Progress -> 2
+        is ChatUi.AuthFail -> 3
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         0 -> ChatsViewHolder.Base(R.layout.chat_layout.makeView(parent), chatListener)
         1 -> ChatsViewHolder.Fail(R.layout.fail_fullscreen.makeView(parent), retry)
+        3 -> ChatsViewHolder.AuthFail(R.layout.fail_fullscreen.makeView(parent), navigate)
         else -> ChatsViewHolder.FullscreenProgress(R.layout.progress_fullscreen.makeView(parent))
     }
 
@@ -84,7 +88,26 @@ class ChatsAdapter(
                         id: UUID, title: String, lastMessageText: String, lastMessagePathToFile: String
                     ) = Unit
                 })
+                button.visibility = View.VISIBLE
                 button.setOnClickListener { retry.tryAgain() }
+            }
+        }
+
+        class AuthFail(view: View, private val navigate: Navigate) : ChatsViewHolder(view) {
+            private val message = itemView.findViewById<MaterialTextView>(R.id.error_message_text_view)
+            private val button = itemView.findViewById<MaterialButton>(R.id.login_button)
+
+            override fun bind(chat: ChatUi) {
+                chat.map(object : ChatUi.BaseMapper {
+                    override fun map(text: String) {
+                        message.text = text
+                    }
+                    override fun map(
+                        id: UUID, title: String, lastMessageText: String, lastMessagePathToFile: String
+                    ) = Unit
+                })
+                button.visibility = View.VISIBLE
+                button.setOnClickListener { navigate.navigate() }
             }
         }
     }

@@ -28,9 +28,11 @@ sealed class ChatsUi : Abstract.Object<Unit, ChatsCommunication> {
                 ErrorType.SERVICE_ERROR -> R.string.service_unavailable_message
                 else -> R.string.something_went_wrong
             }
-
             val message = resourceProvider.getString(messageId)
-            mapper.map(listOf(ChatUi.Fail(message)))
+
+            if (messageId == R.string.service_unavailable_message)
+                mapper.map(listOf(ChatUi.AuthFail(message)))
+            else mapper.map(listOf(ChatUi.Fail(message)))
         }
     }
 }

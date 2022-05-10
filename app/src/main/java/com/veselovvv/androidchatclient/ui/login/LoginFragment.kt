@@ -59,7 +59,6 @@ class LoginFragment : Fragment() {
                 )) allFieldsAreCorrect = false
 
             if (allFieldsAreCorrect) {
-                //TODO
                 viewModel.login(email, password)
                 viewModel.observe(this) {
                     it.map(object : Navigate {

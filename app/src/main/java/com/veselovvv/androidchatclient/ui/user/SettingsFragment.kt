@@ -122,7 +122,7 @@ class SettingsFragment : BaseFileUploadFragment() {
         }
     }
 
-    //TODO dryR
+    //TODO dry
     override fun doOnActivityResult(data: Uri) {
         avatarCircleImageView.setImageURI(data)
         viewModel.observeFileUploading(this) {

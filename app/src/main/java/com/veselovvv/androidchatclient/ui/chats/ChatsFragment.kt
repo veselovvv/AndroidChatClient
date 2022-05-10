@@ -1,5 +1,6 @@
 package com.veselovvv.androidchatclient.ui.chats
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,8 @@ import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.core.Retry
+import com.veselovvv.androidchatclient.ui.login.LoginActivity
+import com.veselovvv.androidchatclient.ui.login.Navigate
 import com.veselovvv.androidchatclient.ui.user.HandleUserInfo
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
@@ -54,6 +57,12 @@ class ChatsFragment : Fragment() {
         val adapter = ChatsAdapter(
             object : Retry {
                 override fun tryAgain() = viewModel.fetchChats()
+            },
+            object : Navigate {
+                override fun navigate() {
+                    requireActivity().startActivity(Intent(requireActivity(), LoginActivity::class.java))
+                    requireActivity().finish()
+                }
             },
             object : ChatsAdapter.ChatListener {
                 override fun showChat(id: UUID, title: String, companionId: String) =

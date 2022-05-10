@@ -25,6 +25,10 @@ sealed class ChatUi : Abstract.Object<Unit, ChatUi.BaseMapper> {
         override fun map(mapper: BaseMapper) = mapper.map(message)
     }
 
+    class AuthFail(private val message: String) : ChatUi() {
+        override fun map(mapper: BaseMapper) = mapper.map(message)
+    }
+
     interface BaseMapper : Abstract.Mapper {
         fun map(id: UUID, title: String, lastMessageText: String, lastMessagePathToFile: String)
         fun map(text: String)
