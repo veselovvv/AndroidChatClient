@@ -1,6 +1,7 @@
 package com.veselovvv.androidchatclient.data.users.net
 
 import com.veselovvv.androidchatclient.data.login.Login
+import com.veselovvv.androidchatclient.data.user.EditUserDTO
 import com.veselovvv.androidchatclient.data.user.UserDTO
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -20,5 +21,12 @@ interface UserService {
     @GET("users/{userId}")
     suspend fun getUser(
         @Header("Authorization") token: String, @Path("userId") userId: String
+    ): ResponseBody
+
+    @PUT("users/{userId}/edit")
+    suspend fun editUser(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String,
+        @Body editUserDTO: EditUserDTO
     ): ResponseBody
 }

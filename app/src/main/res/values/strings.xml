@@ -39,4 +39,5 @@
     <string name="close">Close</string>
     <string name="save">Save</string>
     <string name="log_out">Log out</string>
+    <string name="saved">Saved</string>
 </resources>

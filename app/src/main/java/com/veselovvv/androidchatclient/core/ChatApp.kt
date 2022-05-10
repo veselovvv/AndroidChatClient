@@ -136,6 +136,7 @@ class ChatApp : Application() { //TODO to modules
                 userCloudDataSource,
                 UserCloudMapper.Base(ToUserMapper.Base()),
                 ToUserDTOMapper.Base(),
+                ToEditUserDTOMapper.Base(),
                 sessionManager
             ),
             BaseUsersDataToDomainMapper(BaseUserDataToDomainMapper())
@@ -214,6 +215,13 @@ class ChatApp : Application() { //TODO to modules
             ChatCache.Base(this)
         )
 
-        settingsViewModel = SettingsViewModel(userInteractor, usersDomainToUiMapper, userCommunication)
+        settingsViewModel = SettingsViewModel(
+            userInteractor,
+            uploadFileInteractor,
+            usersDomainToUiMapper,
+            uploadFileDomainToUiMapper,
+            userCommunication,
+            uploadFileCommunication
+        )
     }
 }

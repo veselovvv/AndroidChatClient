@@ -26,7 +26,6 @@ class RegisterViewModel(
     private val uploadFileCommunication: UploadFileCommunication
 ) : ViewModel() {
     private var pathToFile = ""
-
     fun getPathToFile() = pathToFile
     fun setPathToFile(path: String) { pathToFile = path }
 
