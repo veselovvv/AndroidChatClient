@@ -23,6 +23,12 @@ interface UserService {
         @Header("Authorization") token: String, @Path("userId") userId: String
     ): ResponseBody
 
+    //TODO
+    @GET("users/getByEmail/{email}")
+    suspend fun getUserByEmail(
+        @Header("Authorization") token: String, @Path("email") email: String
+    ): ResponseBody
+
     @PUT("users/{userId}/edit")
     suspend fun editUser(
         @Header("Authorization") token: String,

@@ -53,6 +53,7 @@ class SettingsFragment : BaseFileUploadFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         toolbar = view.findViewById(R.id.toolbar_settings)
+        toolbar.title = getString(R.string.settings)
         toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
         toolbar.inflateMenu(R.menu.settings_menu)
         toolbar.setOnMenuItemClickListener {

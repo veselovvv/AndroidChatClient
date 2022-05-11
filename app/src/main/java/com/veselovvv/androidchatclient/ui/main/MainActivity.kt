@@ -2,13 +2,16 @@ package com.veselovvv.androidchatclient.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.ui.chats.ChatsFragment
 import com.veselovvv.androidchatclient.ui.chatwithmessages.ChatWithMessagesFragment
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHATS_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHAT_SCREEN
+import com.veselovvv.androidchatclient.ui.main.Screens.Companion.NEW_CHAT_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.SETTINGS_SCREEN
+import com.veselovvv.androidchatclient.ui.newchat.NewChatFragment
 import com.veselovvv.androidchatclient.ui.user.SettingsFragment
 
 class MainActivity : AppCompatActivity() {
@@ -26,19 +29,9 @@ class MainActivity : AppCompatActivity() {
                         .replace(R.id.container_main, ChatsFragment())
                         .commit()
                 }
-                CHAT_SCREEN -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container_main, ChatWithMessagesFragment())
-                        .addToBackStack(null)
-                        .commit()
-                }
-                SETTINGS_SCREEN -> {
-                    //TODO dry
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container_main, SettingsFragment())
-                        .addToBackStack(null)
-                        .commit()
-                }
+                CHAT_SCREEN -> replaceFragment(ChatWithMessagesFragment())
+                SETTINGS_SCREEN -> replaceFragment(SettingsFragment())
+                NEW_CHAT_SCREEN -> replaceFragment(NewChatFragment())
                 else -> throw IllegalStateException("Screen id is undefined: $it")
             }
         })
@@ -47,5 +40,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (viewModel.navigateBack()) super.onBackPressed()
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container_main, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

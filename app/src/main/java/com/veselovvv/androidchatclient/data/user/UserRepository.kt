@@ -5,6 +5,7 @@ interface UserRepository {
         name: String, email: String, password: String, roleId: String, photoPathToFile: String
     ): UsersData
     suspend fun fetchUser(userId: String): UsersData
+    suspend fun fetchUserByEmail(email: String): UsersData
     suspend fun editUser(
         userId: String, name: String, email: String, password: String, photoPathToFile: String
     ): UsersData
@@ -32,6 +33,15 @@ interface UserRepository {
         override suspend fun fetchUser(userId: String) = try {
             val token = sessionManager.read().first
             val userCloud = cloudDataSource.fetchUser(token, userId)
+            val user = userCloudMapper.map(userCloud)
+            UsersData.Success(user)
+        } catch (exception: Exception) {
+            UsersData.Fail(exception)
+        }
+
+        override suspend fun fetchUserByEmail(email: String) = try {
+            val token = sessionManager.read().first
+            val userCloud = cloudDataSource.fetchUserByEmail(token, email)
             val user = userCloudMapper.map(userCloud)
             UsersData.Success(user)
         } catch (exception: Exception) {

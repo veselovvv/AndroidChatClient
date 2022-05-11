@@ -18,7 +18,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
@@ -80,15 +79,8 @@ class ChatsFragment : Fragment() {
         emailTextView =  navigationView.getHeaderView(0).findViewById(R.id.email_header)
         navigationView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.action_new_group -> {
-                    //TODO
-                    Snackbar.make(requireView(), "New Group", Snackbar.LENGTH_SHORT).show()
-                    drawerLayout.close()
-                    true
-                }
-                R.id.action_people -> {
-                    //TODO
-                    Snackbar.make(requireView(), "People", Snackbar.LENGTH_SHORT).show()
+                R.id.action_new_chat -> {
+                    viewModel.showNewChat()
                     drawerLayout.close()
                     true
                 }

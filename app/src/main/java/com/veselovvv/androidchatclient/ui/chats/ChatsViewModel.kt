@@ -12,6 +12,7 @@ import com.veselovvv.androidchatclient.domain.user.UsersDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.main.NavigationCommunication
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHATS_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHAT_SCREEN
+import com.veselovvv.androidchatclient.ui.main.Screens.Companion.NEW_CHAT_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.SETTINGS_SCREEN
 import com.veselovvv.androidchatclient.ui.user.UserCommunication
 import com.veselovvv.androidchatclient.ui.user.UserUi
@@ -66,9 +67,8 @@ class ChatsViewModel(
         navigationCommunication.map(CHAT_SCREEN)
     }
 
-    fun showSettings() {
-        navigationCommunication.map(SETTINGS_SCREEN)
-    }
+    fun showSettings() = navigationCommunication.map(SETTINGS_SCREEN)
+    fun showNewChat() = navigationCommunication.map(NEW_CHAT_SCREEN)
 
     fun getUserId() = userInteractor.getUserId()
     fun getUserToken() = userInteractor.getUserToken()

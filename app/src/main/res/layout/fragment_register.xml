@@ -11,13 +11,10 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textview_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:text="@string/create_an_account"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:textAppearance="?attr/textAppearanceBody1" />
+        style="@style/large_text_view" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar_imageview_register"
@@ -89,10 +86,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/create_account_button_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_button"
         android:text="@string/create"
-        android:textStyle="bold" />
+        style="@style/wide_button" />
 </LinearLayout>

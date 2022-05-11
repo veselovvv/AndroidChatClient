@@ -24,5 +24,6 @@ class Screens {
         const val CHATS_SCREEN = 0
         const val CHAT_SCREEN = 1
         const val SETTINGS_SCREEN = 2
+        const val NEW_CHAT_SCREEN = 3
     }
 }

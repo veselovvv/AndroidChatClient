@@ -34,7 +34,10 @@ import com.veselovvv.androidchatclient.domain.login.BaseLoginDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.login.LoginInteractor
 import com.veselovvv.androidchatclient.domain.message.BaseMessageDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.message.MessageInteractor
-import com.veselovvv.androidchatclient.domain.user.*
+import com.veselovvv.androidchatclient.domain.user.BaseUserDataToDomainMapper
+import com.veselovvv.androidchatclient.domain.user.BaseUsersDataToDomainMapper
+import com.veselovvv.androidchatclient.domain.user.UserInteractor
+import com.veselovvv.androidchatclient.domain.user.UsersDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.chats.*
 import com.veselovvv.androidchatclient.ui.chatwithmessages.*
 import com.veselovvv.androidchatclient.ui.fileuploading.BaseUploadFileDomainToUiMapper
@@ -45,6 +48,7 @@ import com.veselovvv.androidchatclient.ui.main.NavigationCommunication
 import com.veselovvv.androidchatclient.ui.main.Navigator
 import com.veselovvv.androidchatclient.ui.message.BaseMessageDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.message.MessageCommunication
+import com.veselovvv.androidchatclient.ui.newchat.NewChatViewModel
 import com.veselovvv.androidchatclient.ui.user.BaseUserDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.user.BaseUsersDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.user.SettingsViewModel
@@ -84,6 +88,7 @@ class ChatApp : Application() { //TODO to modules
     lateinit var userInteractor: UserInteractor
     lateinit var usersDomainToUiMapper: UsersDomainToUiMapper
     lateinit var settingsViewModel: SettingsViewModel
+    lateinit var newChatViewModel: NewChatViewModel
 
     override fun onCreate() {
         super.onCreate()
@@ -223,5 +228,7 @@ class ChatApp : Application() { //TODO to modules
             userCommunication,
             uploadFileCommunication
         )
+
+        newChatViewModel = NewChatViewModel(userInteractor, usersDomainToUiMapper, userCommunication)
     }
 }

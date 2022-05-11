@@ -8,6 +8,7 @@ interface UserInteractor {
         name: String, email: String, password: String, roleId: String, photoPathToFile: String
     ): UsersDomain
     suspend fun fetchUser(userId: String): UsersDomain
+    suspend fun fetchUserByEmail(email: String): UsersDomain
     suspend fun editUser(
         userId: String, name: String, email: String, password: String, photoPathToFile: String
     ): UsersDomain
@@ -24,6 +25,7 @@ interface UserInteractor {
         ) = userRepository.createUser(name, email, password, roleId, photoPathToFile).map(mapper)
 
         override suspend fun fetchUser(userId: String) = userRepository.fetchUser(userId).map(mapper)
+        override suspend fun fetchUserByEmail(email: String) = userRepository.fetchUserByEmail(email).map(mapper)
 
         override suspend fun editUser(
             userId: String, name: String, email: String, password: String, photoPathToFile: String

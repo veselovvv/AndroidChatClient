@@ -16,18 +16,10 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/try_again_button"
         android:text="@string/try_again"
-        android:layout_marginTop="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:background="@drawable/rounded_button" />
+        style="@style/button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_button"
         android:text="@string/login"
-        android:layout_marginTop="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:background="@drawable/rounded_button" />
+        style="@style/button" />
 </LinearLayout>
