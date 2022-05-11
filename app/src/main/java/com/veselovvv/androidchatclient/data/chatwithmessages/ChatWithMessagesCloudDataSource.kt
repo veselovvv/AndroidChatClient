@@ -6,6 +6,7 @@ import com.veselovvv.androidchatclient.data.chats.net.ChatService
 
 interface ChatWithMessagesCloudDataSource {
     suspend fun fetchChatWithMessages(token: String, chatId: String): ChatWithMessages
+    suspend fun createChat(token: String, createChatDto: CreateChatDto)
     suspend fun editChatSettings(
         token: String, chatId: String, userId: String, editChatSettings: EditChatSettingsDto
     ): ChatWithMessages
@@ -17,6 +18,9 @@ interface ChatWithMessagesCloudDataSource {
 
         override suspend fun fetchChatWithMessages(token: String, chatId: String): ChatWithMessages =
             gson.fromJson(service.getChat(token, chatId).string(), type)
+
+        override suspend fun createChat(token: String, createChatDto: CreateChatDto) =
+            service.createChat(token, createChatDto)
 
         override suspend fun editChatSettings(
             token: String, chatId: String, userId: String, editChatSettings: EditChatSettingsDto

@@ -1,5 +1,6 @@
 package com.veselovvv.androidchatclient.data.chats.net
 
+import com.veselovvv.androidchatclient.data.chatwithmessages.CreateChatDto
 import com.veselovvv.androidchatclient.data.chatwithmessages.EditChatSettingsDto
 import com.veselovvv.androidchatclient.data.message.MessageDTO
 import okhttp3.ResponseBody
@@ -11,6 +12,12 @@ interface ChatService {
         @Header("Authorization") token: String,
         @Path("chatId") chatId: String
     ): ResponseBody
+
+    @POST("chats/group")
+    suspend fun createChat(
+        @Header("Authorization") token: String,
+        @Body createChatDto: CreateChatDto
+    )
 
     @POST("chats/direct/{userId}/send")
     suspend fun sendDirectMessage(

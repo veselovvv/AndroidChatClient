@@ -2,10 +2,10 @@ package com.veselovvv.androidchatclient.domain.chatwithmessages
 
 import com.veselovvv.androidchatclient.data.chatwithmessages.ChatsWithMessagesDataToDomainMapper
 import com.veselovvv.androidchatclient.data.chatwithmessages.ChatsWithMessagesRepository
-import com.veselovvv.androidchatclient.data.chatwithmessages.EditChatSettingsDto
 
 interface ChatsWithMessagesInteractor {
     suspend fun fetchChatWithMessages(chatId: String): ChatsWithMessagesDomain
+    suspend fun createChat(title: String, createdBy: String, userIds: List<String>): ChatsWithMessagesDomain
     suspend fun editChatSettings(
         chatId: String, userId: String, banned: Boolean, sendNotifications: Boolean
     ): ChatsWithMessagesDomain
@@ -20,6 +20,9 @@ interface ChatsWithMessagesInteractor {
     ) : ChatsWithMessagesInteractor {
         override suspend fun fetchChatWithMessages(chatId: String) =
             chatsWithMessagesRepository.fetchChatWithMessages(chatId).map(mapper)
+
+        override suspend fun createChat(title: String, createdBy: String, userIds: List<String>) =
+            chatsWithMessagesRepository.createChat(title, createdBy, userIds).map(mapper)
 
         override suspend fun editChatSettings(
             chatId: String, userId: String, banned: Boolean, sendNotifications: Boolean

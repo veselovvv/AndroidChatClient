@@ -10,8 +10,7 @@ import java.net.UnknownHostException
 
 sealed class ChatsWithMessagesDomain : Abstract.Object<ChatsWithMessagesUi, ChatsWithMessagesDomainToUiMapper> {
     class Empty : ChatsWithMessagesDomain() {
-        override fun map(mapper: ChatsWithMessagesDomainToUiMapper) =
-            mapper.map()
+        override fun map(mapper: ChatsWithMessagesDomainToUiMapper) = mapper.map()
     }
 
     class Success(

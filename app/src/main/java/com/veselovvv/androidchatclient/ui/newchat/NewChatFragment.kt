@@ -1,16 +1,13 @@
 package com.veselovvv.androidchatclient.ui.newchat
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.veselovvv.androidchatclient.R
@@ -62,8 +59,8 @@ class NewChatFragment : Fragment() {
                         override fun handle(
                             id: String, name: String, email: String, password: String, photoPathToFile: String
                         ) {
-                            //TODO
-                            Log.d("LogTag", "User id: $id")
+                            viewModel.createChat(title, viewModel.getUserId(), listOf(viewModel.getUserId(), id))
+                            Snackbar.make(requireView(), getString(R.string.created), Snackbar.LENGTH_SHORT).show()
                         }
                     })
                     it.map(requireView())
