@@ -6,6 +6,7 @@ import com.veselovvv.androidchatclient.data.chatwithmessages.ChatsWithMessagesRe
 interface ChatsWithMessagesInteractor {
     suspend fun fetchChatWithMessages(chatId: String): ChatsWithMessagesDomain
     suspend fun createChat(title: String, createdBy: String, userIds: List<String>): ChatsWithMessagesDomain
+    suspend fun addMember(groupId: String, userId: String, isChatAdmin: String): ChatsWithMessagesDomain
     suspend fun editChatSettings(
         chatId: String, userId: String, banned: Boolean, sendNotifications: Boolean
     ): ChatsWithMessagesDomain
@@ -23,6 +24,9 @@ interface ChatsWithMessagesInteractor {
 
         override suspend fun createChat(title: String, createdBy: String, userIds: List<String>) =
             chatsWithMessagesRepository.createChat(title, createdBy, userIds).map(mapper)
+
+        override suspend fun addMember(groupId: String, userId: String, isChatAdmin: String) =
+            chatsWithMessagesRepository.addMember(groupId, userId, isChatAdmin).map(mapper)
 
         override suspend fun editChatSettings(
             chatId: String, userId: String, banned: Boolean, sendNotifications: Boolean

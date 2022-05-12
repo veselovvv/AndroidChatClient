@@ -89,6 +89,10 @@ class ChatWithMessagesFragment : BaseFileUploadFragment() {
                     requireActivity().onBackPressed()
                     true
                 }
+                R.id.action_add_member -> {
+                    viewModel.showAddMember()
+                    true
+                }
                 else -> false
             }
         }
@@ -201,12 +205,14 @@ class ChatWithMessagesFragment : BaseFileUploadFragment() {
                         }
                     }
 
-                    if (viewModel.getCompanionId() != "")
+                    if (viewModel.getCompanionId() != "") {
                         toolbar.showMenuItem(R.id.action_leave_chat, false)
-                    else {
-                        if (viewModel.getUserId() != chat.createdByUserId.toString())
+                        toolbar.showMenuItem(R.id.action_add_member, false)
+                    } else {
+                        if (viewModel.getUserId() != chat.createdByUserId.toString()) {
                             toolbar.showMenuItem(R.id.action_delete_chat, false)
-                        else toolbar.showMenuItem(R.id.action_leave_chat, false)
+                            toolbar.showMenuItem(R.id.action_add_member, false)
+                        } else toolbar.showMenuItem(R.id.action_leave_chat, false)
                     }
                 }
             })

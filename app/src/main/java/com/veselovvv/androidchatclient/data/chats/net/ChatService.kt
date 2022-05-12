@@ -1,5 +1,6 @@
 package com.veselovvv.androidchatclient.data.chats.net
 
+import com.veselovvv.androidchatclient.data.chatwithmessages.AddMemberDto
 import com.veselovvv.androidchatclient.data.chatwithmessages.CreateChatDto
 import com.veselovvv.androidchatclient.data.chatwithmessages.EditChatSettingsDto
 import com.veselovvv.androidchatclient.data.message.MessageDTO
@@ -17,6 +18,13 @@ interface ChatService {
     suspend fun createChat(
         @Header("Authorization") token: String,
         @Body createChatDto: CreateChatDto
+    )
+
+    @POST("chats/group/{groupId}/join")
+    suspend fun addMember(
+        @Header("Authorization") token: String,
+        @Path("groupId") groupId: String,
+        @Body addMemberDto: AddMemberDto
     )
 
     @POST("chats/direct/{userId}/send")

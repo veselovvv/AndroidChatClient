@@ -5,6 +5,7 @@ import com.veselovvv.androidchatclient.data.user.SessionManager
 interface ChatsWithMessagesRepository {
     suspend fun fetchChatWithMessages(chatId: String): ChatsWithMessagesData
     suspend fun createChat(title: String, createdBy: String, userIds: List<String>): ChatsWithMessagesData
+    suspend fun addMember(groupId: String, userId: String, isChatAdmin: String): ChatsWithMessagesData
     suspend fun editChatSettings(
         chatId: String, userId: String, banned: Boolean, sendNotifications: Boolean
     ): ChatsWithMessagesData
@@ -18,6 +19,7 @@ interface ChatsWithMessagesRepository {
         private val chatWithMessagesCloudMapper: ChatWithMessagesCloudMapper,
         private val toEditChatSettingsDtoMapper: ToEditChatSettingsDtoMapper,
         private val toCreateChatDtoMapper: ToCreateChatDtoMapper,
+        private val toAddMemberDtoMapper: ToAddMemberDtoMapper,
         private val sessionManager: SessionManager
     ) : ChatsWithMessagesRepository {
         override suspend fun fetchChatWithMessages(chatId: String) = try {
@@ -33,6 +35,15 @@ interface ChatsWithMessagesRepository {
             val token = sessionManager.read().first
             val createChatDTO = toCreateChatDtoMapper.map(title, createdBy, userIds)
             cloudDataSource.createChat(token, createChatDTO)
+            ChatsWithMessagesData.Empty()
+        } catch (exception: Exception) {
+            ChatsWithMessagesData.Fail(exception)
+        }
+
+        override suspend fun addMember(groupId: String, userId: String, isChatAdmin: String) = try {
+            val token = sessionManager.read().first
+            val addMemberDto = toAddMemberDtoMapper.map(userId, isChatAdmin)
+            cloudDataSource.addMember(token, groupId, addMemberDto)
             ChatsWithMessagesData.Empty()
         } catch (exception: Exception) {
             ChatsWithMessagesData.Fail(exception)

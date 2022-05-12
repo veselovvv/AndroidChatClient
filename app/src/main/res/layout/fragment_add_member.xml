@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_new_chat"
+            android:id="@+id/toolbar_add_member"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             style="@style/toolbar" />
@@ -28,34 +28,18 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_margin="8dp"
-            android:src="@drawable/ic_baseline_chat_24"
+            android:src="@drawable/ic_baseline_person_24"
             android:tint="@color/teal_200" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/textview_new_chat"
+            android:id="@+id/textview_add_member"
             android:layout_margin="32dp"
-            android:text="@string/start_new_chat"
+            android:text="@string/add_member"
             android:textSize="32sp"
             style="@style/large_text_view" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/title_text_input_layout_new_chat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/title"
-            app:startIconDrawable="@drawable/ic_baseline_title_24"
-            app:errorEnabled="true"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_text_input_layout_new_chat"
+            android:id="@+id/email_text_input_layout_add_member"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/user_email"
@@ -72,8 +56,8 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_new_chat"
-            android:text="@string/start"
+            android:id="@+id/button_add_member"
+            android:text="@string/add"
             style="@style/wide_button" />
     </LinearLayout>
 </LinearLayout>

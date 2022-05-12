@@ -39,6 +39,7 @@ import com.veselovvv.androidchatclient.domain.user.BaseUserDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.user.BaseUsersDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.user.UserInteractor
 import com.veselovvv.androidchatclient.domain.user.UsersDomainToUiMapper
+import com.veselovvv.androidchatclient.ui.addmember.AddMemberViewModel
 import com.veselovvv.androidchatclient.ui.chats.*
 import com.veselovvv.androidchatclient.ui.chatwithmessages.*
 import com.veselovvv.androidchatclient.ui.fileuploading.BaseUploadFileDomainToUiMapper
@@ -93,6 +94,7 @@ class ChatApp : Application() { //TODO to modules
     lateinit var chatsWithMessagesInteractor: ChatsWithMessagesInteractor
     lateinit var chatsWithMessagesCommunication: ChatsWithMessagesCommunication
     lateinit var chatsWithMessagesDomainToUiMapper: ChatsWithMessagesDomainToUiMapper
+    lateinit var addMemberViewModel: AddMemberViewModel
 
     override fun onCreate() {
         super.onCreate()
@@ -162,6 +164,7 @@ class ChatApp : Application() { //TODO to modules
                 ChatWithMessagesCloudMapper.Base(ToChatWithMessagesMapper.Base()),
                 ToEditChatSettingsDtoMapper.Base(),
                 ToCreateChatDtoMapper.Base(),
+                ToAddMemberDtoMapper.Base(),
                 sessionManager
             ),
             BaseChatsWithMessagesDataToDomainMapper(BaseChatWithMessagesDataToDomainMapper())
@@ -226,7 +229,8 @@ class ChatApp : Application() { //TODO to modules
             chatsWithMessagesDomainToUiMapper,
             BaseMessageDomainToUiMapper(resourceProvider),
             uploadFileDomainToUiMapper,
-            ChatCache.Base(this)
+            ChatCache.Base(this),
+            navigationCommunication
         )
 
         settingsViewModel = SettingsViewModel(
@@ -245,6 +249,16 @@ class ChatApp : Application() { //TODO to modules
             chatsWithMessagesInteractor,
             chatsWithMessagesCommunication,
             chatsWithMessagesDomainToUiMapper
+        )
+
+        addMemberViewModel = AddMemberViewModel(
+            userInteractor,
+            usersDomainToUiMapper,
+            userCommunication,
+            chatsWithMessagesInteractor,
+            chatsWithMessagesCommunication,
+            chatsWithMessagesDomainToUiMapper,
+            ChatCache.Base(this) //TODO dry
         )
     }
 }

@@ -15,6 +15,8 @@ import com.veselovvv.androidchatclient.domain.message.MessageDomainToUiMapper
 import com.veselovvv.androidchatclient.domain.message.MessageInteractor
 import com.veselovvv.androidchatclient.ui.fileuploading.UploadFileCommunication
 import com.veselovvv.androidchatclient.ui.fileuploading.UploadFileUi
+import com.veselovvv.androidchatclient.ui.main.NavigationCommunication
+import com.veselovvv.androidchatclient.ui.main.Screens.Companion.ADD_MEMBER_SCREEN
 import com.veselovvv.androidchatclient.ui.message.MessageCommunication
 import com.veselovvv.androidchatclient.ui.message.MessageUi
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +34,8 @@ class ChatsWithMessagesViewModel(
     private val chatsWithMessagesMapper: ChatsWithMessagesDomainToUiMapper,
     private val messageMapper: MessageDomainToUiMapper,
     private val uploadFileMapper: UploadFileDomainToUiMapper,
-    private val chatCache: Read<Triple<String, String, String>>
+    private val chatCache: Read<Triple<String, String, String>>,
+    private val navigationCommunication: NavigationCommunication
 ) : ViewModel() {
     private var isBannedInChat = false
     private var selectedFileUri: Uri? = null
@@ -138,6 +141,7 @@ class ChatsWithMessagesViewModel(
     fun observeFileUploading(owner: LifecycleOwner, observer: Observer<UploadFileUi>) =
         uploadFileCommunication.observe(owner, observer)
 
+    fun showAddMember() = navigationCommunication.map(ADD_MEMBER_SCREEN)
     fun getUserToken() = chatsWithMessagesInteractor.getUserToken()
     fun getUserId() = chatsWithMessagesInteractor.getUserId()
     fun getChatId() = chatCache.read().first
