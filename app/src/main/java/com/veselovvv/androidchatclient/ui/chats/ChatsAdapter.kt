@@ -86,7 +86,7 @@ class ChatsAdapter(
                                             photoPath.substringAfter("chat-server/"),
                                         LazyHeaders.Builder().addHeader("Authorization", userToken).build())
                                 ).into(photoImageView)
-                        }
+                        } else photoImageView.setImageResource(R.drawable.ic_baseline_alternate_email_24)
                     }
                     override fun map(text: String) = Unit
                 })
