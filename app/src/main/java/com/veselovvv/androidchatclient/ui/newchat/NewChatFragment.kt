@@ -57,7 +57,12 @@ class NewChatFragment : Fragment() {
                 viewModel.observeUser(this) {
                     it.map(object : HandleUserInfo {
                         override fun handle(
-                            id: String, name: String, email: String, password: String, photoPathToFile: String
+                            id: String,
+                            name: String,
+                            email: String,
+                            password: String,
+                            photoPathToFile: String,
+                            role: String
                         ) {
                             viewModel.createChat(title, viewModel.getUserId(), listOf(viewModel.getUserId(), id))
                             Snackbar.make(requireView(), getString(R.string.created), Snackbar.LENGTH_SHORT).show()

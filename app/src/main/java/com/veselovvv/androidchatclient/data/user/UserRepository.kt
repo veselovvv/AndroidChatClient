@@ -24,7 +24,7 @@ interface UserRepository {
             name: String, email: String, password: String, roleId: String, photoPathToFile: String
         ) = try {
             val userDTO = toUserDTOMapper.map(name, email, password, roleId, photoPathToFile)
-            cloudDataSource.createUser(userDTO) //TODO need save result?
+            cloudDataSource.createUser(userDTO)
             UsersData.RegisterSuccess()
         } catch (exception: Exception) {
             UsersData.Fail(exception)

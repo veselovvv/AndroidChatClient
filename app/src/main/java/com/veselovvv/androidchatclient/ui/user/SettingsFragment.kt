@@ -81,17 +81,24 @@ class SettingsFragment : BaseFileUploadFragment() {
         viewModel.observeUser(this) {
             it.map(object : HandleUserInfo {
                 override fun handle(
-                    id: String, name: String, email: String, password: String, photoPathToFile: String
+                    id: String,
+                    name: String,
+                    email: String,
+                    password: String,
+                    photoPathToFile: String,
+                    role: String
                 ) {
                     viewModel.setPathToFile(photoPathToFile)
                     //TODO path? + dry
-                    Glide.with(requireView())
-                        .load(
-                            GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
-                                    photoPathToFile.substringAfter("chat-server/"),
-                                LazyHeaders.Builder().addHeader("Authorization", viewModel.getUserToken()
-                                ).build())
-                        ).into(avatarCircleImageView)
+                    if (photoPathToFile != "") {
+                        Glide.with(requireView())
+                            .load(
+                                GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
+                                        photoPathToFile.substringAfter("chat-server/"),
+                                    LazyHeaders.Builder().addHeader("Authorization", viewModel.getUserToken()
+                                    ).build())
+                            ).into(avatarCircleImageView)
+                    }
                     usernameTextInputLayout.editText?.setText(name)
                     emailTextInputLayout.editText?.setText(email)
                     passwordTextInputLayout.editText?.setText(password)

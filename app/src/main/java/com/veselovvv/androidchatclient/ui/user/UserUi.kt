@@ -22,10 +22,11 @@ sealed class UserUi {
         private val name: String,
         private val email: String,
         private val password: String,
-        private val photoPathToFile: String
+        private val photoPathToFile: String,
+        private val role: String
     ) : UserUi() {
         override fun map(handleUserInfo: HandleUserInfo) =
-            handleUserInfo.handle(id, name, email, password, photoPathToFile)
+            handleUserInfo.handle(id, name, email, password, photoPathToFile, role)
     }
 
     class Fail(private val message: String) : UserUi() {

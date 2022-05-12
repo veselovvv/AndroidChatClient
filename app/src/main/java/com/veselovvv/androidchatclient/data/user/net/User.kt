@@ -15,10 +15,8 @@ data class User(
     private val email: String,
     @SerializedName("password")
     private val password: String,
-    /*@SerializedName("banned")
-    private val banned: Boolean,
     @SerializedName("role")
-    private val role: Role,TODO? */
+    private val role: Role,
     @SerializedName("photoPathToFile")
     private val photoPathToFile: String?
 ) : Abstract.Object<UserData, ToUserMapper> {
@@ -27,5 +25,12 @@ data class User(
     val photoPath get() = this.photoPathToFile ?: ""
 
     override fun map(mapper: ToUserMapper) =
-        mapper.map(id.toString(), name, email, password, photoPathToFile ?: "")
+        mapper.map(id.toString(), name, email, password, photoPathToFile ?: "", role.roleName)
+}
+
+data class Role(
+    @SerializedName("name")
+    private val name: String
+) {
+    val roleName get() = this.name
 }

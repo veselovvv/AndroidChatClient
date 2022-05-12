@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -102,18 +103,29 @@ class ChatsFragment : Fragment() {
             viewModel.observeUser(this) {
                 it.map(object : HandleUserInfo {
                     override fun handle(
-                        id: String, name: String, email: String, password: String, photoPathToFile: String
+                        id: String,
+                        name: String,
+                        email: String,
+                        password: String,
+                        photoPathToFile: String,
+                        role: String
                     ) {
                         //TODO path?
-                        Glide.with(requireView())
-                            .load(
-                                GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
-                                        photoPathToFile.substringAfter("chat-server/"),
-                                LazyHeaders.Builder().addHeader("Authorization", viewModel.getUserToken()
-                                ).build())
-                            ).into(avatarCircleImageView)
+                        if (photoPathToFile != "") {
+                            Glide.with(requireView())
+                                .load(
+                                    GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
+                                            photoPathToFile.substringAfter("chat-server/"),
+                                        LazyHeaders.Builder().addHeader("Authorization", viewModel.getUserToken()
+                                        ).build())
+                                ).into(avatarCircleImageView)
+                        }
                         usernameTextView.text = name
                         emailTextView.text = email
+
+                        if (role == "ADMIN")
+                            navigationView.showDrawerMenuItem(R.id.action_ban_user, true)
+                        else navigationView.showDrawerMenuItem(R.id.action_ban_user, false)
                     }
                 })
                 it.map(requireView())
@@ -157,4 +169,8 @@ class ChatsFragment : Fragment() {
         super.onPause()
         toolbar.menu.clear()
     }
+}
+
+private fun NavigationView.showDrawerMenuItem(@IdRes itemId: Int, showItem: Boolean) {
+    menu.findItem(itemId).isVisible = showItem
 }

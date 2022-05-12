@@ -52,7 +52,12 @@ class AddMemberFragment : Fragment() {
                 viewModel.observeUser(this) {
                     it.map(object : HandleUserInfo {
                         override fun handle(
-                            id: String, name: String, email: String, password: String, photoPathToFile: String
+                            id: String,
+                            name: String,
+                            email: String,
+                            password: String,
+                            photoPathToFile: String,
+                            role: String
                         ) {
                             viewModel.addMember(viewModel.getChatId(), id, "false") //TODO?
                             Snackbar.make(requireView(), getString(R.string.added), Snackbar.LENGTH_SHORT).show()

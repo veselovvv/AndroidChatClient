@@ -8,5 +8,9 @@
         <item android:id="@+id/action_settings"
             android:title="@string/settings"
             android:icon="@drawable/ic_baseline_settings_24" />
+
+        <item android:id="@+id/action_ban_user"
+            android:title="@string/ban_user"
+            android:icon="@drawable/ic_baseline_block_24" />
     </group>
 </menu>
