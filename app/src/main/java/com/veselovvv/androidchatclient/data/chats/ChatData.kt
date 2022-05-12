@@ -9,8 +9,9 @@ data class ChatData(
     private val title: String,
     private val companionId: String,
     private val lastMessageText: String,
-    private val lastMessagePathToFile: String
+    private val lastMessagePathToFile: String,
+    private val photoPath: String
 ) : Abstract.Object<ChatDomain, ChatDataToDomainMapper> {
     override fun map(mapper: ChatDataToDomainMapper) =
-        mapper.map(id, title, companionId, lastMessageText, lastMessagePathToFile)
+        mapper.map(id, title, companionId, lastMessageText, lastMessagePathToFile, photoPath)
 }

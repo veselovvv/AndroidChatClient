@@ -6,6 +6,11 @@ import java.util.*
 
 interface ChatDomainToUiMapper : Abstract.Mapper {
     fun map(
-        id: UUID, title: String, companionId: String, lastMessageText: String, lastMessagePathToFile: String
+        id: UUID,
+        title: String,
+        companionId: String,
+        lastMessageText: String,
+        lastMessagePathToFile: String,
+        photoPath: String
     ): ChatUi
 }

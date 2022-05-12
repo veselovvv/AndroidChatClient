@@ -24,6 +24,7 @@ data class User(
 ) : Abstract.Object<UserData, ToUserMapper> {
     val userId get() = this.id
     val userName get() = this.name
+    val photoPath get() = this.photoPathToFile ?: ""
 
     override fun map(mapper: ToUserMapper) =
         mapper.map(id.toString(), name, email, password, photoPathToFile ?: "")

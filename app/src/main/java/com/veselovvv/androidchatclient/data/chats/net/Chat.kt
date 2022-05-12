@@ -13,11 +13,8 @@ data class Chat(
     @SerializedName("title")
     private var title: String?,
     private var companionId: String?,
-    private var lastMessage: Message?
-    /*@SerializedName("user")
-    private val user: User?, //TODO need that?
-    @SerializedName("userChatSettingsList")
-    private val userChatSettingsList: List<UserChatSettings>*/
+    private var lastMessage: Message?,
+    private var photoPathToFile: String?
 ) : Abstract.Object<ChatData, ToChatMapper> {
     val chatId get() = this.id
     var chatTitle
@@ -29,6 +26,9 @@ data class Chat(
     var lastChatMessage
         get() = this.lastMessage
         set(value) { this.lastMessage = value }
+    var photoPath
+        get() = this.photoPathToFile ?: ""
+        set(value) { this.photoPathToFile = value }
 
     override fun map(mapper: ToChatMapper) =
         mapper.map(
@@ -36,6 +36,7 @@ data class Chat(
             title ?: "",
             companionId ?: "",
             lastMessage?.messageText ?: "",
-            lastMessage?.messagePathToFile ?: ""
+            lastMessage?.messagePathToFile ?: "",
+            photoPath ?: ""
         )
 }

@@ -32,7 +32,9 @@ interface ChatsRepository {
                 if (chat.chatTitle == "") {
                     chatWithMessages.chatDetails.forEach {
                         if (it.userId.toString() != userId) {
-                            chat.chatTitle = userCloudDataSource.fetchUser(token, it.userId.toString()).userName
+                                val user = userCloudDataSource.fetchUser(token, it.userId.toString())
+                            chat.chatTitle = user.userName
+                            chat.photoPath = user.photoPath
                             chat.userCompanionId = it.userId.toString()
                         }
                     }

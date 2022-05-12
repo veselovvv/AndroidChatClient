@@ -66,7 +66,8 @@ class ChatsFragment : Fragment() {
             object : ChatsAdapter.ChatListener {
                 override fun showChat(id: UUID, title: String, companionId: String) =
                     viewModel.showChat(id.toString(), title, companionId) //TODO id
-            }
+            },
+            viewModel.getUserToken()
         )
 
         drawerLayout = view.findViewById(R.id.drawer_layout)

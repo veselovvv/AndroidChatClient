@@ -5,6 +5,11 @@ import java.util.*
 
 class BaseChatDataToDomainMapper : ChatDataToDomainMapper {
     override fun map(
-        id: UUID, title: String, companionId: String, lastMessageText: String, lastMessagePathToFile: String
-    ) = ChatDomain(id, title, companionId, lastMessageText, lastMessagePathToFile)
+        id: UUID,
+        title: String,
+        companionId: String,
+        lastMessageText: String,
+        lastMessagePathToFile: String,
+        photoPath: String
+    ) = ChatDomain(id, title, companionId, lastMessageText, lastMessagePathToFile, photoPath)
 }

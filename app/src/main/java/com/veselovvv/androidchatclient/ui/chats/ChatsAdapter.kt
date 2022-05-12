@@ -4,18 +4,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.Retry
 import com.veselovvv.androidchatclient.ui.login.Navigate
+import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ChatsAdapter(
     private val retry: Retry,
     private val navigate: Navigate,
-    private val chatListener: ChatListener
+    private val chatListener: ChatListener,
+    private val userToken: String
 ) : RecyclerView.Adapter<ChatsAdapter.ChatsViewHolder>() {
     private val chats = ArrayList<ChatUi>()
 
@@ -39,11 +44,12 @@ class ChatsAdapter(
         else -> ChatsViewHolder.FullscreenProgress(R.layout.progress_fullscreen.makeView(parent))
     }
 
-    override fun onBindViewHolder(holder: ChatsViewHolder, position: Int) = holder.bind(chats[position])
+    override fun onBindViewHolder(holder: ChatsViewHolder, position: Int) =
+        holder.bind(chats[position], userToken)
     override fun getItemCount() = chats.size
 
     abstract class ChatsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        open fun bind(chat: ChatUi) {}
+        open fun bind(chat: ChatUi, userToken: String) {}
 
         class FullscreenProgress(view: View) : ChatsViewHolder(view)
 
@@ -52,11 +58,17 @@ class ChatsAdapter(
                 itemView.findViewById<MaterialTextView>(R.id.title_text_view_chat_item)
             private val lastMessageTextView =
                 itemView.findViewById<MaterialTextView>(R.id.last_message_text_view_chat_item)
+            private val photoImageView =
+                itemView.findViewById<CircleImageView>(R.id.avatar_imageview_chat_item)
 
-            override fun bind(chat: ChatUi) {
+            override fun bind(chat: ChatUi, userToken: String) {
                 chat.map(object : ChatUi.BaseMapper {
                     override fun map(
-                        id: UUID, title: String, lastMessageText: String, lastMessagePathToFile: String
+                        id: UUID,
+                        title: String,
+                        lastMessageText: String,
+                        lastMessagePathToFile: String,
+                        photoPath: String
                     ) {
                         titleTextView.text = title
                         when {
@@ -64,6 +76,16 @@ class ChatsAdapter(
                             lastMessagePathToFile != "" ->
                                 lastMessageTextView.text = itemView.context.getString(R.string.file)
                             else -> lastMessageTextView.text = itemView.context.getString(R.string.no_messages)
+                        }
+
+                        if (photoPath != "") {
+                            //TODO DRY + path?
+                            Glide.with(itemView)
+                                .load(
+                                    GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
+                                            photoPath.substringAfter("chat-server/"),
+                                        LazyHeaders.Builder().addHeader("Authorization", userToken).build())
+                                ).into(photoImageView)
                         }
                     }
                     override fun map(text: String) = Unit
@@ -79,13 +101,15 @@ class ChatsAdapter(
             private val message = itemView.findViewById<MaterialTextView>(R.id.error_message_text_view)
             private val button = itemView.findViewById<MaterialButton>(R.id.try_again_button)
 
-            override fun bind(chat: ChatUi) {
+            override fun bind(chat: ChatUi, userToken: String) {
                 chat.map(object : ChatUi.BaseMapper {
-                    override fun map(text: String) {
-                        message.text = text
-                    }
+                    override fun map(text: String) { message.text = text }
                     override fun map(
-                        id: UUID, title: String, lastMessageText: String, lastMessagePathToFile: String
+                        id: UUID,
+                        title: String,
+                        lastMessageText: String,
+                        lastMessagePathToFile: String,
+                        photoPath: String
                     ) = Unit
                 })
                 button.visibility = View.VISIBLE
@@ -97,13 +121,15 @@ class ChatsAdapter(
             private val message = itemView.findViewById<MaterialTextView>(R.id.error_message_text_view)
             private val button = itemView.findViewById<MaterialButton>(R.id.login_button)
 
-            override fun bind(chat: ChatUi) {
+            override fun bind(chat: ChatUi, userToken: String) {
                 chat.map(object : ChatUi.BaseMapper {
-                    override fun map(text: String) {
-                        message.text = text
-                    }
+                    override fun map(text: String) { message.text = text }
                     override fun map(
-                        id: UUID, title: String, lastMessageText: String, lastMessagePathToFile: String
+                        id: UUID,
+                        title: String,
+                        lastMessageText: String,
+                        lastMessagePathToFile: String,
+                        photoPath: String
                     ) = Unit
                 })
                 button.visibility = View.VISIBLE
