@@ -24,8 +24,8 @@
         android:gravity="center">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_margin="8dp"
             android:src="@drawable/ic_baseline_chat_24"
             android:tint="@color/teal_200" />
