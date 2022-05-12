@@ -3,6 +3,7 @@ package com.veselovvv.androidchatclient.ui.chatwithmessages
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,6 +13,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.data.messages.Message
+import de.hdodenhof.circleimageview.CircleImageView
 
 class MessagesAdapter(
     private val userId: String, private val userToken: String
@@ -54,10 +56,13 @@ class MessagesAdapter(
                 itemView.findViewById<MaterialTextView>(R.id.date_text_view_received_message_item)
             private val receivedMessagePhotoImageView =
                 itemView.findViewById<ShapeableImageView>(R.id.photo_image_view_received_message_item)
+            private val receivedMessageAvatarImageView =
+                itemView.findViewById<CircleImageView>(R.id.avatar_imageview_message_item)
 
             override fun bind(message: Message, userId: String, userToken: String) {
                 if (message.sender.userId.toString() == userId) {
                     receivedMessageLayout.visibility = View.GONE
+                    receivedMessageAvatarImageView.visibility = View.GONE
                     sentMessageLayout.visibility = View.VISIBLE
                     sentMessageTextTextView.text = message.messageText
                     sentMessageDateTextView.text = message.dateTime.substring(11, 16)
@@ -69,9 +74,13 @@ class MessagesAdapter(
                 } else {
                     sentMessageLayout.visibility = View.GONE
                     receivedMessageLayout.visibility = View.VISIBLE
+                    receivedMessageAvatarImageView.visibility = View.VISIBLE
                     receivedMessageNameTextView.text = message.sender.userName
                     receivedMessageTextTextView.text = message.messageText
                     receivedMessageDateTextView.text = message.dateTime.substring(11, 16)
+
+                    if (message.sender.photoPath != "")
+                        loadImage(message.sender.photoPath, userToken, receivedMessageAvatarImageView)
 
                     if (message.messagePathToFile != "" && message.messagePathToFile != null) {
                         receivedMessagePhotoImageView.visibility = View.VISIBLE
@@ -81,7 +90,7 @@ class MessagesAdapter(
             }
 
             private fun loadImage(
-                messagePathToFile: String, userToken: String, imageView: ShapeableImageView
+                messagePathToFile: String, userToken: String, imageView: ImageView
             ) {
                 //TODO path?
                 Glide.with(itemView)
