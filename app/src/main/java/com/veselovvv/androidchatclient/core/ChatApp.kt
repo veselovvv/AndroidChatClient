@@ -40,6 +40,7 @@ import com.veselovvv.androidchatclient.domain.user.BaseUsersDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.user.UserInteractor
 import com.veselovvv.androidchatclient.domain.user.UsersDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.addmember.AddMemberViewModel
+import com.veselovvv.androidchatclient.ui.banuser.BanUserViewModel
 import com.veselovvv.androidchatclient.ui.chats.*
 import com.veselovvv.androidchatclient.ui.chatwithmessages.*
 import com.veselovvv.androidchatclient.ui.fileuploading.BaseUploadFileDomainToUiMapper
@@ -95,6 +96,7 @@ class ChatApp : Application() { //TODO to modules
     lateinit var chatsWithMessagesCommunication: ChatsWithMessagesCommunication
     lateinit var chatsWithMessagesDomainToUiMapper: ChatsWithMessagesDomainToUiMapper
     lateinit var addMemberViewModel: AddMemberViewModel
+    lateinit var banUserViewModel: BanUserViewModel
 
     override fun onCreate() {
         super.onCreate()
@@ -259,6 +261,12 @@ class ChatApp : Application() { //TODO to modules
             chatsWithMessagesCommunication,
             chatsWithMessagesDomainToUiMapper,
             ChatCache.Base(this) //TODO dry
+        )
+
+        banUserViewModel = BanUserViewModel(
+            userInteractor,
+            usersDomainToUiMapper,
+            userCommunication
         )
     }
 }

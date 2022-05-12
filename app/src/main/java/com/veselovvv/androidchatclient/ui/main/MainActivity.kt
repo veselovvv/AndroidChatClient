@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.ui.addmember.AddMemberFragment
+import com.veselovvv.androidchatclient.ui.banuser.BanUserFragment
 import com.veselovvv.androidchatclient.ui.chats.ChatsFragment
 import com.veselovvv.androidchatclient.ui.chatwithmessages.ChatWithMessagesFragment
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.ADD_MEMBER_SCREEN
+import com.veselovvv.androidchatclient.ui.main.Screens.Companion.BAN_USER_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHATS_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHAT_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.NEW_CHAT_SCREEN
@@ -35,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                 SETTINGS_SCREEN -> replaceFragment(SettingsFragment())
                 NEW_CHAT_SCREEN -> replaceFragment(NewChatFragment())
                 ADD_MEMBER_SCREEN -> replaceFragment(AddMemberFragment())
+                BAN_USER_SCREEN -> replaceFragment(BanUserFragment())
                 else -> throw IllegalStateException("Screen id is undefined: $it")
             }
         })

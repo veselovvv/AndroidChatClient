@@ -91,6 +91,11 @@ class ChatsFragment : Fragment() {
                     drawerLayout.close()
                     true
                 }
+                R.id.action_ban_user -> {
+                    viewModel.showBanUser()
+                    drawerLayout.close()
+                    true
+                }
                 else -> false
             }
         }

@@ -26,5 +26,6 @@ class Screens {
         const val SETTINGS_SCREEN = 2
         const val NEW_CHAT_SCREEN = 3
         const val ADD_MEMBER_SCREEN = 4
+        const val BAN_USER_SCREEN = 5
     }
 }
