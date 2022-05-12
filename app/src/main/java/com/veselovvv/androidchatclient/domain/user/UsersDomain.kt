@@ -9,7 +9,7 @@ import retrofit2.HttpException
 import java.net.UnknownHostException
 
 sealed class UsersDomain : Abstract.Object<UsersUi, UsersDomainToUiMapper> {
-    class RegisterSuccess : UsersDomain() {
+    class EmptySuccess : UsersDomain() {
         override fun map(mapper: UsersDomainToUiMapper) = mapper.map()
     }
 

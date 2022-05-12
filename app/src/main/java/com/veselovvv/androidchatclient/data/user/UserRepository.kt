@@ -9,6 +9,7 @@ interface UserRepository {
     suspend fun editUser(
         userId: String, name: String, email: String, password: String, photoPathToFile: String
     ): UsersData
+    suspend fun banUser(userId: String, banned: Boolean): UsersData
     fun getUserId(): String //TODO dry here and in chat with messages
     fun getUserToken(): String //TODO dry here and in chat with messages
     fun cleanToken()
@@ -25,7 +26,7 @@ interface UserRepository {
         ) = try {
             val userDTO = toUserDTOMapper.map(name, email, password, roleId, photoPathToFile)
             cloudDataSource.createUser(userDTO)
-            UsersData.RegisterSuccess()
+            UsersData.EmptySuccess()
         } catch (exception: Exception) {
             UsersData.Fail(exception)
         }
@@ -56,6 +57,14 @@ interface UserRepository {
             val userCloud = cloudDataSource.editUser(token, userId, editUserDTO)
             val user = userCloudMapper.map(userCloud)
             UsersData.Success(user)
+        } catch (exception: Exception) {
+            UsersData.Fail(exception)
+        }
+
+        override suspend fun banUser(userId: String, banned: Boolean) = try {
+            val token = sessionManager.read().first
+            cloudDataSource.banUser(token, userId, banned)
+            UsersData.EmptySuccess()
         } catch (exception: Exception) {
             UsersData.Fail(exception)
         }

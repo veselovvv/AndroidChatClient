@@ -4,7 +4,7 @@ import com.veselovvv.androidchatclient.core.Abstract
 import com.veselovvv.androidchatclient.domain.user.UsersDomain
 
 sealed class UsersData : Abstract.Object<UsersDomain, UsersDataToDomainMapper> {
-    class RegisterSuccess : UsersData() {
+    class EmptySuccess : UsersData() {
         override fun map(mapper: UsersDataToDomainMapper) = mapper.map()
     }
 

@@ -35,4 +35,11 @@ interface UserService {
         @Path("userId") userId: String,
         @Body editUserDTO: EditUserDTO
     ): ResponseBody
+
+    @PUT("users/{userId}/ban")
+    suspend fun banUser(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String,
+        @Query("banned") banned: Boolean
+    )
 }

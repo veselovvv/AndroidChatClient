@@ -10,7 +10,7 @@ class BaseUsersDomainToUiMapper(
     private val resourceProvider: ResourceProvider,
     private val userMapper: UserDomainToUiMapper
 ) : UsersDomainToUiMapper {
-    override fun map() = UsersUi.RegisterSuccess()
+    override fun map() = UsersUi.EmptySuccess()
     override fun map(user: UserDomain) = UsersUi.Success(user, userMapper)
     override fun map(errorType: ErrorType) = UsersUi.Fail(errorType, resourceProvider)
 }

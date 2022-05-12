@@ -7,7 +7,7 @@ import com.veselovvv.androidchatclient.data.user.UsersDataToDomainMapper
 class BaseUsersDataToDomainMapper(
     private val userMapper: UserDataToDomainMapper
 ) : UsersDataToDomainMapper {
-    override fun map() = UsersDomain.RegisterSuccess()
+    override fun map() = UsersDomain.EmptySuccess()
     override fun map(user: UserData) = UsersDomain.Success(user, userMapper)
     override fun map(exception: Exception) = UsersDomain.Fail(exception)
 }

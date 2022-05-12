@@ -27,6 +27,16 @@ class BanUserViewModel(
         }
     }
 
+    fun banUser(userId: String, banned: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val resultDomain = userInteractor.banUser(userId, banned)
+            val resultUi = resultDomain.map(userMapper)
+            withContext(Dispatchers.Main) {
+                resultUi.map(userCommunication)
+            }
+        }
+    }
+
     fun observeUser(owner: LifecycleOwner, observer: Observer<UserUi>) = //TODO + rename to observe?
         userCommunication.observe(owner, observer)
 }

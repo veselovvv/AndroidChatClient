@@ -12,7 +12,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
-import com.veselovvv.androidchatclient.ui.addmember.AddMemberViewModel
 import com.veselovvv.androidchatclient.ui.login.FieldType
 import com.veselovvv.androidchatclient.ui.login.Validator
 import com.veselovvv.androidchatclient.ui.user.HandleUserInfo
@@ -68,7 +67,7 @@ class BanUserFragment : Fragment() {
                         photoPathToFile: String,
                         role: String
                     ) {
-                        //viewModel.banUser(setBanned) //TODO
+                        viewModel.banUser(id, setBanned)
                         Snackbar.make(requireView(), getString(R.string.saved), Snackbar.LENGTH_SHORT).show()
                     }
                 })

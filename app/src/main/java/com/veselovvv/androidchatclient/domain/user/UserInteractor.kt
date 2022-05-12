@@ -12,6 +12,7 @@ interface UserInteractor {
     suspend fun editUser(
         userId: String, name: String, email: String, password: String, photoPathToFile: String
     ): UsersDomain
+    suspend fun banUser(userId: String, banned: Boolean): UsersDomain
     fun getUserId(): String
     fun getUserToken(): String
     fun cleanToken()
@@ -30,6 +31,9 @@ interface UserInteractor {
         override suspend fun editUser(
             userId: String, name: String, email: String, password: String, photoPathToFile: String
         ) = userRepository.editUser(userId, name, email, password, photoPathToFile).map(mapper)
+
+        override suspend fun banUser(userId: String, banned: Boolean) =
+            userRepository.banUser(userId, banned).map(mapper)
 
         override fun getUserId() = userRepository.getUserId()
         override fun getUserToken() = userRepository.getUserToken()

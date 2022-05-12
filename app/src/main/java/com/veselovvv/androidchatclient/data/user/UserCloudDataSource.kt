@@ -10,6 +10,7 @@ interface UserCloudDataSource {
     suspend fun fetchUser(token: String, userId: String): User
     suspend fun fetchUserByEmail(token: String, email: String): User
     suspend fun editUser(token: String, userId: String, editUserDTO: EditUserDTO): User
+    suspend fun banUser(token: String, userId: String, banned: Boolean)
 
     class Base(private val service: UserService, private val gson: Gson) : UserCloudDataSource {
         private val type = object : TypeToken<User>() {}.type
@@ -24,5 +25,8 @@ interface UserCloudDataSource {
 
         override suspend fun editUser(token: String, userId: String, editUserDTO: EditUserDTO): User =
             gson.fromJson(service.editUser(token, userId, editUserDTO).string(), type)
+
+        override suspend fun banUser(token: String, userId: String, banned: Boolean) =
+            service.banUser(token, userId, banned)
     }
 }
