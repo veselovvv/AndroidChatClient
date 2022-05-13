@@ -11,8 +11,6 @@ import com.veselovvv.androidchatclient.core.ImageLoader
 import com.veselovvv.androidchatclient.core.Retry
 import com.veselovvv.androidchatclient.ui.login.Navigate
 import de.hdodenhof.circleimageview.CircleImageView
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ChatsAdapter(
     private val imageLoader: ImageLoader,
@@ -63,7 +61,7 @@ class ChatsAdapter(
             override fun bind(chat: ChatUi, userToken: String, imageLoader: ImageLoader) {
                 chat.map(object : ChatUi.BaseMapper {
                     override fun map(
-                        id: UUID,
+                        id: String,
                         title: String,
                         lastMessageText: String,
                         lastMessagePathToFile: String,
@@ -97,7 +95,7 @@ class ChatsAdapter(
                 chat.map(object : ChatUi.BaseMapper {
                     override fun map(text: String) { message.text = text }
                     override fun map(
-                        id: UUID,
+                        id: String,
                         title: String,
                         lastMessageText: String,
                         lastMessagePathToFile: String,
@@ -117,7 +115,7 @@ class ChatsAdapter(
                 chat.map(object : ChatUi.BaseMapper {
                     override fun map(text: String) { message.text = text }
                     override fun map(
-                        id: UUID,
+                        id: String,
                         title: String,
                         lastMessageText: String,
                         lastMessagePathToFile: String,
@@ -131,7 +129,7 @@ class ChatsAdapter(
     }
 
     interface ChatListener {
-        fun showChat(id: UUID, title: String, companionId: String)
+        fun showChat(id: String, title: String, companionId: String)
     }
 }
 

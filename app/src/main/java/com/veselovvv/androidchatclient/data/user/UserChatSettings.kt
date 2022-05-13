@@ -1,4 +1,4 @@
-package com.veselovvv.androidchatclient.data.user.net
+package com.veselovvv.androidchatclient.data.user
 
 import com.google.gson.annotations.SerializedName
 

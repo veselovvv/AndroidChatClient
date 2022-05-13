@@ -6,8 +6,8 @@ import android.widget.LinearLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.core.Retry
-import com.veselovvv.androidchatclient.data.chatdetails.ChatDetails
-import com.veselovvv.androidchatclient.data.messages.Message
+import com.veselovvv.androidchatclient.data.chatwithmessages.ChatDetails
+import com.veselovvv.androidchatclient.data.message.Message
 
 sealed class ChatWithMessagesUi {
     open fun map(progressLayout: FrameLayout) = Unit

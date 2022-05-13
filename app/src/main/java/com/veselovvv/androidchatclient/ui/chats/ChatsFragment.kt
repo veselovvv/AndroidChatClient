@@ -22,7 +22,6 @@ import com.veselovvv.androidchatclient.ui.login.LoginActivity
 import com.veselovvv.androidchatclient.ui.login.Navigate
 import com.veselovvv.androidchatclient.ui.user.HandleUserInfo
 import de.hdodenhof.circleimageview.CircleImageView
-import java.util.*
 
 class ChatsFragment : BaseFragment(R.layout.fragment_chats) {
     private lateinit var viewModel: ChatsViewModel
@@ -58,8 +57,8 @@ class ChatsFragment : BaseFragment(R.layout.fragment_chats) {
                 }
             },
             object : ChatsAdapter.ChatListener {
-                override fun showChat(id: UUID, title: String, companionId: String) =
-                    viewModel.showChat(id.toString(), title, companionId) //TODO id
+                override fun showChat(id: String, title: String, companionId: String) =
+                    viewModel.showChat(id, title, companionId)
             },
             viewModel.getUserToken()
         )

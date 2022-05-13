@@ -1,4 +1,4 @@
-package com.veselovvv.androidchatclient.ui.banuser
+package com.veselovvv.androidchatclient.ui.user
 
 import android.os.Bundle
 import android.view.View
@@ -10,7 +10,6 @@ import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.ui.core.BaseFragment
 import com.veselovvv.androidchatclient.ui.login.FieldType
 import com.veselovvv.androidchatclient.ui.login.Validator
-import com.veselovvv.androidchatclient.ui.user.HandleUserInfo
 
 class BanUserFragment : BaseFragment(R.layout.fragment_ban_user) {
     private lateinit var viewModel: BanUserViewModel

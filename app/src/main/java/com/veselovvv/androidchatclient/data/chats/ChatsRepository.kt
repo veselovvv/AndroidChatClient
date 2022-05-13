@@ -25,7 +25,7 @@ interface ChatsRepository {
             chatsCloudList.forEach { chat ->
                 val chatWithMessages = chatsWithMessagesCloudDataSource.fetchChatWithMessages(
                     token,
-                    chat.chatId.toString()
+                    chat.chatId
                 )
                 chat.lastChatMessage = chatWithMessages.lastMessage
 

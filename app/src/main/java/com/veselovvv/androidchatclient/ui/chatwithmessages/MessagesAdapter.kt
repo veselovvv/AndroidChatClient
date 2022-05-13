@@ -9,7 +9,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ImageLoader
-import com.veselovvv.androidchatclient.data.messages.Message
+import com.veselovvv.androidchatclient.data.message.Message
 import de.hdodenhof.circleimageview.CircleImageView
 
 class MessagesAdapter(
@@ -57,7 +57,7 @@ class MessagesAdapter(
                 itemView.findViewById<CircleImageView>(R.id.avatar_imageview_message_item)
 
             override fun bind(message: Message, userId: String, userToken: String, imageLoader: ImageLoader) {
-                if (message.sender.userId.toString() == userId) {
+                if (message.sender.userId == userId) {
                     receivedMessageLayout.visibility = View.GONE
                     receivedMessageAvatarImageView.visibility = View.GONE
                     sentMessageLayout.visibility = View.VISIBLE

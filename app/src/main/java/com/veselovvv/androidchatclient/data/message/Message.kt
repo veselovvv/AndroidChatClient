@@ -1,18 +1,17 @@
-package com.veselovvv.androidchatclient.data.messages
+package com.veselovvv.androidchatclient.data.message
 
 import com.google.gson.annotations.SerializedName
-import com.veselovvv.androidchatclient.data.user.net.User
-import java.util.*
+import com.veselovvv.androidchatclient.data.user.User
 
 data class Message(
     @SerializedName("id")
-    private val id: UUID,
+    private val id: String,
     @SerializedName("text")
     private val text: String,
     @SerializedName("pathToFile")
     private val pathToFile: String?,
     @SerializedName("chatId")
-    private val chatId: UUID,
+    private val chatId: String,
     @SerializedName("user")
     private val user: User,
     @SerializedName("messageDateTime")

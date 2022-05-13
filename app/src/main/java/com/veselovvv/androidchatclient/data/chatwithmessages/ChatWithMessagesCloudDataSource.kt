@@ -2,7 +2,7 @@ package com.veselovvv.androidchatclient.data.chatwithmessages
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.veselovvv.androidchatclient.data.chats.net.ChatService
+import com.veselovvv.androidchatclient.data.chats.ChatService
 
 interface ChatWithMessagesCloudDataSource {
     suspend fun fetchChatWithMessages(token: String, chatId: String): ChatWithMessages

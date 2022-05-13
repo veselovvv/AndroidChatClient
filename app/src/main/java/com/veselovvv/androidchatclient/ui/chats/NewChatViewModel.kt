@@ -1,7 +1,6 @@
-package com.veselovvv.androidchatclient.ui.addmember
+package com.veselovvv.androidchatclient.ui.chats
 
 import androidx.lifecycle.viewModelScope
-import com.veselovvv.androidchatclient.core.Read
 import com.veselovvv.androidchatclient.domain.chatwithmessages.ChatsWithMessagesDomainToUiMapper
 import com.veselovvv.androidchatclient.domain.chatwithmessages.ChatsWithMessagesInteractor
 import com.veselovvv.androidchatclient.domain.user.UserInteractor
@@ -14,19 +13,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AddMemberViewModel(
+class NewChatViewModel(
     private val userInteractor: UserInteractor,
     private val userMapper: UsersDomainToUiMapper,
     private val userCommunication: UserCommunication,
     private val chatsWithMessagesInteractor: ChatsWithMessagesInteractor,
     private val chatsWithMessagesCommunication: ChatsWithMessagesCommunication,
-    private val chatsWithMessagesMapper: ChatsWithMessagesDomainToUiMapper,
-    private val chatCache: Read<Triple<String, String, String>>
+    private val chatsWithMessagesMapper: ChatsWithMessagesDomainToUiMapper
 ) : BaseFetchUserByEmailViewModel(userInteractor, userMapper, userCommunication) {
-    fun addMember(groupId: String, userId: String, isChatAdmin: String) {
+    fun createChat(title: String, createdBy: String, userIds: List<String>) {
         chatsWithMessagesCommunication.map(ChatWithMessagesUi.Progress)
         viewModelScope.launch(Dispatchers.IO) {
-            val chatWithMessages = chatsWithMessagesInteractor.addMember(groupId, userId, isChatAdmin)
+            val chatWithMessages = chatsWithMessagesInteractor.createChat(title, createdBy, userIds)
             val chatWithMessagesUi = chatWithMessages.map(chatsWithMessagesMapper)
             withContext(Dispatchers.Main) {
                 chatWithMessagesUi.map(chatsWithMessagesCommunication)
@@ -35,5 +33,4 @@ class AddMemberViewModel(
     }
 
     fun getUserId() = userInteractor.getUserId()
-    fun getChatId() = chatCache.read().first
 }

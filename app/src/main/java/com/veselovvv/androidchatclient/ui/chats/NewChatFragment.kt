@@ -1,4 +1,4 @@
-package com.veselovvv.androidchatclient.ui.newchat
+package com.veselovvv.androidchatclient.ui.chats
 
 import android.os.Bundle
 import android.view.View

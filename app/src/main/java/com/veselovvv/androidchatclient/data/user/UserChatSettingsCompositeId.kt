@@ -1,13 +1,12 @@
-package com.veselovvv.androidchatclient.data.user.net
+package com.veselovvv.androidchatclient.data.user
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 data class UserChatSettingsCompositeId(
     @SerializedName("chatId")
-    private val chatId: UUID,
+    private val chatId: String,
     @SerializedName("userId")
-    private val userId: UUID
+    private val userId: String
 ) {
     val idUser get() = this.userId
 }

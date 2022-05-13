@@ -4,7 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.veselovvv.androidchatclient.core.Abstract
-import com.veselovvv.androidchatclient.data.messages.Message
+import com.veselovvv.androidchatclient.data.message.Message
 
 interface MessagesCommunication : Abstract.Mapper {
     fun map(messages: List<Message>)

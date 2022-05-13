@@ -1,7 +1,6 @@
 package com.veselovvv.androidchatclient.ui.chats
 
 import com.veselovvv.androidchatclient.core.Abstract
-import java.util.*
 
 sealed class ChatUi : Abstract.Object<Unit, ChatUi.BaseMapper> {
     override fun map(mapper: BaseMapper) = Unit
@@ -10,7 +9,7 @@ sealed class ChatUi : Abstract.Object<Unit, ChatUi.BaseMapper> {
     object Progress : ChatUi()
 
     class Base(
-        private val id: UUID,
+        private val id: String,
         private val title: String,
         private val companionId: String,
         private val lastMessageText: String,
@@ -33,7 +32,7 @@ sealed class ChatUi : Abstract.Object<Unit, ChatUi.BaseMapper> {
 
     interface BaseMapper : Abstract.Mapper {
         fun map(
-            id: UUID,
+            id: String,
             title: String,
             lastMessageText: String,
             lastMessagePathToFile: String,

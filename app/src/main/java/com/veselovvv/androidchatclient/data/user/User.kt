@@ -1,14 +1,11 @@
-package com.veselovvv.androidchatclient.data.user.net
+package com.veselovvv.androidchatclient.data.user
 
 import com.google.gson.annotations.SerializedName
 import com.veselovvv.androidchatclient.core.Abstract
-import com.veselovvv.androidchatclient.data.user.ToUserMapper
-import com.veselovvv.androidchatclient.data.user.UserData
-import java.util.*
 
 data class User(
     @SerializedName("id")
-    private val id: UUID,
+    private val id: String,
     @SerializedName("name")
     private val name: String,
     @SerializedName("email")
@@ -25,7 +22,7 @@ data class User(
     val photoPath get() = this.photoPathToFile ?: ""
 
     override fun map(mapper: ToUserMapper) =
-        mapper.map(id.toString(), name, email, password, photoPathToFile ?: "", role.roleName)
+        mapper.map(id, name, email, password, photoPathToFile ?: "", role.roleName)
 }
 
 data class Role(

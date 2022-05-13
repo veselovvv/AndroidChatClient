@@ -1,4 +1,4 @@
-package com.veselovvv.androidchatclient.ui.addmember
+package com.veselovvv.androidchatclient.ui.chatwithmessages
 
 import android.os.Bundle
 import android.view.View

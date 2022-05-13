@@ -1,10 +1,9 @@
-package com.veselovvv.androidchatclient.ui.banuser
+package com.veselovvv.androidchatclient.ui.user
 
 import androidx.lifecycle.viewModelScope
 import com.veselovvv.androidchatclient.domain.user.UserInteractor
 import com.veselovvv.androidchatclient.domain.user.UsersDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.core.BaseFetchUserByEmailViewModel
-import com.veselovvv.androidchatclient.ui.user.UserCommunication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

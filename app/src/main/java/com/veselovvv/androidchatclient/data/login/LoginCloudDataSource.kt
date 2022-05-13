@@ -2,7 +2,7 @@ package com.veselovvv.androidchatclient.data.login
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.veselovvv.androidchatclient.data.users.net.UserService
+import com.veselovvv.androidchatclient.data.user.UserService
 
 interface LoginCloudDataSource {
     suspend fun login(login: Login): LoginResponse

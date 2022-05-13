@@ -1,4 +1,4 @@
-package com.veselovvv.androidchatclient.data.chats.net
+package com.veselovvv.androidchatclient.data.chats
 
 import com.veselovvv.androidchatclient.data.chatwithmessages.AddMemberDto
 import com.veselovvv.androidchatclient.data.chatwithmessages.CreateChatDto

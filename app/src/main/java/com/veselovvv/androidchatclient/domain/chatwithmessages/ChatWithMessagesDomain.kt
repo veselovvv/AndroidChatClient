@@ -1,8 +1,8 @@
 package com.veselovvv.androidchatclient.domain.chatwithmessages
 
 import com.veselovvv.androidchatclient.core.Abstract
-import com.veselovvv.androidchatclient.data.chatdetails.ChatDetails
-import com.veselovvv.androidchatclient.data.messages.Message
+import com.veselovvv.androidchatclient.data.chatwithmessages.ChatDetails
+import com.veselovvv.androidchatclient.data.message.Message
 import com.veselovvv.androidchatclient.ui.chatwithmessages.ChatWithMessagesUi
 
 class ChatWithMessagesDomain(

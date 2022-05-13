@@ -3,9 +3,9 @@ package com.veselovvv.androidchatclient.ui.main
 import android.os.Bundle
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ChatApp
-import com.veselovvv.androidchatclient.ui.addmember.AddMemberFragment
-import com.veselovvv.androidchatclient.ui.banuser.BanUserFragment
 import com.veselovvv.androidchatclient.ui.chats.ChatsFragment
+import com.veselovvv.androidchatclient.ui.chats.NewChatFragment
+import com.veselovvv.androidchatclient.ui.chatwithmessages.AddMemberFragment
 import com.veselovvv.androidchatclient.ui.chatwithmessages.ChatWithMessagesFragment
 import com.veselovvv.androidchatclient.ui.core.BaseActivity
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.ADD_MEMBER_SCREEN
@@ -14,7 +14,7 @@ import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHATS_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.CHAT_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.NEW_CHAT_SCREEN
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.SETTINGS_SCREEN
-import com.veselovvv.androidchatclient.ui.newchat.NewChatFragment
+import com.veselovvv.androidchatclient.ui.user.BanUserFragment
 import com.veselovvv.androidchatclient.ui.user.SettingsFragment
 
 class MainActivity : BaseActivity() {

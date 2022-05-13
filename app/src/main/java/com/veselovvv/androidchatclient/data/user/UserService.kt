@@ -1,8 +1,6 @@
-package com.veselovvv.androidchatclient.data.users.net
+package com.veselovvv.androidchatclient.data.user
 
 import com.veselovvv.androidchatclient.data.login.Login
-import com.veselovvv.androidchatclient.data.user.EditUserDTO
-import com.veselovvv.androidchatclient.data.user.UserDTO
 import okhttp3.ResponseBody
 import retrofit2.http.*
 

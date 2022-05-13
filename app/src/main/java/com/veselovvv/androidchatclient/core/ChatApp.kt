@@ -3,11 +3,7 @@ package com.veselovvv.androidchatclient.core
 import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.veselovvv.androidchatclient.data.chats.ChatsCloudDataSource
-import com.veselovvv.androidchatclient.data.chats.ChatsCloudMapper
-import com.veselovvv.androidchatclient.data.chats.ChatsRepository
-import com.veselovvv.androidchatclient.data.chats.ToChatMapper
-import com.veselovvv.androidchatclient.data.chats.net.ChatService
+import com.veselovvv.androidchatclient.data.chats.*
 import com.veselovvv.androidchatclient.data.chatwithmessages.*
 import com.veselovvv.androidchatclient.data.fileuploading.UploadFileCloudDataSource
 import com.veselovvv.androidchatclient.data.fileuploading.UploadFileRepository
@@ -19,7 +15,6 @@ import com.veselovvv.androidchatclient.data.message.MessageCloudDataSource
 import com.veselovvv.androidchatclient.data.message.MessageRepository
 import com.veselovvv.androidchatclient.data.message.ToMessageDTOMapper
 import com.veselovvv.androidchatclient.data.user.*
-import com.veselovvv.androidchatclient.data.users.net.UserService
 import com.veselovvv.androidchatclient.domain.chats.BaseChatDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.chats.BaseChatsDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.chats.ChatsInteractor
@@ -39,8 +34,6 @@ import com.veselovvv.androidchatclient.domain.user.BaseUserDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.user.BaseUsersDataToDomainMapper
 import com.veselovvv.androidchatclient.domain.user.UserInteractor
 import com.veselovvv.androidchatclient.domain.user.UsersDomainToUiMapper
-import com.veselovvv.androidchatclient.ui.addmember.AddMemberViewModel
-import com.veselovvv.androidchatclient.ui.banuser.BanUserViewModel
 import com.veselovvv.androidchatclient.ui.chats.*
 import com.veselovvv.androidchatclient.ui.chatwithmessages.*
 import com.veselovvv.androidchatclient.ui.fileuploading.BaseUploadFileDomainToUiMapper
@@ -51,11 +44,7 @@ import com.veselovvv.androidchatclient.ui.main.NavigationCommunication
 import com.veselovvv.androidchatclient.ui.main.Navigator
 import com.veselovvv.androidchatclient.ui.message.BaseMessageDomainToUiMapper
 import com.veselovvv.androidchatclient.ui.message.MessageCommunication
-import com.veselovvv.androidchatclient.ui.newchat.NewChatViewModel
-import com.veselovvv.androidchatclient.ui.user.BaseUserDomainToUiMapper
-import com.veselovvv.androidchatclient.ui.user.BaseUsersDomainToUiMapper
-import com.veselovvv.androidchatclient.ui.user.SettingsViewModel
-import com.veselovvv.androidchatclient.ui.user.UserCommunication
+import com.veselovvv.androidchatclient.ui.user.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

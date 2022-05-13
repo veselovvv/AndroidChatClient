@@ -1,8 +1,8 @@
-package com.veselovvv.androidchatclient.data.chatdetails
+package com.veselovvv.androidchatclient.data.chatwithmessages
 
 import com.google.gson.annotations.SerializedName
-import com.veselovvv.androidchatclient.data.user.net.User
-import com.veselovvv.androidchatclient.data.user.net.UserChatSettings
+import com.veselovvv.androidchatclient.data.user.User
+import com.veselovvv.androidchatclient.data.user.UserChatSettings
 
 data class ChatDetails(
     @SerializedName("user")

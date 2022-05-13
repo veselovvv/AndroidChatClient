@@ -1,6 +1,6 @@
 package com.veselovvv.androidchatclient.data.message
 
-import com.veselovvv.androidchatclient.data.chats.net.ChatService
+import com.veselovvv.androidchatclient.data.chats.ChatService
 
 interface MessageCloudDataSource {
     suspend fun sendDirectMessage(token: String, message: MessageDTO, userId: String)

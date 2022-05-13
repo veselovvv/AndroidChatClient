@@ -15,8 +15,8 @@ import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
 import com.veselovvv.androidchatclient.core.ImageLoader
 import com.veselovvv.androidchatclient.core.Retry
-import com.veselovvv.androidchatclient.data.chatdetails.ChatDetails
-import com.veselovvv.androidchatclient.data.messages.Message
+import com.veselovvv.androidchatclient.data.chatwithmessages.ChatDetails
+import com.veselovvv.androidchatclient.data.message.Message
 import com.veselovvv.androidchatclient.ui.core.BaseFileUploadFragment
 import com.veselovvv.androidchatclient.ui.fileuploading.SetPathToFile
 import kotlinx.coroutines.*
@@ -189,7 +189,7 @@ class ChatWithMessagesFragment : BaseFileUploadFragment(R.layout.fragment_chat_w
             it.map(object : HideMenuItems {
                 override fun hide(chat: ChatDetails) {
                     chat.chatSettingsList.forEach { chatSettings ->
-                        if (chatSettings.userId.toString() == viewModel.getUserId()) {
+                        if (chatSettings.userId == viewModel.getUserId()) {
                             viewModel.setIsBannedInChat(chatSettings.isBanned)
                             if (chatSettings.isNotificationsEnabled) {
                                 toolbar.showMenuItem(R.id.action_enable_notifications, false)

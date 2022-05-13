@@ -1,15 +1,12 @@
-package com.veselovvv.androidchatclient.data.chats.net
+package com.veselovvv.androidchatclient.data.chats
 
 import com.google.gson.annotations.SerializedName
 import com.veselovvv.androidchatclient.core.Abstract
-import com.veselovvv.androidchatclient.data.chats.ChatData
-import com.veselovvv.androidchatclient.data.chats.ToChatMapper
-import com.veselovvv.androidchatclient.data.messages.Message
-import java.util.*
+import com.veselovvv.androidchatclient.data.message.Message
 
 data class Chat(
     @SerializedName("id")
-    private val id: UUID,
+    private val id: String,
     @SerializedName("title")
     private var title: String?,
     private var companionId: String?,

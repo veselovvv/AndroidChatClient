@@ -2,8 +2,6 @@ package com.veselovvv.androidchatclient.data.user
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.veselovvv.androidchatclient.data.user.net.User
-import com.veselovvv.androidchatclient.data.users.net.UserService
 
 interface UserCloudDataSource {
     suspend fun createUser(user: UserDTO)

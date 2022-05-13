@@ -2,8 +2,7 @@ package com.veselovvv.androidchatclient.data.chatwithmessages
 
 import com.google.gson.annotations.SerializedName
 import com.veselovvv.androidchatclient.core.Abstract
-import com.veselovvv.androidchatclient.data.chatdetails.ChatDetails
-import com.veselovvv.androidchatclient.data.messages.Message
+import com.veselovvv.androidchatclient.data.message.Message
 
 data class ChatWithMessages(
     @SerializedName("chat")

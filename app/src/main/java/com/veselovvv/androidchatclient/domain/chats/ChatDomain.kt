@@ -2,10 +2,9 @@ package com.veselovvv.androidchatclient.domain.chats
 
 import com.veselovvv.androidchatclient.core.Abstract
 import com.veselovvv.androidchatclient.ui.chats.ChatUi
-import java.util.*
 
 class ChatDomain(
-    private val id: UUID,
+    private val id: String,
     private val title: String,
     private val companionId: String,
     private val lastMessageText: String,
