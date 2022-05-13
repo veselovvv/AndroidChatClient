@@ -6,16 +6,14 @@ import android.view.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.IdRes
-import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
-import com.veselovvv.androidchatclient.core.ChatApp
+import com.veselovvv.androidchatclient.core.ImageLoader
 import com.veselovvv.androidchatclient.core.Retry
 import com.veselovvv.androidchatclient.data.chatdetails.ChatDetails
 import com.veselovvv.androidchatclient.data.messages.Message
@@ -26,8 +24,9 @@ import okhttp3.*
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 
-class ChatWithMessagesFragment : BaseFileUploadFragment() {
+class ChatWithMessagesFragment : BaseFileUploadFragment(R.layout.fragment_chat_with_messages) {
     private lateinit var viewModel: ChatsWithMessagesViewModel
+    private lateinit var imageLoader: ImageLoader
     private lateinit var toolbar: Toolbar
     private lateinit var progressLayout: FrameLayout
     private lateinit var failLayout: LinearLayout
@@ -43,17 +42,14 @@ class ChatWithMessagesFragment : BaseFileUploadFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = (requireActivity().application as ChatApp).chatsWithMessagesViewModel
+        viewModel = app.chatsWithMessagesViewModel
+        imageLoader = app.imageLoader
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
-    ): View? = inflater.inflate(R.layout.fragment_chat_with_messages, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = MessagesAdapter(viewModel.getUserId(), viewModel.getUserToken())
+        val adapter = MessagesAdapter(imageLoader, viewModel.getUserId(), viewModel.getUserToken())
         recyclerView = view.findViewById(R.id.recycler_view_chat_with_messages)
         recyclerView.adapter = adapter
         recyclerView.scrollToPosition(adapter.itemCount - 1)
@@ -236,9 +232,6 @@ class ChatWithMessagesFragment : BaseFileUploadFragment() {
         super.onDestroy()
         stompClient.disconnect() //TODO
     }
-
-    private fun showSnackBar(@StringRes text: Int) =
-        Snackbar.make(requireView(), getString(text), Snackbar.LENGTH_SHORT).show()
 }
 
 private fun Toolbar.showMenuItem(@IdRes itemId: Int, showItem: Boolean) {

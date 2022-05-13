@@ -2,35 +2,31 @@ package com.veselovvv.androidchatclient.ui.chats
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isEmpty
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
-import com.veselovvv.androidchatclient.core.ChatApp
+import com.veselovvv.androidchatclient.core.ImageLoader
 import com.veselovvv.androidchatclient.core.Retry
+import com.veselovvv.androidchatclient.ui.core.BaseFragment
 import com.veselovvv.androidchatclient.ui.login.LoginActivity
 import com.veselovvv.androidchatclient.ui.login.Navigate
 import com.veselovvv.androidchatclient.ui.user.HandleUserInfo
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
-class ChatsFragment : Fragment() {
+class ChatsFragment : BaseFragment(R.layout.fragment_chats) {
     private lateinit var viewModel: ChatsViewModel
+    private lateinit var imageLoader: ImageLoader
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeToRefreshLayout: SwipeRefreshLayout
     private lateinit var toolbar: Toolbar
@@ -43,18 +39,15 @@ class ChatsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = (requireActivity().application as ChatApp).chatsViewModel
+        viewModel = app.chatsViewModel
+        imageLoader = app.imageLoader
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_chats, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = ChatsAdapter(
+            imageLoader,
             object : Retry {
                 override fun tryAgain() = viewModel.fetchChats()
             },
@@ -115,16 +108,9 @@ class ChatsFragment : Fragment() {
                         photoPathToFile: String,
                         role: String
                     ) {
-                        //TODO path?
-                        if (photoPathToFile != "") {
-                            Glide.with(requireView())
-                                .load(
-                                    GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
-                                            photoPathToFile.substringAfter("chat-server/"),
-                                        LazyHeaders.Builder().addHeader("Authorization", viewModel.getUserToken()
-                                        ).build())
-                                ).into(avatarCircleImageView)
-                        }
+                        if (photoPathToFile != "") imageLoader.load(
+                            requireView(), photoPathToFile, viewModel.getUserToken(), avatarCircleImageView
+                        )
                         usernameTextView.text = name
                         emailTextView.text = email
 

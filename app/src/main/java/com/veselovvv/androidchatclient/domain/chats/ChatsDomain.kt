@@ -6,7 +6,6 @@ import com.veselovvv.androidchatclient.data.chats.ChatData
 import com.veselovvv.androidchatclient.data.chats.ChatDataToDomainMapper
 import com.veselovvv.androidchatclient.ui.chats.ChatsUi
 import retrofit2.HttpException
-import java.lang.Exception
 import java.net.UnknownHostException
 
 sealed class ChatsDomain : Abstract.Object<ChatsUi, ChatsDomainToUiMapper> {

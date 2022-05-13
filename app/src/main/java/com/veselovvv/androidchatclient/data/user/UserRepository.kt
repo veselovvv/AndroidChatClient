@@ -10,8 +10,8 @@ interface UserRepository {
         userId: String, name: String, email: String, password: String, photoPathToFile: String
     ): UsersData
     suspend fun banUser(userId: String, banned: Boolean): UsersData
-    fun getUserId(): String //TODO dry here and in chat with messages
-    fun getUserToken(): String //TODO dry here and in chat with messages
+    fun getUserId(): String
+    fun getUserToken(): String
     fun cleanToken()
 
     class Base(

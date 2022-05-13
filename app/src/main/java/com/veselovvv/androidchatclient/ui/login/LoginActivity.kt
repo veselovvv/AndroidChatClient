@@ -1,16 +1,13 @@
 package com.veselovvv.androidchatclient.ui.login
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.veselovvv.androidchatclient.R
+import com.veselovvv.androidchatclient.ui.core.BaseActivity
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container_login, LoginFragment())
-            .commit()
+        replaceFragment(R.id.container_login, LoginFragment(), false)
     }
 }

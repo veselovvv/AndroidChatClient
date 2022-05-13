@@ -9,9 +9,7 @@ class MainViewModel(
     private val navigator: Read<Int>,
     private val communication: NavigationCommunication
 ) : ViewModel() {
-    fun init() {
-        communication.map(navigator.read())
-    }
+    fun init() = communication.map(navigator.read())
 
     fun observe(owner: LifecycleOwner, observer: Observer<Int>) =
         communication.observe(owner, observer)

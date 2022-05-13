@@ -4,12 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
+import com.veselovvv.androidchatclient.core.ImageLoader
 import com.veselovvv.androidchatclient.core.Retry
 import com.veselovvv.androidchatclient.ui.login.Navigate
 import de.hdodenhof.circleimageview.CircleImageView
@@ -17,6 +15,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ChatsAdapter(
+    private val imageLoader: ImageLoader,
     private val retry: Retry,
     private val navigate: Navigate,
     private val chatListener: ChatListener,
@@ -45,11 +44,11 @@ class ChatsAdapter(
     }
 
     override fun onBindViewHolder(holder: ChatsViewHolder, position: Int) =
-        holder.bind(chats[position], userToken)
+        holder.bind(chats[position], userToken, imageLoader)
     override fun getItemCount() = chats.size
 
     abstract class ChatsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        open fun bind(chat: ChatUi, userToken: String) {}
+        open fun bind(chat: ChatUi, userToken: String, imageLoader: ImageLoader) {}
 
         class FullscreenProgress(view: View) : ChatsViewHolder(view)
 
@@ -61,7 +60,7 @@ class ChatsAdapter(
             private val photoImageView =
                 itemView.findViewById<CircleImageView>(R.id.avatar_imageview_chat_item)
 
-            override fun bind(chat: ChatUi, userToken: String) {
+            override fun bind(chat: ChatUi, userToken: String, imageLoader: ImageLoader) {
                 chat.map(object : ChatUi.BaseMapper {
                     override fun map(
                         id: UUID,
@@ -78,15 +77,8 @@ class ChatsAdapter(
                             else -> lastMessageTextView.text = itemView.context.getString(R.string.no_messages)
                         }
 
-                        if (photoPath != "") {
-                            //TODO DRY + path?
-                            Glide.with(itemView)
-                                .load(
-                                    GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
-                                            photoPath.substringAfter("chat-server/"),
-                                        LazyHeaders.Builder().addHeader("Authorization", userToken).build())
-                                ).into(photoImageView)
-                        } else photoImageView.setImageResource(R.drawable.ic_baseline_alternate_email_24)
+                        if (photoPath != "") imageLoader.load(itemView, photoPath, userToken, photoImageView)
+                        else photoImageView.setImageResource(R.drawable.ic_baseline_alternate_email_24)
                     }
                     override fun map(text: String) = Unit
                 })
@@ -101,7 +93,7 @@ class ChatsAdapter(
             private val message = itemView.findViewById<MaterialTextView>(R.id.error_message_text_view)
             private val button = itemView.findViewById<MaterialButton>(R.id.try_again_button)
 
-            override fun bind(chat: ChatUi, userToken: String) {
+            override fun bind(chat: ChatUi, userToken: String, imageLoader: ImageLoader) {
                 chat.map(object : ChatUi.BaseMapper {
                     override fun map(text: String) { message.text = text }
                     override fun map(
@@ -121,7 +113,7 @@ class ChatsAdapter(
             private val message = itemView.findViewById<MaterialTextView>(R.id.error_message_text_view)
             private val button = itemView.findViewById<MaterialButton>(R.id.login_button)
 
-            override fun bind(chat: ChatUi, userToken: String) {
+            override fun bind(chat: ChatUi, userToken: String, imageLoader: ImageLoader) {
                 chat.map(object : ChatUi.BaseMapper {
                     override fun map(text: String) { message.text = text }
                     override fun map(

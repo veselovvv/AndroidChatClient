@@ -3,7 +3,6 @@ package com.veselovvv.androidchatclient.ui.chatwithmessages
 import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.veselovvv.androidchatclient.core.Read
 import com.veselovvv.androidchatclient.data.messages.Message
@@ -13,8 +12,8 @@ import com.veselovvv.androidchatclient.domain.fileuploading.UploadFileDomainToUi
 import com.veselovvv.androidchatclient.domain.fileuploading.UploadFileInteractor
 import com.veselovvv.androidchatclient.domain.message.MessageDomainToUiMapper
 import com.veselovvv.androidchatclient.domain.message.MessageInteractor
+import com.veselovvv.androidchatclient.ui.core.BaseFileUploadViewModel
 import com.veselovvv.androidchatclient.ui.fileuploading.UploadFileCommunication
-import com.veselovvv.androidchatclient.ui.fileuploading.UploadFileUi
 import com.veselovvv.androidchatclient.ui.main.NavigationCommunication
 import com.veselovvv.androidchatclient.ui.main.Screens.Companion.ADD_MEMBER_SCREEN
 import com.veselovvv.androidchatclient.ui.message.MessageCommunication
@@ -36,17 +35,14 @@ class ChatsWithMessagesViewModel(
     private val uploadFileMapper: UploadFileDomainToUiMapper,
     private val chatCache: Read<Triple<String, String, String>>,
     private val navigationCommunication: NavigationCommunication
-) : ViewModel() {
+) : BaseFileUploadViewModel(uploadFileInteractor, uploadFileMapper, uploadFileCommunication) {
     private var isBannedInChat = false
     private var selectedFileUri: Uri? = null
-    private var pathToFile = ""
 
     fun getIsBannedInChat() = isBannedInChat
     fun setIsBannedInChat(isBanned: Boolean) { isBannedInChat = isBanned }
     fun getSelectedFileUri() = selectedFileUri
     fun setSelectedFileUri(uri: Uri?) { selectedFileUri = uri }
-    fun getPathToFile() = pathToFile
-    fun setPathToFile(path: String) { pathToFile = path }
 
     fun fetchChatWithMessages(chatId: String) {
         chatsWithMessagesCommunication.map(ChatWithMessagesUi.Progress)
@@ -119,16 +115,6 @@ class ChatsWithMessagesViewModel(
         }
     }
 
-    fun uploadFile(uri: Uri) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val resultDomain = uploadFileInteractor.uploadFile(uri)
-            val resultUi = resultDomain.map(uploadFileMapper)
-            withContext(Dispatchers.Main) {
-                resultUi.map(uploadFileCommunication)
-            }
-        }
-    }
-
     fun observe(owner: LifecycleOwner, observer: Observer<ChatWithMessagesUi>) =
         chatsWithMessagesCommunication.observe(owner, observer)
 
@@ -137,9 +123,6 @@ class ChatsWithMessagesViewModel(
 
     fun observeMessage(owner: LifecycleOwner, observer: Observer<MessageUi>) =
         messageCommunication.observe(owner, observer)
-
-    fun observeFileUploading(owner: LifecycleOwner, observer: Observer<UploadFileUi>) =
-        uploadFileCommunication.observe(owner, observer)
 
     fun showAddMember() = navigationCommunication.map(ADD_MEMBER_SCREEN)
     fun getUserToken() = chatsWithMessagesInteractor.getUserToken()

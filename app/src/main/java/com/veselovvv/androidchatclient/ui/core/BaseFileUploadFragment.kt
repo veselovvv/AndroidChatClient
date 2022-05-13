@@ -5,10 +5,10 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 
-abstract class BaseFileUploadFragment : Fragment() {
+abstract class BaseFileUploadFragment(@LayoutRes private val layout: Int) : BaseFragment(layout) {
     private companion object {
         const val READ_EXTERNAL_REQUEST = 1
         const val FILE_REQUEST_CODE = 100

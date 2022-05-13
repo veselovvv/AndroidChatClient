@@ -3,20 +3,17 @@ package com.veselovvv.androidchatclient.ui.chatwithmessages
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
+import com.veselovvv.androidchatclient.core.ImageLoader
 import com.veselovvv.androidchatclient.data.messages.Message
 import de.hdodenhof.circleimageview.CircleImageView
 
 class MessagesAdapter(
-    private val userId: String, private val userToken: String
+    private val imageLoader: ImageLoader, private val userId: String, private val userToken: String
 ) : RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder>() {
     private val messages = ArrayList<Message>()
 
@@ -30,12 +27,12 @@ class MessagesAdapter(
         MessagesViewHolder.Base(R.layout.message_layout.makeView(parent))
 
     override fun onBindViewHolder(holder: MessagesViewHolder, position: Int) =
-        holder.bind(messages[position], userId, userToken)
+        holder.bind(messages[position], userId, userToken, imageLoader)
 
     override fun getItemCount() = messages.size
 
     abstract class MessagesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        open fun bind(message: Message, userId: String, userToken: String) = Unit
+        open fun bind(message: Message, userId: String, userToken: String, imageLoader: ImageLoader) = Unit
 
         class Base(view: View) : MessagesViewHolder(view) {
             private val sentMessageLayout =
@@ -59,7 +56,7 @@ class MessagesAdapter(
             private val receivedMessageAvatarImageView =
                 itemView.findViewById<CircleImageView>(R.id.avatar_imageview_message_item)
 
-            override fun bind(message: Message, userId: String, userToken: String) {
+            override fun bind(message: Message, userId: String, userToken: String, imageLoader: ImageLoader) {
                 if (message.sender.userId.toString() == userId) {
                     receivedMessageLayout.visibility = View.GONE
                     receivedMessageAvatarImageView.visibility = View.GONE
@@ -69,7 +66,9 @@ class MessagesAdapter(
 
                     if (message.messagePathToFile != "" && message.messagePathToFile != null) {
                         sentMessagePhotoImageView.visibility = View.VISIBLE
-                        loadImage(message.messagePathToFile.toString(), userToken, sentMessagePhotoImageView)
+                        imageLoader.load(
+                            itemView, message.messagePathToFile.toString(), userToken, sentMessagePhotoImageView
+                        )
                     } else sentMessagePhotoImageView.visibility = View.GONE
                 } else {
                     sentMessageLayout.visibility = View.GONE
@@ -79,25 +78,17 @@ class MessagesAdapter(
                     receivedMessageTextTextView.text = message.messageText
                     receivedMessageDateTextView.text = message.dateTime.substring(11, 16)
 
-                    if (message.sender.photoPath != "")
-                        loadImage(message.sender.photoPath, userToken, receivedMessageAvatarImageView)
+                    if (message.sender.photoPath != "") imageLoader.load(
+                        itemView, message.sender.photoPath, userToken, receivedMessageAvatarImageView
+                    )
 
                     if (message.messagePathToFile != "" && message.messagePathToFile != null) {
                         receivedMessagePhotoImageView.visibility = View.VISIBLE
-                        loadImage(message.messagePathToFile.toString(), userToken, receivedMessagePhotoImageView)
+                        imageLoader.load(
+                            itemView, message.messagePathToFile.toString(), userToken, receivedMessagePhotoImageView
+                        )
                     } else receivedMessagePhotoImageView.visibility = View.GONE
                 }
-            }
-
-            private fun loadImage(
-                messagePathToFile: String, userToken: String, imageView: ImageView
-            ) {
-                //TODO path?
-                Glide.with(itemView)
-                    .load(GlideUrl("http://10.0.2.2:8081/getFile/?path=" +
-                            messagePathToFile.substringAfter("chat-server/"),
-                        LazyHeaders.Builder().addHeader("Authorization", userToken).build())
-                    ).into(imageView)
             }
         }
     }

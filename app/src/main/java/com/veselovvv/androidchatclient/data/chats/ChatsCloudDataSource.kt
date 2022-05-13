@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.veselovvv.androidchatclient.data.chats.net.Chat
 import com.veselovvv.androidchatclient.data.users.net.UserService
-import java.util.*
 
 interface ChatsCloudDataSource {
     suspend fun fetchChats(token: String, userId: String): List<Chat>

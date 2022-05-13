@@ -18,8 +18,6 @@ data class Message(
     @SerializedName("messageDateTime")
     private val messageDateTime: String
 ) {
-    //TODO
-    val messageId get() = this.id
     val messageText get() = this.text
     val messagePathToFile get() = this.pathToFile
     val sender get() = this.user

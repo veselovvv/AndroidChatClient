@@ -2,42 +2,32 @@ package com.veselovvv.androidchatclient.ui.login
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
-import com.veselovvv.androidchatclient.core.ChatApp
 import com.veselovvv.androidchatclient.ui.core.BaseFileUploadFragment
 import com.veselovvv.androidchatclient.ui.fileuploading.SetPathToFile
 import de.hdodenhof.circleimageview.CircleImageView
 
-class RegisterFragment : BaseFileUploadFragment() {
+class RegisterFragment : BaseFileUploadFragment(R.layout.fragment_register) {
     private lateinit var viewModel: RegisterViewModel
     private lateinit var validator: Validator
     private lateinit var avatarCircleImageView: CircleImageView
-    private lateinit var selectAvatarMaterialTextView: MaterialTextView
     private lateinit var usernameTextInputLayout: TextInputLayout
     private lateinit var emailTextInputLayout: TextInputLayout
     private lateinit var passwordTextInputLayout: TextInputLayout
     private lateinit var usernameEditText: TextInputEditText
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
-    private lateinit var createAccountButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = (requireActivity().application as ChatApp).registerViewModel
-        validator = (requireActivity().application as ChatApp).validator
+        viewModel = app.registerViewModel
+        validator = app.validator
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_register, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,11 +40,11 @@ class RegisterFragment : BaseFileUploadFragment() {
         passwordEditText = passwordTextInputLayout.editText as TextInputEditText
         avatarCircleImageView = view.findViewById(R.id.avatar_imageview_register)
 
-        selectAvatarMaterialTextView = view.findViewById(R.id.select_avatar_textview_register)
-        selectAvatarMaterialTextView.setOnClickListener { getPermission() }
+        view.findViewById<MaterialTextView>(R.id.select_avatar_textview_register).setOnClickListener {
+            getPermission()
+        }
 
-        createAccountButton = view.findViewById(R.id.create_account_button_register)
-        createAccountButton.setOnClickListener {
+        view.findViewById<MaterialButton>(R.id.create_account_button_register).setOnClickListener {
             val username = usernameEditText.text.toString()
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()

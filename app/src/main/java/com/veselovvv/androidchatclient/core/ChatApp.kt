@@ -97,6 +97,7 @@ class ChatApp : Application() { //TODO to modules
     lateinit var chatsWithMessagesDomainToUiMapper: ChatsWithMessagesDomainToUiMapper
     lateinit var addMemberViewModel: AddMemberViewModel
     lateinit var banUserViewModel: BanUserViewModel
+    lateinit var imageLoader: ImageLoader
 
     override fun onCreate() {
         super.onCreate()
@@ -124,6 +125,7 @@ class ChatApp : Application() { //TODO to modules
 
         validator = Validator.Base()
         sessionManager = SessionManager.Base(this)
+        imageLoader = ImageLoader.Base()
 
         userService = retrofit.create(UserService::class.java)
         chatService = retrofit.create(ChatService::class.java)

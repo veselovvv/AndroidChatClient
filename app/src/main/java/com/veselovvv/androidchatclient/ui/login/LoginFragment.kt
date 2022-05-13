@@ -2,39 +2,29 @@ package com.veselovvv.androidchatclient.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.veselovvv.androidchatclient.R
-import com.veselovvv.androidchatclient.core.ChatApp
+import com.veselovvv.androidchatclient.ui.core.BaseFragment
 import com.veselovvv.androidchatclient.ui.main.MainActivity
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment(R.layout.fragment_login) {
     private lateinit var viewModel: LoginViewModel
     private lateinit var validator: Validator
     private lateinit var emailTextInputLayout: TextInputLayout
     private lateinit var passwordTextInputLayout: TextInputLayout
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
-    private lateinit var loginButton: MaterialButton
-    private lateinit var createAccountTextView: MaterialTextView
     private lateinit var errorTextView: MaterialTextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = (requireActivity().application as ChatApp).loginViewModel
-        validator = (requireActivity().application as ChatApp).validator
+        viewModel = app.loginViewModel
+        validator = app.validator
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_login, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,8 +35,7 @@ class LoginFragment : Fragment() {
         passwordEditText = passwordTextInputLayout.editText as TextInputEditText
         errorTextView = view.findViewById(R.id.error_textview_login)
 
-        loginButton = view.findViewById(R.id.button_login)
-        loginButton.setOnClickListener {
+        view.findViewById<MaterialButton>(R.id.button_login).setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             var allFieldsAreCorrect = true
@@ -72,11 +61,10 @@ class LoginFragment : Fragment() {
             }
         }
 
-        createAccountTextView = view.findViewById(R.id.create_account_textview_login)
-        createAccountTextView.setOnClickListener {
+        view.findViewById<MaterialTextView>(R.id.create_account_textview_login).setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.container_login, RegisterFragment())
-                .addToBackStack("RegisterFragment")
+                .addToBackStack(null)
                 .commit()
         }
     }
