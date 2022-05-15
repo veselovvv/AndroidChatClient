@@ -1,5 +1,5 @@
 # AndroidChatClient
-Chat client for Android with this backend - https://github.com/ViacheslavVeselov/Chat
+Chat client for Android using Kotlin, Coroutines, Retrofit, OkHttp, Gson, Glide, Material Design Components and Circle Image View with this backend - https://github.com/ViacheslavVeselov/Chat
 
 ![1](https://user-images.githubusercontent.com/76612421/168471190-b2a849a4-e69b-40f6-b9ca-99ad3dc233a2.PNG)
 ![2](https://user-images.githubusercontent.com/76612421/168471192-b4064a3f-e22d-45c0-b199-50719bfd4ca8.PNG)
