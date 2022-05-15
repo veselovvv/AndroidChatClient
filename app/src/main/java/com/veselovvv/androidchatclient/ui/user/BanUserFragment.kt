@@ -19,8 +19,8 @@ class BanUserFragment : BaseFragment(R.layout.fragment_ban_user) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = (requireActivity().application as ChatApp).banUserViewModel
-        validator = (requireActivity().application as ChatApp).validator
+        viewModel = (requireActivity().application as ChatApp).getBanUserViewModel()
+        validator = (requireActivity().application as ChatApp).getValidator()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

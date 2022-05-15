@@ -25,8 +25,8 @@ class RegisterFragment : BaseFileUploadFragment(R.layout.fragment_register) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = app.registerViewModel
-        validator = app.validator
+        viewModel = app.getRegisterViewModel()
+        validator = app.getValidator()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

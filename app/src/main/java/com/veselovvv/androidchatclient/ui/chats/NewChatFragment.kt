@@ -21,8 +21,8 @@ class NewChatFragment : BaseFragment(R.layout.fragment_new_chat) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = app.newChatViewModel
-        validator = app.validator
+        viewModel = app.getNewChatViewModel()
+        validator = app.getValidator()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -19,8 +19,8 @@ class AddMemberFragment : BaseFragment(R.layout.fragment_add_member) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = app.addMemberViewModel
-        validator = app.validator
+        viewModel = app.getAddMemberViewModel()
+        validator = app.getValidator()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

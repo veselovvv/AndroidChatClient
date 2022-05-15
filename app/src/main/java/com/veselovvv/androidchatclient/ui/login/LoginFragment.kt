@@ -22,8 +22,8 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = app.loginViewModel
-        validator = app.validator
+        viewModel = app.getLoginViewModel()
+        validator = app.getValidator()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

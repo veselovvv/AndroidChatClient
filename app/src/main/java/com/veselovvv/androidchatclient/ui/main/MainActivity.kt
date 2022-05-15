@@ -24,7 +24,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = (application as ChatApp).mainViewModel
+        viewModel = (application as ChatApp).getMainViewModel()
         viewModel.observe(this, {
             when (it) {
                 CHATS_SCREEN -> replaceFragment(R.id.container_main, ChatsFragment(), false)

@@ -38,8 +38,8 @@ class ChatsFragment : BaseFragment(R.layout.fragment_chats) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = app.chatsViewModel
-        imageLoader = app.imageLoader
+        viewModel = app.getChatsViewModel()
+        imageLoader = app.getImageLoader()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

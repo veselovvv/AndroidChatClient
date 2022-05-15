@@ -42,8 +42,8 @@ class ChatWithMessagesFragment : BaseFileUploadFragment(R.layout.fragment_chat_w
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = app.chatsWithMessagesViewModel
-        imageLoader = app.imageLoader
+        viewModel = app.getChatWithMessagesViewModel()
+        imageLoader = app.getImageLoader()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,20 +104,17 @@ class ChatWithMessagesFragment : BaseFileUploadFragment(R.layout.fragment_chat_w
         tryAgainButton = requireActivity().findViewById(R.id.try_again_button_chat_with_messages)
         unselectFileButton = requireActivity().findViewById(R.id.unselect_file_button_chat_with_messages)
 
-        //TODO move to ViewModel?
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://10.0.2.2:8081/chat-ws/websocket")
         stompClient.connect()
 
         val destination = if (viewModel.getCompanionId() != "")
             "/user/${viewModel.getUserId()}/queue/messages"
         else "/group/${viewModel.getChatId()}"
-
         stompClient.topic(destination).subscribe {
             MainScope().launch(Dispatchers.Main) {
                 fetchData(adapter)
             }
         }
-
         fetchData(adapter)
 
         attachFileImageView.setOnClickListener { getPermission() }
@@ -230,7 +227,7 @@ class ChatWithMessagesFragment : BaseFileUploadFragment(R.layout.fragment_chat_w
 
     override fun onDestroy() {
         super.onDestroy()
-        stompClient.disconnect() //TODO
+        stompClient.disconnect()
     }
 }
 

@@ -34,9 +34,9 @@ class SettingsFragment : BaseFileUploadFragment(R.layout.fragment_settings) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = app.settingsViewModel
-        validator = app.validator
-        imageLoader = app.imageLoader
+        viewModel = app.getSettingsViewModel()
+        validator = app.getValidator()
+        imageLoader = app.getImageLoader()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
