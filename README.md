@@ -1,5 +1,5 @@
 # AndroidChatClient
-Chat client for Android using Kotlin, Coroutines, Retrofit, Gson, Glide, Material Design Components and Circle Image View with this backend - https://github.com/ViacheslavVeselov/Chat.
+Chat client for Android using Kotlin, MVVM, ViewModel, LiveData, Coroutines, Retrofit, Gson, Glide, Material Design Components and Circle Image View with this backend - https://github.com/ViacheslavVeselov/Chat.
 
 This app allows to send and receive text messages, photos or photos with text. The app has authorization and registration. There are app screens: login, registration, chat list, chat with messages, settings, creating a chat, ban user (only for admin). Chat list screen is shown after logging in. The list is sorted by last message and can be updated by making a swipe. There is also a search of chats. In addition, the chat with messages screen has a menu with options such as: disable/enable notifications, delete/leave chat, add member.
 
